@@ -1,0 +1,82 @@
+// Center alignment for the entire popup
+.popup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f8d7da; // Light red background for the popup
+  border-radius: 12px; // Soft corners
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.popup-title {
+  font-weight: bold;
+  color: #bd1717; // Darker red for the title
+  font-size: 1.4rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.text-input {
+  color: #000000 !important; // Text color remains black for readability
+  font-size: 0.95rem;
+  background-color: #ffffff; // White background for text input
+  border: none; // No border
+  box-shadow: none; // No shadow
+  outline: none; // No outline
+  border-radius: 10px; // Corrected border-radius
+  padding: 10px;
+  margin: 10px; 
+}
+
+.color-picker {
+  input[type="color"] {
+      height: 42px;
+      width: 100%;
+      cursor: pointer;
+      border: none; // No border
+      box-shadow: none; // No shadow
+      outline: none; // No outline
+  }
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.action-button {
+  padding: 8px 16px;
+  font-weight: 500;
+  border: none; // No border
+  color: white; // Text color for buttons
+  margin-right: 20px !important;
+}
+
+.cancel-button {
+  background-color: #bd1717; // Red for cancel button
+}
+
+.save-button {
+  background-color: #bd1717; // Darker red for save button
+}
+
+.task-label {
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin: 5px;
+  display: inline-block;
+  font-weight: bold;
+  text-align: center;
+  background-color: #bd1717; // Light red background for labels
+  color: white; // White text for labels
+}

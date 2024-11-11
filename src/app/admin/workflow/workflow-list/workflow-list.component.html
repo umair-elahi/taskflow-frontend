@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-md-3 mbpx-20">
+    <div class="box body-box bg-white mbpx-30 ripple-box height-147px" [routerLink]="['/workflow', 'create', 'new']">
+      <div class="innerdiv create-workflow-button">
+        <h5 class="fw-normal mbpx-20"><i class="fas fa-plus"></i>
+        </h5>
+        <p class="fs-medium mbpx-20">Create New App
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-3 mbpx-20" *ngFor="let item of applications">
+    <div class="hover-box bg-white height-147px">
+      <figure class="">
+        <div class="main-content">
+          <div class="col-md-4 d-table h-100 col-nopadd">
+            <h2 class="main-inner ">{{item.name[0]}}</h2>
+          </div>
+          <div class="right  col-md-8 ">
+            <p class="fs-medium">
+              {{item.name}}
+            </p>
+            <p class="fs-xsmall">
+              {{item.email || 'admin@aetasaal.com'}}
+            </p>
+          </div>
+        </div>
+        <span class="cross-tick">{{item.isPublished ? 'Publish' : 'Draft'}}</span>
+        <figcaption>
+          <div class="inner">
+            <div class="col-md-10 prpx-2">
+              <P>{{item.shortDescription}}</P>
+            </div>
+            <div class="col-md-2 plpx-1 prpx-1 bg-white h-100 hover-right ">
+              <ul class="unstyled ptpx-10 pbpx-10">
+                <li *ngIf="item.isPublished"><i class="fas fa-plus"
+                    [routerLink]="['/workflow', item.id, 'execute', 'new', 'open']"></i></li>
+                <li *ngIf="item.canEdit"><i class="fas fa-pencil-alt" [routerLink]="['/workflow', 'create', item.id]"></i></li>
+                <li><i class="fas fa-trash" (click)="deleteApplication(item.id)"></i></li>
+              </ul>
+            </div>
+          </div>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</div>

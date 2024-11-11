@@ -1,0 +1,240 @@
+<div class="col-md-12">
+  <div class="box bg-white">
+    <div class="box-header">
+      <h4 class="fw-normal title fs-medium d-inline-block">{{title}}</h4>
+      <span class="execution-count">Total Tasks: {{ lists.length }}</span>
+    </div>
+    <div class="box-body">
+      <div class="row" *ngIf="status === 'participated'">
+        <div class="col-lg-11">
+          <input type="text" class="form-control" [(ngModel)]="serachText" placeholder="Search Here" />
+        </div>
+        <div class="col-lg-1">
+          <button class="btn btn-primary" (click)="searchParticipated()">Search</button>
+        </div>
+      </div>
+      <div class="row" *ngIf="status !== 'participated' && status !== 'withdraw'">
+        <div class="col-lg-12">
+          <input type="text" class="form-control" [(ngModel)]="serachByMulti"
+            (keyup.enter)="filterResultsByMultiFields()"
+            placeholder="Search By Application Name, Request Title, Initiator" />
+        </div>
+      </div>
+      <div class="row" *ngIf="status === 'withdraw'">
+        <div class="col-md-3">
+          <div class="form-group">
+            Select Application
+            <ng-select [items]="applications" bindLabel="name" bindValue="id" name="id"
+              [(ngModel)]="rptFilter.applicationId" placeholder="Select Application">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            Start Date
+            <input type="date" name="startDate" [(ngModel)]="rptFilter.startDate" class="form-control">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            End Date
+            <input type="date" name="endDate" [(ngModel)]="rptFilter.endDate" class="form-control">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <button type="submit" class="btn btn-sm btn-success pull-right" (click)="getListData()">
+            Find Report
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <!-- Table -->
+        <section class="data-table">
+          <mat-accordion>
+            <mat-expansion-panel *ngFor="let list of lists" class="mat-detail-panel" (opened)="openAccordianItem(list)">
+              <mat-expansion-panel-header>
+                <mat-panel-title class="width-25-p">
+                  <!-- {{list.name}} - {{selectedField.name}} -->
+                  {{list.name}} - {{list.title || 'N/A'}}
+                </mat-panel-title>
+                <mat-panel-description>
+                  <span class="width-50-p">{{list.createdByName}}</span>
+                  <span style="background-color: transparent !important; color: rgba(0,0,0,.87) !important; margin-right: 20px !important;"class="width-50-p"
+                    *ngIf="list.applicationWorkflowName">{{list.applicationWorkflowName || 'N/A' }}</span>
+                  <span class="width-50-p">
+                    {{list.createdAt ? (list.createdAt | date:'medium') : 'N/A' }}
+                  </span>
+                  <span class="width-50-p">
+                    {{list.updatedAt ? (list.updatedAt | date:'medium') : 'N/A' }}
+                  </span>
+
+                  <div class="task-container" style="background-color: transparent !important; 
+                        color: #000001 !important;">
+                    <div class="task-labels">
+                      <div 
+                        
+                        *ngFor="let label of list.labels; let i = index" 
+                        [ngStyle]="{ 'color': getTextColor(label.color) }" 
+                        class="task-label">
+                        {{ label.title }}
+                        <span class="delete-icon" (click)="deleteLabelFromTask(list, i)">
+                          &times; <!-- Cross icon for delete -->
+                        </span>
+                      </div>
+
+
+                    </div>
+                    <div class="add-label-icon">
+                      <i class="fas fa-tag" (click)="openLabelPopup(list)"></i>
+                    </div>
+
+
+                    <span class="read-status" *ngIf="list.read">
+                      <i class="fas fa-check-double"></i>
+                    </span>
+                    
+                    
+
+                  </div>
+                  
+                  
+                  
+                  
+                  
+
+
+                  
+                  <span class="width-50-p">
+                    <i *ngIf="status === 'draft'" class="fas fa-trash trash-icon" data-toggle="tooltip" title=""
+                      data-original-title="Delete" (click)="$event.stopPropagation(); deleteRecord(list.id)"
+                      matTooltip="Delete">
+                    </i>
+                  </span>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <mat-progress-bar *ngIf="!list.isDataLoaded" mode="indeterminate"></mat-progress-bar>
+              <div *ngIf="list.isDataLoaded">
+                <div class="box bg-white" *ngFor="let section of list.application.applicationFormSections">
+                  <div class="box-header">
+                    <h4 class="fw-normal title fs-medium d-inline-block">{{section.name}}</h4>&nbsp;
+                    <i mat-raised-button matTooltip="{{section.helpText}}" class="info-icon fas fa-question-circle">
+                    </i>
+                  </div>
+
+                  <div class="row box-body">
+                    <form [formGroup]="section.formlyProp.templateOptionsForm" class="design-form-acc execution-form">
+                      <formly-form [fields]="section.formlyProp.fields" [options]="section.formlyProp.options"
+                        [form]="section.formlyProp.templateOptionsForm">
+                      </formly-form>
+                    </form>
+                  </div>
+                </div>
+                <div *ngIf="list.showMap && list.latitude && list.longitude">
+                  <agm-map [latitude]="list.latitude" [longitude]="list.longitude" style="height: 300px;">
+                    <agm-marker [latitude]="list.latitude" [longitude]="list.longitude"></agm-marker>
+                  </agm-map>
+                </div>
+                <div class="comment-box"
+                  *ngIf="list.applicationExecutionWorkflows && list.applicationExecutionWorkflows.length && list.applicationExecutionWorkflows[0].comments && list.applicationExecutionWorkflows[0].comments.length">
+                  <div class="row">
+                    <span class="header">Comments</span>
+                    <span class="view-comment-link" (click)="list.viewComment = !list.viewComment">View Comments</span>
+                  </div>
+                  <div *ngIf="list.viewComment">
+                    <div class="row line-item" *ngFor="let com of list.applicationExecutionWorkflows[0].comments">
+                      <div class="comment-initial">
+                        <span class="sp-latter lighten-2">{{com.userName?.charAt(0)}}</span>
+                      </div>
+                      <div class="comment-detail">
+                        <span class="user-name">{{com.userName}}</span>
+                        <span class="com-time">{{com.time ? (com.time | date:'medium') : 'N/A'}}</span>
+                        <span class="comments">{{com.comment}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br />
+                <div class="row" *ngIf="status === 'clarity'">
+                  <div class="col-md-12">
+                    <label>Please add clarification*</label>
+                    <br />
+                    <textarea [(ngModel)]="newComment" class="form-control"></textarea>
+                  </div>
+                </div>
+                <div class="row action-buttons">
+                  <div class="col-md-2 pull-right" *ngIf="status === 'approval' || status === 'input'">
+                    <button class="btn btn-primary width-100-p" (click)="sendForApproval(list)">Approve</button>
+                  </div>
+                  <div class="col-md-2 pull-right" *ngIf="status === 'approval' || status === 'input'">
+                    <button class="btn btn-default width-100-p" (click)="sendForReassign(list)">Reassign</button>
+                  </div>
+                  <div class="col-md-2 pull-right" *ngIf="status === 'approval' || status === 'input'">
+                    <button class="btn btn-info width-100-p" (click)="sendForClarity(list)">Get Clarity</button>
+                  </div>
+                  <div class="col-md-2 pull-right" *ngIf="status === 'approval' || status === 'input'">
+                    <button class="btn btn-danger width-100-p" (click)="sendForRejection(list)">Reject</button>
+                  </div>
+                  <div class="col-md-2 pull-right"
+                    *ngIf="status !== 'approved' && status !== 'rejected' && status !== 'withdraw' && list.canWithdraw && list.createdBy === currentUserId">
+                    <button class="btn btn-secondary width-100-p" (click)="sendForWithdraw(list)">Withdraw</button>
+                  </div>
+                  <div class="col-md-2 pull-right" *ngIf="status === 'draft'">
+                    <a class="btn btn-default width-100-p"
+                      [routerLink]="['/workflow', list.applicationId, 'execute', list.id, 'open']">
+                      Edit
+                    </a>
+                  </div>
+                  <div class="col-md-2 pull-right" (click)="saveExecution(list)" *ngIf="status === 'clarity'">
+                    <button class="btn btn-primary width-100-p">
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+          <div class="row" *ngIf="!lists.length">
+            <div class="col-md-12 alert-info">
+              <span>No Records available</span>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-12">
+            <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()"
+              aria-controls="example-datatable" class="form-control">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="-1">All</option>
+            </select>
+
+            <p class="mtpx-10 text-sm-center paging-size-info">
+              Showing
+              <strong>{{filters.pageNo}}</strong> -
+              <strong>{{filters.noOfPages > 0 ? filters.noOfPages : 1}}</strong> of
+              <strong>{{totalRecords}}</strong>
+            </p>
+          </div>
+
+          <div class="col-lg-6 col-md-12" *ngIf="filters.noOfPages !== -1">
+            <ul class="pagination ta-right text-md-left unstyled">
+              <li (click)="goToPrevious()">
+                Previous
+              </li>
+              <select name="example-datatable_length" [(ngModel)]="filters.pageNo" class="form-control"
+                (change)="goToPage(filters.pageNo)">
+                <option *ngFor="let item of range" value="{{item+1}}">{{item+1}}</option>
+              </select>
+              <!-- <li *ngFor="let item of range" [ngClass]="filters.pageNo == (item + 1) ? 'active-page' : ''"
+                (click)="goToPage(item)">
+                {{item + 1}}
+              </li> -->
+              <li (click)="goToNext()">
+                Next
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

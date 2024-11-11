@@ -1,0 +1,52 @@
+<div class="mobile-nav-btn">
+  <span class="lines"></span>
+</div>
+<!-- Mobile Navigation Button End-->
+
+<header class=" togglemain ph ta-center bg-white toggle auto">
+  <div class="container">
+    <div class="col-lg-6">
+      <ul class="inline unstyled ta-left">
+        <li class="d-inline-block ptpx-10 prpx-10 plpx-10 pbpx-10">
+          <div class="  ta-left ptpx-20">
+            <i class="fas fa-bars fc-primary fa-2x togglebtn cursor-pointer" id="togglebtn"></i>
+
+          </div>
+        </li>
+        <li class="d-inline-block plpx-10 prpx-10 ptpx-10 pbpx-10">
+          <div [matMenuTriggerFor]="menu" class="dropdown-boxes"><i
+              class="fas fa-th-large fc-primary fa-2x cursor-pointer"></i>
+            <mat-menu #menu="matMenu" class="sec-padding --small prpx-20 plpx-20 module-box animated fadeInDown">
+              <div class="module-btn col-nopadd" *ngFor="let mod of appModules" (click)="menuChange(mod)">
+                <div class="sec-padding --xsmall icon-box ta-center"
+                  [ngClass]="{'active': currentModuleName === mod.Name}">
+                  <i class="fas {{mod.Icon}} fc-lgrey fa-3x icon"></i>
+                  <p class="text ptpx-5">{{mod.Name}}</p>
+                </div>
+              </div>
+            </mat-menu>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+
+    <div class=" offset-lg-4 col-lg-2 ta-right hidden-md-down float-right right-nav">
+      <ul class="unstyled inline">
+        <li [matMenuTriggerFor]="userMenu" class="user-menu-btn float-right cursor-pointer">
+          <img src="{{profilePic || 'assets/images/user-pic.png'}}">
+          <div>
+            <mat-menu #userMenu="matMenu" class="usermenu-box animated bounceInDown">
+              <button mat-menu-item [routerLink]="['/admin', 'my-profile']">
+                <i class="power-icon fc-primary-green fas fa-user"></i>Profile
+              </button>
+              <button mat-menu-item (click)="logoutUser()" class="btpx-1">
+                <i class="power-icon fc-primary-green fas fa-sign-out-alt"></i>Logout
+              </button>
+            </mat-menu>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>

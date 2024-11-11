@@ -1,0 +1,83 @@
+<div class="col-md-12">
+  <div class="box bg-white">
+    <div class="box-header">
+      <h4 class="fw-normal title fs-medium d-inline-block">Task Execution</h4>
+      <a *ngIf="applicationId !== 'new'" [routerLink]="['/workflow', applicationId, 'execute', 'new', 'open']" class="btn btn-primary pull-right btn-new-record">
+        Add New Execution
+      </a>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <!-- Table -->
+        <section class="data-table">
+          <div class="mtpx-40 hidden-sm-up"></div>
+          <table class="w-100 mbpx-10 table-strip">
+            <tr>
+              <th>App Name</th>
+              <th>Start At</th>
+              <th>Status</th>
+              <th>Created On</th>
+              <th>Modified On</th>
+              <th>Actions</th>
+            </tr>
+            <tr class="table-footer">
+              <td colspan="6">
+                <input type="text" class="form-control" name="firstname" placeholder="Search By Status"
+                  [(ngModel)]="filters.searchArray[0].value">
+              </td>
+            </tr>
+            <tr
+              *ngFor="let list of lists | filter:{filtrationKeys: ['status'], filtrationValues: [filters.searchArray[0].value]}">
+              <td>{{list.application.name}}</td>
+              <td>{{list.startedAt ? (list.startedAt | date:'medium') : 'N/A'}}</td>
+              <td>{{list.status}}</td>
+              <td>{{list.createdAt ? (list.createdAt | date:'medium') : 'N/A' }}</td>
+              <td>{{list.updatedAt ? (list.updatedAt | date:'medium') : 'N/A' }}</td>
+              <td>
+                <i class="fas fa-pencil-alt rec-action" [routerLink]="['/workflow', list.applicationId, 'execute', list.id, 'open']" data-toggle="tooltip" title="" data-original-title="Edit"></i>
+                <i class="fas fa-trash rec-action" data-toggle="tooltip" title="" data-original-title="Delete"
+                  (click)="deleteRecord(list.id)"></i>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center" *ngIf="lists.length == 0" colspan="6">
+                No Lists Available
+              </td>
+            </tr>
+          </table>
+          <div class="col-lg-6 col-md-12">
+            <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()"
+              aria-controls="example-datatable" class="form-control">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="-1">All</option>
+            </select>
+
+            <p class="mtpx-10 text-sm-center paging-size-info">
+              Showing
+              <strong>{{filters.pageNo}}</strong> -
+              <strong>{{filters.noOfPages > 0 ? filters.noOfPages : 1}}</strong> of
+              <strong>{{totalRecords}}</strong>
+            </p>
+          </div>
+
+          <div class="col-lg-6 col-md-12">
+            <ul class="pagination ta-right text-md-left unstyled">
+              <li class="prev" (click)="filters.pageNo == '1' && goToPrevious()">
+                Previous
+              </li>
+              <li *ngFor="let item of range" [ngClass]="filters.pageNo == (item + 1) ? 'active-page' : ''"
+                (click)="goToPage(item)">
+                {{item + 1}}
+              </li>
+              <li class="next" (click)="filters.pageNo == (range[range.length - 1] + 1) && goToNext()">
+                Next
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

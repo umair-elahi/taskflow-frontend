@@ -1,0 +1,65 @@
+<div class="col-md-12">
+  <div class="box bg-white">
+    <div class="box-header">
+      <h4 class="fw-normal title fs-medium d-inline-block">Application Location</h4>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            Select Application
+            <ng-select [items]="applications" bindLabel="name" name="applicationId" [(ngModel)]="rptFilter.application"
+              placeholder="Select Application">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            Start Date
+            <input type="date" name="startDate" [(ngModel)]="rptFilter.startDate" class="form-control">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            End Date
+            <input type="date" name="endDate" [(ngModel)]="rptFilter.endDate" class="form-control">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <button type="submit" class="btn btn-sm btn-success pull-right" (click)="findReport()">
+            Find Report
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <!-- Table -->
+        <section class="data-table">
+          <table class="w-100 mbpx-10 table-strip">
+            <tr>
+              <th>
+                Workflow
+                <i class="fas" (click)="getSortedResults('title')"
+                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+              </th>
+              <th>Action</th>
+            </tr>
+            <tr *ngFor="let tl of items">
+              <td>{{tl.title}}</td>
+              <td>
+                <a class="btn btn-primary" (click)="showMap(tl)">
+                  View In Map
+                  <i class="fas fa-map"></i>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center" *ngIf="items.length == 0" colspan="4">
+                No Location Available
+              </td>
+            </tr>
+          </table>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

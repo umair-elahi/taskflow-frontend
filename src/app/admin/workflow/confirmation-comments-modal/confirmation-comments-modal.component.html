@@ -1,0 +1,72 @@
+<h1 mat-dialog-title>Confirmation</h1>
+<div mat-dialog-content>
+  <form name="commentsForm" *ngIf="isFormBinded" [formGroup]="commentsForm" novalidate id="form-test"
+    class="form-horizontal form-bordered form-control-borderless">
+    <div class="row">
+      <div class="col-md-12" *ngIf="users && users.length">
+        <div class="form-group">
+          <div class="col-xs-12">
+            Workflow
+            <ng-select [items]="workflows" bindLabel="name" bindValue="id" name="workflowId"
+              formControlName="workflowId" placeholder="Select Workflow">
+            </ng-select>
+            <p class="custom-error"
+              *ngIf="commentsForm.get('workflowId').hasError('required') && commentsForm.get('workflowId').touched">
+              Workflow is required.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12" *ngIf="users && users.length">
+        <div class="form-group">
+          <div class="col-xs-12">
+            Clarity From
+            <ng-select [items]="users" bindLabel="email" bindValue="id" name="userId" formControlName="userId"
+              placeholder="Select User">
+            </ng-select>
+            <p class="custom-error"
+              *ngIf="commentsForm.get('userId').hasError('required') && commentsForm.get('userId').touched">
+              User is required.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12" *ngIf="!users || !users.length">
+        <div class="form-group">
+          <div class="col-xs-12">
+            Send To
+            <p>Initiator</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <div class="col-xs-12">
+            Comments
+            <textarea formControlName="comment" name="comment" class="form-control"></textarea>
+            <p class="custom-error"
+              *ngIf="commentsForm.get('comment').hasError('required') && commentsForm.get('comment').touched">
+              Comments is required.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <br />
+        <button type="submit" class="btn btn-sm btn-success pull-right" [disabled]="commentsForm.invalid"
+          (click)="send()">
+          Save
+        </button>
+        <a (click)="onNoClick()" class="btn btn-sm btn-warning pull-right">
+          Cancel </a>
+      </div>
+    </div>
+    <br>
+    <br>
+  </form>
+</div>

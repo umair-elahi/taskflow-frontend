@@ -1,0 +1,44 @@
+<div class="col-md-12 application-execution" *ngIf="isFormBinded">
+  <div class="box bg-white" *ngIf="downloadButtons && downloadButtons.length">
+    <div class="box-header">
+      <h4 class="fw-normal title fs-medium d-inline-block">Download Documents</h4>
+    </div>
+    <div class="box-body">
+      <a *ngFor="let item of downloadButtons" href="{{item.link}}" target="_blank" class="btn btn-default">Download
+        {{item.name}}</a>
+    </div>
+  </div>
+
+  <div class="box bg-white" *ngFor="let item of applicationFormSection">
+    <div class="box-header">
+      <h4 class="fw-normal title fs-medium d-inline-block">{{item.name}}</h4>
+      <i mat-raised-button matTooltip="{{item.helpText}}" class="info-icon fas fa-question-circle">
+      </i>
+    </div>
+    <div class="box-body">
+      <form [formGroup]="item.formlyProp.templateOptionsForm" class="design-form-acc execution-form">
+        <formly-form [fields]="item.formlyProp.fields" [options]="item.formlyProp.options"
+          [form]="item.formlyProp.templateOptionsForm">
+        </formly-form>
+      </form>
+    </div>
+  </div>
+  <div *ngIf="coords.latitude && coords.longitude">
+    <agm-map [latitude]="coords.latitude" [longitude]="coords.longitude" style="height: 300px;">
+      <agm-marker [latitude]="coords.latitude" [longitude]="coords.longitude"></agm-marker>
+    </agm-map>
+  </div>
+  <div class="box bg-white" *ngIf="state !== 'read'">
+    <div class="box-header">
+      <h4 class="fw-normal title fs-medium d-inline-block pull-right">
+        <button type="submit" class="btn btn-warning" [routerLink]="['/workflow', 'draft', 'all']">Cancel</button>
+        <button type="submit" class="btn btn-secondary" (click)="saveApplicationExecutionData()"
+          *ngIf="!editDetails || editDetails.status !== 'approved'">Save as Draft</button>
+        <button type="submit" class="btn btn-primary" (click)="saveApplicationExecutionData(true)"
+          *ngIf="!editDetails || editDetails.status !== 'approved'">Save And Publish</button>
+        <button type="submit" class="btn btn-success" (click)="publishExecution()"
+          *ngIf="editDetails && editDetails.status === 'draft'">Publish</button>
+      </h4>
+    </div>
+  </div>
+</div>

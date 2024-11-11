@@ -1,0 +1,44 @@
+// @media (max-width: 992px){
+    
+//     .mobile-nav {
+//         position: fixed;
+//         top: 0;
+//         left: 0; /* Aligns the side menu to the left */
+//         width: 250px; /* Set the width of the side menu */
+//         height: 100%;
+//         background-color: #fff; /* Set the background color of the menu */
+//         z-index: 9999;
+//         transition: transform 0.3s ease-in-out;
+//       }
+      
+//       .sidemenu-box {
+//         position: absolute;
+//         top: 0;
+//         left: 0; /* Ensure it's starting from the left side */
+//         width: 250px; /* You can adjust this to your desired width */
+//         height: 100vh; /* Full screen height */
+//         background-color: #ffffff; /* Side menu background color */
+//         transform: translateX(-100%); /* Initially hide the menu */
+//         transition: transform 0.3s ease-in-out; /* Transition for sliding effect */
+//       }
+      
+//       /* When the side menu is active and visible, adjust transform */
+//       .mobile-nav.active .sidemenu-box {
+//         transform: translateX(0); /* Show the menu by sliding it in from the left */
+//       }
+      
+//       /* For the toggle menu */
+//       .mobile-nav-btn {
+//         position: fixed;
+//         top: 3%;
+//         left: 3%; /* Position the button on the left */
+//         height: 30px;
+//         padding: 6px 7px;
+//         border-radius: 4px;
+//         background-color: #000000;
+//         z-index: 1000;
+//         cursor: pointer;
+//         z-index: 10000;
+//       }
+// }
+

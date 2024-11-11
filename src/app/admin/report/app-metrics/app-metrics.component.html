@@ -1,0 +1,104 @@
+<div class="col-md-12">
+  <div class="box bg-white">
+    <div class="box-header">
+      <h4 class="fw-normal title fs-medium d-inline-block">Application Metrics</h4>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            Select Application
+            <ng-select [items]="applications" bindLabel="name" name="applicationId" [(ngModel)]="rptFilter.application"
+              placeholder="Select Application">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            Start Date
+            <input type="date" name="startDate" [(ngModel)]="rptFilter.startDate" class="form-control">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            End Date
+            <input type="date" name="endDate" [(ngModel)]="rptFilter.endDate" class="form-control">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <button type="submit" class="btn btn-sm btn-success pull-right" (click)="findReport()">
+            Find Report
+          </button>
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <!-- Table -->
+        <div class="row">
+          <div class="col-md-4">
+            <div class="box body-box bg-white mbpx-30 ripple-box">
+              <div class="innerdiv">
+                <p class="fs-medium mbpx-20">Total Items
+                </p>
+                <h5 class="fw-normal mbpx-20 ">{{items.total || 0}} <i class="fas fa-shield-alt"></i>
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="box body-box bg-white mbpx-30 ripple-box"
+              (click)="rptFilter.application && gotoDetail('approved', rptFilter.application.id, items.completed)">
+              <div class="innerdiv">
+                <p class="fs-medium mbpx-20">Completed
+                </p>
+                <h5 class="fw-normal mbpx-20">{{items.completed || 0}} <i class="fas fa-check"></i>
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="box body-box bg-white mbpx-30 ripple-box"
+              (click)="rptFilter.application && gotoDetail('draft', rptFilter.application.id, items.inProgress)">
+              <div class="innerdiv">
+                <p class="fs-medium mbpx-20">In Progress
+                </p>
+                <h5 class="fw-normal mbpx-20">{{items.inProgress || 0}} <i class="fas fa-hourglass-end"></i>
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="box body-box bg-white mbpx-30 ripple-box"
+              (click)="rptFilter.application && gotoDetail('rejected', rptFilter.application.id, items.rejected)">
+              <div class="innerdiv">
+                <p class="fs-medium mbpx-20">Rejected
+                </p>
+                <h5 class="fw-normal mbpx-20">{{items.rejected || 0}} <i class="fas fa-times"></i>
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="box body-box bg-white mbpx-30 ripple-box"
+              (click)="rptFilter.application && gotoDetail('withdraw', rptFilter.application.id, items.withdraw)">
+              <div class="innerdiv">
+                <p class="fs-medium mbpx-20">Withdraw
+                </p>
+                <h5 class="fw-normal mbpx-20">{{items.withdraw || 0}} <i class="fas fa-times"></i>
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div [chart]="chart"></div>
+        </div>
+        <div class="col-md-6">
+          <div [chart]="pieChart"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

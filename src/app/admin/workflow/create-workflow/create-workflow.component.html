@@ -1,0 +1,579 @@
+<div class="col-md-12">
+  <div class="box ">
+    <div class="" *ngIf="isFormBinded">
+      <div class="row">
+        <div class="col-md-12">
+          <mat-horizontal-stepper class="top-box" labelPosition="bottom" #stepper linear>
+            <!-- Application Information Step -->
+            <mat-step [stepControl]="applicationForm" class="">
+              <form [formGroup]="applicationForm" novalidate id="form-test"
+                class="form-horizontal form-bordered form-control-borderless bg-white  sec-padding --small plpx-30 prpx-30 ">
+                <ng-template matStepLabel>Application Information</ng-template>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="col-xs-12">
+                      <mat-form-field class="app-info">
+                        <input matInput placeholder="Name Of The App" formControlName="name" name="name">
+                        <mat-error
+                          *ngIf="applicationForm.get('name').hasError('required') && applicationForm.get('name').touched">
+                          App Name required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <div class="col-xs-12">
+                        <mat-form-field>
+                          <textarea matInput placeholder="Short Description" formControlName="shortDescription"
+                            name="shortDescription"></textarea>
+                          <mat-error
+                            *ngIf="applicationForm.get('shortDescription').hasError('required') && applicationForm.get('shortDescription').touched">
+                            Short Description required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <br>
+                <div>
+                  <button type="submit" matStepperNext class="btn btn-sm btn-primary pull-right"
+                    (click)="saveApplication(matStepperNext)">Next</button>
+                </div>
+              </form>
+            </mat-step>
+            <!-- End Application Information Step -->
+
+            <!-- Design Form Step -->
+            <mat-step [stepControl]="secondFormGroup">
+              <ng-template matStepLabel>Design Form</ng-template>
+              <div class="row" *ngFor="let detail of applicationSectionFrom.controls; let ind = index">
+                <div class="col-md-4  ">
+                  <h5 class="plpx-15">Basic Fields</h5>
+                  <div id="fields_{{ind}}" cdkDropList [cdkDropListData]="basicFields"
+                    cdkDropListConnectedTo="fields_body_{{ind}}" class="fields-list">
+                    <div class="field-box width-48" *ngFor="let bf of basicFields" [cdkDragData]="bf" cdkDrag>
+                      <span class="{{bf.icon}} icon"></span>
+                      <span class="name">{{bf.name}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-8 bg-white  sec-padding --small plpx-15 prpx-15 box-body">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <form [formGroup]="detail" novalidate id="form-test"
+                        class="form-horizontal form-bordered form-control-borderless form-section design-form">
+                        <input type="text" class="form-control name" placeholder="Untitled Section"
+                          formControlName="name" name="name" (click)="$event.stopPropagation();"
+                          (change)="saveApplicationForm()"
+                          [ngClass]="{'input-error': detail.get('name').hasError('required') && detail.get('name').touched}" />
+                        <div class="action-btn" *ngIf="applicationSectionFrom.controls.length > 1">
+                          <span class="fas fa-trash pull-right expension-icon"
+                            (click)="$event.stopPropagation(); removeApplicationSectionForm(ind)"
+                            matTooltip="Remove Section"></span>
+                        </div>
+                        <textarea class="form-control desc" formControlName="helpText" name="helpText"
+                          placeholder="Click to enter help text" (click)="$event.stopPropagation();" resize="noresize"
+                          (change)="saveApplicationForm()"
+                          [ngClass]="{'input-error': detail.get('helpText').hasError('required') && detail.get('helpText').touched}"></textarea>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12 col-nopadd">
+                      <div id="fields_body_{{ind}}" cdkDropList
+                        [cdkDropListData]="detail.value.applicationSectionFormFields"
+                        class="fields-list dragged-container"
+                        (cdkDropListDropped)="drop($event, detail.value.applicationSectionFormFields)">
+                        <div *ngFor="let bf of detail.value.applicationSectionFormFields; let ind = index"
+                          [cdkDragData]="bf" cdkDrag [cdkDragDisabled]="true">
+                          <mat-accordion>
+                            <mat-expansion-panel class="mat-panel-dragged border-remove">
+                              <mat-expansion-panel-header>
+                                <mat-panel-title class="dragged-controls">
+                                  <span class="fas fa-trash icon-trash" matTooltip="Remove Field"
+                                    (click)="$event.stopPropagation(); removeField(ind, detail.value.applicationSectionFormFields)"></span>
+                                  <span
+                                    *ngIf="bf.templateOptions.templateOptionType !== 'checkbox' && bf.templateOptions.templateOptionType !== 'radio'">
+                                    <span
+                                      class="input-title">{{bf.templateOptions.name ? bf.templateOptions.name : 'Untitled'}}</span>
+                                    <span class="input-overlay"></span>
+                                  </span>
+                                  <span
+                                    *ngIf="bf.templateOptions.templateOptionType === 'checkbox' || bf.templateOptions.templateOptionType === 'radio'">
+                                    <span class="input-title">
+                                      <span class="{{bf.templateOptions.icon}}"></span>
+                                      {{bf.templateOptions.name ? bf.templateOptions.name : 'Untitled'}}
+                                    </span>
+                                  </span>
+                                </mat-panel-title>
+                              </mat-expansion-panel-header>
+                              <div class="pad-20">
+                                <form [formGroup]="bf.formlyProp.templateOptionsForm" class="design-form-acc">
+                                  <formly-form [model]="bf.templateOptions" [fields]="bf.formlyProp.fields"
+                                    [options]="bf.formlyProp.options" [form]="bf.formlyProp.templateOptionsForm"
+                                    (modelChange)="saveEventFormly(bf.templateOptions)">
+                                  </formly-form>
+                                </form>
+                              </div>
+                            </mat-expansion-panel>
+                          </mat-accordion>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12 add-buttons">
+                      <a class="waves-effect waves-light add-section" (click)="createApplicationSectionForm(null, true)"
+                        translate=""><span>Add Section</span></a>
+                      <a class="waves-effect waves-light add-table" (click)="createApplicationSectionForm(null, true)"
+                        translate=""><span>Add Table</span></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-md-12">
+                  <button mat-button matStepperNext class="btn btn-sm btn-primary pull-right">Next</button>
+                  <button mat-button matStepperPrevious class="btn btn-sm btn-default pull-right">Back</button>
+                </div>
+              </div>
+            </mat-step>
+            <!-- End Design Form Step -->
+
+            <!-- Define Workflow Step -->
+            <mat-step [stepControl]="thirdFormGroup">
+              <ng-template matStepLabel>Define Workflow</ng-template>
+              <table class="workflow-table">
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="circle-main">
+                        <div class="circle-inner">
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="startline">
+                      <table>
+                        <tbody>
+                          <tr class="lines">
+                            <td class="border-left "></td>
+                            <td class="border-left "></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="node">
+                      <div class="first-node">
+                        <div class="node-header">
+                          <p class="fc-white mtpx-10 ta-left">Who can start this app?</p>
+                          <p class="fc-white ta-left ptpx-10 fs-xsmall"
+                            *ngIf="!appInitiator.isEditModeWorkflowInitior && appInitiator.canAllUserInitiateApp">
+                            All users can start</p>
+                          <p class="fc-white ta-left ptpx-10 fs-xsmall"
+                            *ngIf="!appInitiator.isEditModeWorkflowInitior && !appInitiator.canAllUserInitiateApp">
+                            {{appInitiator.userIds.length}} users can initiate this app</p>
+                          <mat-radio-group [(ngModel)]="appInitiator.canAllUserInitiateApp"
+                            *ngIf="appInitiator.isEditModeWorkflowInitior">
+                            <mat-radio-button class="fc-white" [value]="true">All Users</mat-radio-button>
+                            <mat-radio-button class="fc-white" [value]="false">Only The following selected
+                            </mat-radio-button>
+                          </mat-radio-group>
+                          <div [hidden]="!appInitiator.isEditModeWorkflowInitior || appInitiator.canAllUserInitiateApp">
+                            <ng-select [items]="userList" bindLabel="email" bindValue="id" name="userId"
+                              [(ngModel)]="appInitiator.userIds" placeholder="Select User" [multiple]="true">
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="node-footer">
+                          <p class="fc-white ptpx-8 pbpx-8 prpx-5 plpx-5 fw-light tt-uppercase ta-right"
+                            (click)="makeInitiaorWorkflowEditable()" *ngIf="!appInitiator.isEditModeWorkflowInitior">
+                            Change</p>
+                          <p class="fc-white ptpx-8 pbpx-8 prpx-5 plpx-5 fw-light tt-uppercase ta-right"
+                            *ngIf="appInitiator.isEditModeWorkflowInitior" (click)="saveApplication()">Done</p>
+                          <p class="fc-white ptpx-8 pbpx-8 prpx-5 plpx-5 fw-light tt-uppercase ta-right"
+                            *ngIf="appInitiator.isEditModeWorkflowInitior" (click)="makeInitiaorWorkflowEditable()">
+                            Cancel</p>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="startline">
+                      <table>
+                        <tbody>
+                          <tr class="lines">
+                            <td class="border-left "></td>
+                            <td class="border-left "></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr class="circular-btns">
+                    <td class="startline">
+                      <div class=" relative-block">
+                        <div id="circularMenu" class="circular-menu">
+                          <a class="floating-btn"
+                            onclick="document.getElementById('circularMenu').classList.toggle('active');">
+                            <i class="fas fa-plus"></i>
+                          </a>
+                          <menu class="items-wrapper">
+                            <a matTooltip="Add Approval Task" class="menu-item fas fa-check"
+                              (click)="addEmptyWorkflow(workflowTypes.APPROVAL)"></a>
+                            <a matTooltip="Add Input Task" class="menu-item fas fa-pencil-alt"
+                              (click)="addEmptyWorkflow(workflowTypes.INPUT)"></a>
+                            <a matTooltip="Add Goto" class="menu-item fas fa-level-up-alt"
+                              (click)="addEmptyWorkflow(workflowTypes.GOTO)"></a>
+                            <a matTooltip="Add Parallel Branches" class="menu-item fas fa-code-branch"></a>
+                          </menu>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="startline">
+                      <table>
+                        <tbody>
+                          <tr class="lines">
+                            <td class="border-left "></td>
+                            <td class="border-left "></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <table class="workflow-table" *ngFor="let workflow of workflows; let wfInd = index">
+                <tbody>
+                  <tr>
+                    <td class="node">
+                      <div class="first-node">
+                        <div class="node-header">
+                          <p class="fc-white mtpx-10 ta-left w-90" *ngIf="workflow.type !== workflowTypes.GOTO">
+                            <mat-form-field class="app-info">
+                              <input matInput placeholder="Name Of The Task" [(ngModel)]="workflow.name" name="name"
+                                (change)="workflow.name && saveWorkflows()">
+                              <mat-error *ngIf="!workflow.name">
+                                Task Name required
+                              </mat-error>
+                            </mat-form-field>
+                          </p>
+                          <p>
+                            <span class="fas fa-trash pull-right expension-icon" (click)="removeWorkflow(wfInd)"
+                              matTooltip="Remove Workflow"></span>
+                          </p>
+                          <div class="assign-to-section">
+                            <span>
+                              <mat-slide-toggle [(ngModel)]="workflow.showMap"
+                                (change)="workflow.name && saveWorkflows()">Show location to this user?
+                              </mat-slide-toggle>
+                            </span><br />
+                            <span>
+                              <mat-slide-toggle [(ngModel)]="workflow.canWithdraw"
+                                (change)="workflow.name && saveWorkflows()">User can withdraw request?
+                              </mat-slide-toggle>
+                            </span><br />
+                            <span *ngIf="!workflow.showAssignToOption">Show Advance Assignment Options </span>
+                            <span *ngIf="workflow.showAssignToOption">Go back to assign manually </span>
+                            <a (click)="toggleAssignToOption(workflow)">Yes</a>
+
+                            <mat-radio-group class="rb-assignto" [(ngModel)]="workflow.assignTo"
+                              *ngIf="workflow.showAssignToOption" id="assignTo_{{wfInd}}" (change)="saveWorkflows()">
+                              <mat-radio-button class="fc-white" [value]="'initiator'">Initiator</mat-radio-button>
+                              <mat-radio-button class="fc-white" [value]="'manager'">Initiator's Manager
+                              </mat-radio-button>
+                              <mat-radio-button class="fc-white" [value]="'department_head'">Initiator's Department Head
+                              </mat-radio-button>
+                              <mat-radio-button class="fc-white" [value]="'location_head'">Initiator's Location Head
+                              </mat-radio-button>
+                              <mat-radio-button class="fc-white" [value]="'group'">Group
+                              </mat-radio-button>
+                              <mat-radio-button *ngFor="let field of userFields" class="fc-white"
+                                [value]="'field_'+field.id">
+                                {{field.name}} Field
+                              </mat-radio-button>
+                            </mat-radio-group>
+                            <ng-select *ngIf="workflow.assignTo === 'group'" [items]="groupList" bindLabel="name"
+                              bindValue="id" name="groupId" [(ngModel)]="workflow.groupId" placeholder="Select Group"
+                              (change)="workflow.groupId && saveWorkflows()">
+                            </ng-select>
+                          </div>
+                          <br />
+                          <div *ngIf="workflow.type !== workflowTypes.GOTO && !workflow.showAssignToOption">
+                            <ng-select [items]="userList" bindLabel="email" bindValue="id" name="userId"
+                              [(ngModel)]="workflow.userIds" placeholder="Select User" [multiple]="true"
+                              (change)="(workflow.userIds && workflow.userIds.length) && saveWorkflows()">
+                            </ng-select>
+                            <span *ngIf="!workflow.userIds || !workflow.userIds.length" class="error">Atleast 1 user
+                              required</span>
+                          </div>
+                          <div *ngIf="workflow.type === workflowTypes.GOTO && !workflow.showAssignToOption">
+                            GOTO
+                            <ng-select [items]="workflows" bindLabel="name" bindValue="id" name="stepId"
+                              [(ngModel)]="workflow.stepId" placeholder="Select Step"
+                              (change)="workflow.stepId && saveWorkflows()">
+                            </ng-select>
+                            <span *ngIf="!workflow.stepId" class="error">Please select step</span>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="startline">
+                      <table>
+                        <tbody>
+                          <tr class="lines">
+                            <td class="border-left "></td>
+                            <td class="border-left "></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr class="circular-btns">
+                    <td class="startline">
+                      <div class=" relative-block">
+                        <div id="circularMenu_{{wfInd}}" class="circular-menu">
+                          <a class="floating-btn" (click)="activeButton(wfInd)">
+                            <i class="fas fa-plus"></i>
+                          </a>
+                          <menu class="items-wrapper">
+                            <a matTooltip="Add Approval Task" class="menu-item fas fa-check"
+                              (click)="addEmptyWorkflow(workflowTypes.APPROVAL)"></a>
+                            <a matTooltip="Add Input Task" class="menu-item fas fa-pencil-alt"
+                              (click)="addEmptyWorkflow(workflowTypes.INPUT)"></a>
+                            <a matTooltip="Add Goto" class="menu-item fas fa-level-up-alt"
+                              (click)="addEmptyWorkflow(workflowTypes.GOTO)"></a>
+                            <a matTooltip="Add Parallel Branches" class="menu-item fas fa-code-branch"></a>
+                          </menu>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="startline">
+                      <table>
+                        <tbody>
+                          <tr class="lines">
+                            <td class="border-left "></td>
+                            <td class="border-left "></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr *ngIf="wfInd === workflows.length - 1">
+                    <td>
+                      <div class="circle-main">
+                        <div class="circle-inner">
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div>
+                <button mat-button matStepperNext class="btn btn-sm btn-primary pull-right">Next</button>
+                <button mat-button matStepperPrevious class="btn btn-sm btn-default pull-right">Back</button>
+              </div>
+            </mat-step>
+            <!-- Define Workflow Step -->
+
+            <!-- Change Permission Step -->
+            <mat-step [stepControl]="ForthFormGroup">
+              <ng-template matStepLabel>Change Permissions</ng-template>
+              <div class="row" class="permission-section">
+                <div class="col-md-4">
+                  <div class="box box-permission"
+                    [ngClass]="{'active': selectedPermissionFlow.type === permissionTypes.NEW}"
+                    (click)="selectPermissions(permissionTypes.NEW)">
+                    <div class="icon">
+                      <i class="fas fa-play fs-small"></i>
+                    </div>
+                    <div class="name">
+                      New {{applicationForm.value.name}}
+                      <br />
+                      <span class="desc">Has Editable fields</span>
+                    </div>
+                  </div>
+                  <div *ngFor="let flow of workflows">
+                    <div class="box box-permission" (click)="selectPermissions(permissionTypes.WORKFLOW, flow.id)"
+                      *ngIf="flow.type === workflowTypes.APPROVAL || flow.type === workflowTypes.INPUT"
+                      [ngClass]="{'active': selectedPermissionFlow.workflowId === flow.id}">
+                      <div class="icon">
+                        <i class="menu-item fas fa-check" *ngIf="flow.type === workflowTypes.APPROVAL"></i>
+                        <i class="menu-item fas fa-pencil-alt" *ngIf="flow.type === workflowTypes.INPUT"></i>
+                      </div>
+                      <div class="name">
+                        {{flow.name}}
+                        <br />
+                        <span class="desc">Has Editable fields</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="box box-permission" (click)="selectPermissions(permissionTypes.INITIATOR_SUMMARY)"
+                    [ngClass]="{'active': selectedPermissionFlow.type === permissionTypes.INITIATOR_SUMMARY}">
+                    <div class="icon">
+                      <i class="fas fa-stop"></i>
+                    </div>
+                    <div class="name">
+                      Initiator's Final Summary
+                      <br />
+                      <span class="desc">Has Editable fields</span>
+                    </div>
+                  </div>
+                  <div class="box box-permission" (click)="selectPermissions(permissionTypes.ALL_TASK)"
+                    [ngClass]="{'active': selectedPermissionFlow.type === permissionTypes.ALL_TASK}">
+                    <div class="icon">
+                      <i class="fas fa-list"></i>
+                    </div>
+                    <div class="name">
+                      All Tasks
+                      <br />
+                      <span class="desc">Has Editable fields</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-8">
+                  <div class="row" *ngFor="let detail of applicationSectionFrom.controls; let ind = index">
+                    <div class="col-md-12 bg-white  sec-padding --small plpx-15 prpx-15 box-body permission-box">
+                      <div class="row permission-form-section">
+                        <div class="col-md-6">
+                          <span class="field-title">
+                            {{detail.value.name}}
+                          </span>
+                        </div>
+                        <div class="col-md-6 margin-bottom-10px buttons-hidden">
+                          <button class="btn btn-default pull-right btn-perm"
+                            *ngIf="selectedPermissionFlow.type === permissionTypes.ALL_TASK"
+                            [ngClass]="{'perm-active': detail.value.perm === permissions.VISIBLE}"
+                            (click)="findFieldAndUpdatePermission(detail.value.id, null, permissions.VISIBLE, detail.value)">VISIBLE</button>
+                          <button class="btn btn-default pull-right btn-perm"
+                            *ngIf="selectedPermissionFlow.type === permissionTypes.NEW || selectedPermissionFlow.type === permissionTypes.WORKFLOW"
+                            [ngClass]="{'perm-active': detail.value.perm === permissions.EDITABLE}"
+                            (click)="findFieldAndUpdatePermission(detail.value.id, null, permissions.EDITABLE, detail.value)">EDITABLE</button>
+                          <button class="btn btn-default pull-right btn-perm"
+                            *ngIf="selectedPermissionFlow.type === permissionTypes.NEW || selectedPermissionFlow.type === permissionTypes.WORKFLOW || selectedPermissionFlow.type === permissionTypes.INITIATOR_SUMMARY"
+                            [ngClass]="{'perm-active': detail.value.perm === permissions.READONLY}"
+                            (click)="findFieldAndUpdatePermission(detail.value.id, null, permissions.READONLY, detail.value)">READ-ONLY</button>
+                          <button class="btn btn-default pull-right btn-perm"
+                            [ngClass]="{'perm-active': detail.value.perm === permissions.HIDDEN}"
+                            (click)="findFieldAndUpdatePermission(detail.value.id, null, permissions.HIDDEN, detail.value)">HIDDEN</button>
+                          <!-- <button class="btn btn-default pull-right btn-perm"
+                            *ngIf="selectedPermissionFlow.type === permissionTypes.ALL_TASK"
+                            [ngClass]="{'perm-active': detail.value.perm === permissions.CONDITIONAL}"
+                            (click)="findFieldAndUpdatePermission(detail.value.id, null, permissions.CONDITIONAL, detail.value)">CONDITIONAL</button> -->
+                        </div>
+                      </div>
+                      <div class="row permission-field-section relative-block"
+                        *ngFor="let bf of detail.value.applicationSectionFormFields; let ind = index">
+                        <div class="col-md-12 col-nopadd input-sec">
+                          <span class="input-overlay"
+                            *ngIf="bf.templateOptions.templateOptionType !== 'checkbox' && bf.templateOptions.templateOptionType !== 'radio'">
+                            <span
+                              class="input-title">{{bf.templateOptions.name ? bf.templateOptions.name : 'Untitled'}}</span>
+                            <span class="input-border"></span>
+                          </span>
+                          <span
+                            *ngIf="bf.templateOptions.templateOptionType === 'checkbox' || bf.templateOptions.templateOptionType === 'radio'">
+                            <span class="input-title">
+                              <span class="{{bf.templateOptions.icon}}"></span>
+                              {{bf.templateOptions.name ? bf.templateOptions.name : 'Untitled'}}
+                            </span>
+                          </span>
+
+                          <div class="col-md-5 offset-md-3 input-hidden col-nopadd">
+                            <button class="btn btn-default pull-right btn-perm"
+                              *ngIf="selectedPermissionFlow.type === permissionTypes.ALL_TASK"
+                              [ngClass]="{'perm-active': bf.templateOptions.perm === permissions.VISIBLE}"
+                              (click)="findFieldAndUpdatePermission(null, bf.templateOptions.id, permissions.VISIBLE)">VISIBLE</button>
+                            <button class="btn btn-default pull-right btn-perm"
+                              *ngIf="selectedPermissionFlow.type === permissionTypes.NEW || selectedPermissionFlow.type === permissionTypes.WORKFLOW"
+                              [ngClass]="{'perm-active': bf.templateOptions.perm === permissions.EDITABLE}"
+                              (click)="findFieldAndUpdatePermission(null, bf.templateOptions.id, permissions.EDITABLE)">EDITABLE</button>
+                            <button class="btn btn-default pull-right btn-perm"
+                              *ngIf="selectedPermissionFlow.type === permissionTypes.NEW || selectedPermissionFlow.type === permissionTypes.WORKFLOW || selectedPermissionFlow.type === permissionTypes.INITIATOR_SUMMARY"
+                              [ngClass]="{'perm-active': bf.templateOptions.perm === permissions.READONLY}"
+                              (click)="findFieldAndUpdatePermission(null, bf.templateOptions.id, permissions.READONLY)">READ-ONLY</button>
+                            <button class="btn btn-default pull-right btn-perm"
+                              [ngClass]="{'perm-active': bf.templateOptions.perm === permissions.HIDDEN}"
+                              (click)="findFieldAndUpdatePermission(null, bf.templateOptions.id, permissions.HIDDEN)">HIDDEN</button>
+                            <button class="btn btn-default pull-right btn-perm"
+                              *ngIf="selectedPermissionFlow.type === permissionTypes.ALL_TASK"
+                              [ngClass]="{'perm-active': bf.templateOptions.perm === permissions.CONDITIONAL}"
+                              (click)="findFieldAndUpdatePermission(null, bf.templateOptions.id, permissions.CONDITIONAL)">CONDITIONAL</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button mat-button matStepperNext class="btn btn-sm btn-primary pull-right">Next</button>
+                <button mat-button matStepperPrevious class="btn btn-sm btn-default pull-right">Back</button>
+              </div>
+            </mat-step>
+            <!-- Change Permission Step -->
+
+            <!-- Publist App Step -->
+            <mat-step>
+              <ng-template matStepLabel>Publish App</ng-template>
+              <div class="bg-white  sec-padding --small plpx-30 prpx-30 publish-section">
+                <div class="row">
+                  <div class="col-md-12">
+                    <label>Who can edit this app?</label><br />
+                    <mat-radio-group [(ngModel)]="appInitiator.canAllUserEditApp">
+                      <mat-radio-button [value]="true" class="mr-1">All Users</mat-radio-button>
+                      <mat-radio-button [value]="false">Only The following selected
+                      </mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12" [hidden]="appInitiator.canAllUserEditApp">
+                    <label>Editable Users</label>
+                    <ng-select [items]="userList" bindLabel="email" bindValue="id" name="userId"
+                      [(ngModel)]="appInitiator.editableUserIds" placeholder="Select User" [multiple]="true">
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <label>Set a Subject to identify individual items of {{applicationForm.get('name').value}}</label>
+                    <p>This aids in search and navigation. Use the "{{ '{' }}" symbol to bring up fields from your form.</p>
+                    <input type="text" class="form-control" [(ngModel)]="appInitiator.subject" (keyup)="changeFieldSubject($event)" />
+                    <ul *ngIf="showFormFieldTitlesSelect" class="form-field-title-select">
+                      <li *ngFor="let formFieldTitle of formFieldsTitles" (click)="selectFormFieldForSubject(formFieldTitle.id)">
+                        {{formFieldTitle.name}}
+                      </li>
+                    </ul>
+                  </div>
+                  
+                </div>
+              </div>
+              <div>
+                <button mat-button (click)="publishApp()" class="btn btn-sm btn-primary pull-right">Publish</button>
+                <button mat-button matStepperPrevious class="btn btn-sm btn-default pull-right">Back</button>
+              </div>
+            </mat-step>
+            <!-- End Publist App Step -->
+          </mat-horizontal-stepper>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,127 @@
+<div class="col-md-12">
+  <div class="box bg-white">
+    <div class="box-header">
+      <h4 class="fw-normal title fs-medium d-inline-block">Lists</h4>
+      <a (click)="add()" class="btn btn-primary pull-right btn-new-record">
+        Add New List
+      </a>
+    </div>
+    <div class="box-body">
+
+      <form name="listForm" *ngIf="isFormBinded" [formGroup]="listForm" novalidate id="form-test"
+        class="form-horizontal form-bordered form-control-borderless">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="col-xs-12">
+                Name
+                <input type="text" formControlName="name" name="name" class="form-control">
+                <p class="custom-error"
+                  *ngIf="listForm.get('name').hasError('required') && listForm.get('name').touched">
+                  Name is required.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="col-xs-12">
+                Type
+                <input type="text" formControlName="type" name="type" class="form-control">
+                <p class="custom-error"
+                  *ngIf="listForm.get('type').hasError('required') && listForm.get('type').touched">
+                  Type is required.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <br />
+            <button type="submit" class="btn btn-sm btn-success pull-right" [disabled]="listForm.invalid"
+              (click)="save()">
+              Save
+            </button>
+            <a type="reset" (click)="isFormBinded=false;" class="btn btn-sm btn-warning pull-right">
+              Cancel </a>
+          </div>
+        </div>
+        <br>
+        <br>
+      </form>
+      <div class="row">
+        <!-- Table -->
+        <section class="data-table">
+          <div class="mtpx-40 hidden-sm-up"></div>
+          <table class="w-100 mbpx-10 table-strip">
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Created On</th>
+              <th>Modified On</th>
+              <th>Actions</th>
+            </tr>
+            <tr class="table-footer">
+              <td colspan="5">
+                <input type="text" class="form-control" name="firstname" placeholder="Search By Name"
+                  [(ngModel)]="filters.searchArray[0].value">
+              </td>
+            </tr>
+            <tr
+              *ngFor="let list of lists | filter:{filtrationKeys: ['name'], filtrationValues: [filters.searchArray[0].value]}">
+              <td>{{list.name}}</td>
+              <td>{{list.type}}</td>
+              <td>{{list.createdAt ? (list.createdAt | date:'medium') : 'N/A' }}</td>
+              <td>{{list.updatedAt ? (list.updatedAt | date:'medium') : 'N/A' }}</td>
+              <td>
+                <i class="fas fa-pencil-alt rec-action" data-toggle="tooltip" title="" data-original-title="Edit"
+                  (click)="edit(list)"></i>
+                <i class="fas fa-trash rec-action" data-toggle="tooltip" title="" data-original-title="Delete"
+                  (click)="deleteRecord(list.id)"></i>
+                <i class="fas fa-list rec-action" data-toggle="tooltip" title="" data-original-title="List Data"
+                  (click)="openListDataDialog(list)"></i>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center" *ngIf="lists.length == 0" colspan="5">
+                No Lists Available
+              </td>
+            </tr>
+          </table>
+          <div class="col-lg-6 col-md-12">
+            <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()"
+              aria-controls="example-datatable" class="form-control">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="-1">All</option>
+            </select>
+
+            <p class="mtpx-10 text-sm-center paging-size-info">
+              Showing
+              <strong>{{filters.pageNo}}</strong> -
+              <strong>{{filters.noOfPages > 0 ? filters.noOfPages : 1}}</strong> of
+              <strong>{{totalRecords}}</strong>
+            </p>
+          </div>
+
+          <div class="col-lg-6 col-md-12">
+            <ul class="pagination ta-right text-md-left unstyled">
+              <li class="prev" (click)="filters.pageNo == '1' && goToPrevious()">
+                Previous
+              </li>
+              <li *ngFor="let item of range" [ngClass]="filters.pageNo == (item + 1) ? 'active-page' : ''"
+                (click)="goToPage(item)">
+                {{item + 1}}
+              </li>
+              <li class="next" (click)="filters.pageNo == (range[range.length - 1] + 1) && goToNext()">
+                Next
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

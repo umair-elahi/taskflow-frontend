@@ -1,0 +1,49 @@
+<!-- Mobile Navigation -->
+<div class="mobile-nav">
+    <section class="box sidemenu-box w-100">
+        <app-side-menu></app-side-menu>
+    </section>
+</div>
+<!-- End Mobile Navigation -->
+<main class="app-container">
+    <!-- Header -->
+    <app-header></app-header>
+    <!-- End Header -->
+
+    <!-- Navigation -->
+    <section class="togglemain  box sidemenu-box matchheight hidden-md-down toggle auto ">
+        <app-side-menu></app-side-menu>
+    </section>
+    <!-- End Navigation -->
+
+    <!-- Section Body -->
+    <section class=" togglemain box main-box sec-padding --small pbpx-0 matchheight toggle auto ">
+        <div class="container">
+            <div class="col-md-9">
+                <h5 class="title fw-normal text-md-center">{{title}} <small
+                        class="fs-default fw-thin pl-1">{{subTitle}}</small>
+                </h5>
+            </div>
+            <div class="mtpx-20 hidden-sm-up"></div>
+            <div class="col-md-3">
+                <div class="breadcrumbb ta-right text-md-center ">
+                    <i class="fas fa-tachometer-alt pr-2"></i> Home > {{title}}
+                </div>
+            </div>
+        </div>
+
+        <div class="sec-padding --small">
+            <div class="container">
+                <router-outlet></router-outlet>
+                <div class="example-button-container" matTooltip="Create New Application"
+                    style="position: fixed;bottom: 0;z-index: 9999;margin-left: 80%;">
+                    <button mat-fab color="primary" aria-label="Example icon button with a delete icon"
+                        [routerLink]="['/workflow', 'list']">
+                        <span class="fas fa-plus" style="margin-top: -9px;display: table;"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Section Body -->
+</main>

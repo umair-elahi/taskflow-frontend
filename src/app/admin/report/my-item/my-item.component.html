@@ -1,0 +1,228 @@
+<div class="col-md-12">
+  <div class="box bg-white">
+    <div class="box-header">
+      <h4 class="fw-normal title fs-medium d-inline-block">My Items</h4>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <!-- Table -->
+        <section class="data-table">
+          <div class="mtpx-40 hidden-sm-up"></div>
+          <table class="w-100 mbpx-10 table-strip">
+            <tr>
+              <th>
+                App Name
+                <i class="fas" (click)="getSortedResults('applicationName')"
+                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+              </th>
+              <th>Draft
+                <i class="fas" (click)="getSortedResults('draft')"
+                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+              </th>
+              <th>In Progress
+                <i class="fas" (click)="getSortedResults('inProgress')"
+                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+              </th>
+              <th>Completed
+                <i class="fas" (click)="getSortedResults('completed')"
+                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+              </th>
+              <th>Rejected
+                <i class="fas" (click)="getSortedResults('rejected')"
+                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+              </th>
+              <th>Withdraw
+                <i class="fas" (click)="getSortedResults('withdraw')"
+                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+              </th>
+            </tr>
+            <tr class="table-footer">
+              <td colspan="5">
+                <input type="text" class="form-control" name="firstname" placeholder="Search By App Name"
+                  [(ngModel)]="filters.searchArray[0].value">
+              </td>
+              <td>
+                <button class="btn btn-primary" *ngIf="myItems && myItems.length"
+                  (click)="printMyItemReport()">Print</button>
+              </td>
+            </tr>
+            <tr
+              *ngFor="let item of myItems | filter:{filtrationKeys: ['applicationName'], filtrationValues: [filters.searchArray[0].value]}">
+              <td>{{item.applicationName}}</td>
+              <td>
+                <span class="item-click" (click)="gotoDetail('draft', item.applicationId, item.draft)">
+                  {{item.draft}}</span>
+              </td>
+              <td>
+                <span class="item-click" (click)="gotoDetail('draft', item.applicationId, item.inProgress)">
+                  {{item.inProgress}}</span>
+              </td>
+              <td>
+                <span class="item-click" (click)="gotoDetail('approved', item.applicationId, item.completed)">
+                  {{item.completed}}</span>
+              </td>
+              <td>
+                <span class="item-click" (click)="gotoDetail('rejected', item.applicationId, item.rejected)">
+                  {{item.rejected}}</span>
+              </td>
+              <td>
+                <span class="item-click" (click)="gotoDetail('withdraw', item.applicationId, item.withdraw)">
+                  {{item.withdraw}}</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center" *ngIf="myItems.length == 0" colspan="6">
+                No My Items Available
+              </td>
+            </tr>
+          </table>
+          <div class="col-lg-6 col-md-12">
+            <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()"
+              aria-controls="example-datatable" class="form-control">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="-1">All</option>
+            </select>
+
+            <p class="mtpx-10 text-sm-center paging-size-info">
+              Showing
+              <strong>{{filters.pageNo}}</strong> -
+              <strong>{{filters.noOfPages > 0 ? filters.noOfPages : 1}}</strong> of
+              <strong>{{totalRecords}}</strong>
+            </p>
+          </div>
+
+          <div class="col-lg-6 col-md-12">
+            <ul class="pagination ta-right text-md-left unstyled">
+              <li class="prev" (click)="filters.pageNo == '1' && goToPrevious()">
+                Previous
+              </li>
+              <li *ngFor="let item of range" [ngClass]="filters.pageNo == (item + 1) ? 'active-page' : ''"
+                (click)="goToPage(item)">
+                {{item + 1}}
+              </li>
+              <li class="next" (click)="filters.pageNo == (range[range.length - 1] + 1) && goToNext()">
+                Next
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <div class="box bg-white">
+    <div class="box-header">
+      <h4 class="fw-normal title fs-medium d-inline-block">Tasks I Worked On</h4>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <!-- Table -->
+        <section class="data-table">
+          <div class="mtpx-40 hidden-sm-up"></div>
+          <table class="w-100 mbpx-10 table-strip">
+            <tr>
+              <th>
+                App Name
+                <i class="fas" (click)="getParticipatedSortedResults('applicationName')"
+                  [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
+              </th>
+              <th>Draft
+                <i class="fas" (click)="getParticipatedSortedResults('draft')"
+                  [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
+              </th>
+              <th>In Progress
+                <i class="fas" (click)="getParticipatedSortedResults('inProgress')"
+                  [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
+              </th>
+              <th>Completed
+                <i class="fas" (click)="getParticipatedSortedResults('completed')"
+                  [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
+              </th>
+              <th>Rejected
+                <i class="fas" (click)="getParticipatedSortedResults('rejected')"
+                  [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
+              </th>
+              <th>Withdraw
+                <i class="fas" (click)="getParticipatedSortedResults('withdraw')"
+                  [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
+              </th>
+            </tr>
+            <tr class="table-footer">
+              <td colspan="5">
+                <input type="text" class="form-control" name="firstname" placeholder="Search By App Name"
+                  [(ngModel)]="filters.searchArray[0].value">
+              </td>
+              <td>
+                <button class="btn btn-primary" *ngIf="participatedItems && participatedItems.length"
+                  (click)="printTaskIWorkReport()">Print</button>
+              </td>
+            </tr>
+            <tr
+              *ngFor="let item of participatedItems | filter:{filtrationKeys: ['applicationName'], filtrationValues: [filters.searchArray[0].value]}">
+              <td>{{item.applicationName}}</td>
+              <td>
+                <span class="item-click" (click)="gotoDetail('draft', item.applicationId, item.draft)">
+                  {{item.draft}}</span>
+              </td>
+              <td>
+                <span class="item-click" (click)="gotoDetail('draft', item.applicationId, item.inProgress)">
+                  {{item.inProgress}}</span>
+              </td>
+              <td>
+                <span class="item-click" (click)="gotoDetail('approved', item.applicationId, item.completed)">
+                  {{item.completed}}</span>
+              </td>
+              <td>
+                <span class="item-click" (click)="gotoDetail('rejected', item.applicationId, item.rejected)">
+                  {{item.rejected}}</span>
+              </td>
+              <td>
+                <span class="item-click" (click)="gotoDetail('withdraw', item.applicationId, item.withdraw)">
+                  {{item.withdraw}}</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center" *ngIf="participatedItems.length == 0" colspan="6">
+                No Participated Items Available
+              </td>
+            </tr>
+          </table>
+          <div class="col-lg-6 col-md-12">
+            <select name="example-datatable_length" [(ngModel)]="participatedFilter.noOfPages"
+              (change)="getPaginatedDataParticipated()" aria-controls="example-datatable" class="form-control">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="-1">All</option>
+            </select>
+
+            <p class="mtpx-10 text-sm-center paging-size-info">
+              Showing
+              <strong>{{participatedFilter.pageNo}}</strong> -
+              <strong>{{participatedFilter.noOfPages > 0 ? participatedFilter.noOfPages : 1}}</strong> of
+              <strong>{{totalRecordsParticipated}}</strong>
+            </p>
+          </div>
+
+          <div class="col-lg-6 col-md-12">
+            <ul class="pagination ta-right text-md-left unstyled">
+              <li class="prev" (click)="participatedFilter.pageNo == '1' && goToPreviousParticipated()">
+                Previous
+              </li>
+              <li *ngFor="let item of rangeParticipated"
+                [ngClass]="participatedFilter.pageNo == (item + 1) ? 'active-page' : ''"
+                (click)="goToPageParticipated(item)">
+                {{item + 1}}
+              </li>
+              <li class="next"
+                (click)="participatedFilter.pageNo == (rangeParticipated[rangeParticipated.length - 1] + 1) && goToNextParticipated()">
+                Next
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

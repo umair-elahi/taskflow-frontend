@@ -1,0 +1,93 @@
+<div class="col-md-12">
+  <div class="box bg-white">
+    <div class="box-header">
+      <h4 class="fw-normal title fs-medium d-inline-block">
+        {{ (lists.length ? lists[0].name + ' - ' : ' ') + "" +title}}
+      </h4>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <!-- Table -->
+        <section class="data-table">
+          <div class="mtpx-40 hidden-sm-up"></div>
+          <table class="w-100 mbpx-10 table-strip">
+            <tr>
+              <th>Action</th>
+              <th>
+                Item Subject
+                <i class="fas" (click)="getSortedResults('title')"
+                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+              </th>
+              <th>
+                Created By
+                <i class="fas" (click)="getSortedResults('createdByName')"
+                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+              </th>
+              <th>
+                Created On
+                <i class="fas" (click)="getSortedResults('createdAt')"
+                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+              </th>
+              <th>
+                Updated On
+                <i class="fas" (click)="getSortedResults('updatedAt')"
+                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+              </th>
+              <th>
+                Task Name
+                <i class="fas" (click)="getSortedResults('applicationWorkflowName')"
+                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+              </th>
+            </tr>
+            <tr *ngFor="let list of lists">
+              <td>
+                <i class="fas fa-eye" [routerLink]="['/workflow', list.applicationId, 'execute', list.id, 'read']"></i>
+              </td>
+              <td>{{list.title || list.name}}</td>
+              <td>{{list.createdByName || 'N/A'}}</td>
+              <td>{{list.createdAt ? (list.createdAt | date:'medium') : 'N/A' }}</td>
+              <td>{{list.updatedAt ? (list.updatedAt | date:'medium') : 'N/A' }}</td>
+              <td>{{list.applicationWorkflowName || 'N/A' }}</td>
+            </tr>
+            <tr>
+              <td class=" text-center" *ngIf="lists.length == 0" colspan="6">
+                No Data Available
+              </td>
+            </tr>
+          </table>
+          <div class="col-lg-6 col-md-12">
+            <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()"
+              aria-controls="example-datatable" class="form-control">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="-1">All</option>
+            </select>
+
+            <p class="mtpx-10 text-sm-center paging-size-info">
+              Showing
+              <strong>{{filters.pageNo}}</strong> -
+              <strong>{{filters.noOfPages > 0 ? filters.noOfPages : 1}}</strong> of
+              <strong>{{totalRecords}}</strong>
+            </p>
+          </div>
+
+          <div class="col-lg-6 col-md-12">
+            <ul class="pagination ta-right text-md-left unstyled">
+              <li class="prev" (click)="filters.pageNo == '1' && goToPrevious()">
+                Previous
+              </li>
+              <li *ngFor="let item of range" [ngClass]="filters.pageNo == (item + 1) ? 'active-page' : ''"
+                (click)="goToPage(item)">
+                {{item + 1}}
+              </li>
+              <li class="next" (click)="filters.pageNo == (range[range.length - 1] + 1) && goToNext()">
+                Next
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

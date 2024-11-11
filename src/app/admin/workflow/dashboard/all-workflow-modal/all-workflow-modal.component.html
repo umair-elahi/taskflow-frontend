@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>All Apps</h1>
+<div mat-dialog-content>
+  <table class="w-100 mbpx-10 table-strip">
+    <tr>
+      <th>App Name</th>
+      <th>Actions</th>
+    </tr>
+    <tr *ngFor="let app of applications">
+      <td style="width: 74%;">
+        {{app.name}}
+        <i mat-raised-button matTooltip="{{app.shortDescription}}" class="fas fa-info-circle"
+          style="float: right;font-size: 26px;"></i>
+      </td>
+      <td>
+        <button mat-button (click)="initiateApp(app.id)" class="btn btn-primary">Initiate App</button>
+      </td>
+    </tr>
+    <tr>
+      <td class="text-center" *ngIf="applications.length == 0" colspan="6">
+        No Apps Available
+      </td>
+    </tr>
+  </table>
+</div>
+<div mat-dialog-actions class="pull-right">
+  <button mat-button (click)="onNoClick()" class="btn btn-default">Close</button>
+</div>

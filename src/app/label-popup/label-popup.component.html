@@ -1,0 +1,29 @@
+<div class="popup-container">
+  <h1 mat-dialog-title class="popup-title">Add Label</h1>
+
+  <div mat-dialog-content>
+    <mat-form-field class="full-width">
+      <mat-label>Label Name</mat-label>
+      <input 
+        matInput 
+        [(ngModel)]="labelTitle" 
+        class="text-input padded-input" 
+        maxlength="17" 
+        placeholder="max 17 characters" 
+      />
+      <mat-hint align="end">{{ labelTitle.length }} / 17</mat-hint>
+    </mat-form-field>
+
+    <!-- <mat-form-field class="full-width">
+      <mat-label>Label Color</mat-label>
+      <input type="color" [(ngModel)]="labelColor" class="color-picker padded-input" />
+    </mat-form-field> -->
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="close()" class="action-button cancel-button">Cancel</button>
+    <button mat-button (click)="saveLabel()" class="action-button save-button" [disabled]="labelTitle.length === 0">
+      Save
+    </button>
+  </div>
+</div>

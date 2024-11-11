@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-md-3 mbpx-20">
+    <div class="box body-box card-box mbpx-30 ripple-box height-220px">
+      <div class="innerdiv">
+        <div class="cardContainer">
+          <a [routerLink]="['/workflow', 'create', 'new']">Create New</a>
+          <ul class="processList">
+            <li class="processListItem" *ngFor="let item of limitedApps"
+              [routerLink]="['/workflow', item.id, 'execute', 'new', 'open']">{{item.name}}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="pull-right btn" (click)="showAllApps()">Show All</button>
+      </div>
+    </div>
+  </div>
+</div>

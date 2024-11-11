@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>{{mapData.title}}</h2>
+
+<mat-dialog-content class="mat-typography">
+  <div class="row">
+    <div class="col-md-12">
+      <div>
+        <agm-map [latitude]="mapData.latitude" [longitude]="mapData.longitude" style="height: 500px">
+          <agm-marker [latitude]="mapData.latitude" [longitude]="mapData.longitude"></agm-marker>
+        </agm-map>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div class="row">
+    <div class="col-md-12">
+      <button type="reset" mat-dialog-close class="btn btn-sm btn-warning pull-right">
+        Cancel </button>
+    </div>
+  </div>
+</mat-dialog-actions>

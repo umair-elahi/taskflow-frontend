@@ -1,0 +1,97 @@
+<div class="col-md-12">
+  <div class="box bg-white">
+    <div class="box-header">
+      <h4 class="fw-normal title fs-medium d-inline-block">Draft</h4>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <!-- Table -->
+        <section class="data-table">
+          <!-- <div class="row">
+            <div class="col-md-12">
+              <input type="text" class="form-control" name="firstname" placeholder="Search By Status"
+                [(ngModel)]="filters.searchArray[0].value">
+            </div>
+          </div> -->
+          <mat-accordion>
+            <mat-expansion-panel class="mat-detail-panel"
+              *ngFor="let list of lists | filter:{filtrationKeys: ['status'], filtrationValues: [filters.searchArray[0].value]}"
+              class="mat-detail-panel">
+              <mat-expansion-panel-header>
+                <mat-panel-title *ngIf="!list.title" >
+                  {{list.application.name}}
+                </mat-panel-title>
+                <mat-panel-title *ngIf="list.title" >
+                  {{list.title}}
+                </mat-panel-title>
+                <mat-panel-description>
+                  <span class="width-50-p">Start</span>
+                  <span class="width-50-p">{{list.startedAt ? (list.startedAt | date:'MMM dd') : 'N/A' }}</span>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="box bg-white" *ngFor="let section of list.application.applicationFormSections">
+                <div class="box-header">
+                  <h4 class="fw-normal title fs-medium d-inline-block">{{section.name}}</h4>
+                  <i mat-raised-button matTooltip="{{section.helpText}}" class="info-icon fas fa-question-circle">
+                  </i>
+                </div>
+                <div class="row box-body">
+                  <div class="col-md-4" *ngFor="let ef of section.applicationFormFields">
+                    <label class="label-title">
+                      {{ef.name}}
+                    </label><br>
+                    <label class="label-name" *ngIf="ef.templateOptions.type !== 'file'">
+                      {{ef.value}}
+                    </label>
+                    <a *ngIf="ef.templateOptions.type === 'file' && ef.value" href="{{getLink(ef.value)}}"
+                      target="_blank" class="btn btn-default">Download {{ef.name}}</a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row action-buttons">
+                <div class="col-md-2 pull-right">
+                  <a class="btn btn-default width-100-p"
+                    [routerLink]="['/workflow', list.applicationId, 'execute', list.id, 'open']">
+                    Edit
+                  </a>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+          <div class="col-lg-6 col-md-12">
+            <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()"
+              aria-controls="example-datatable" class="form-control">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="-1">All</option>
+            </select>
+
+            <p class="mtpx-10 text-sm-center paging-size-info">
+              Showing
+              <strong>{{filters.pageNo}}</strong> -
+              <strong>{{filters.noOfPages > 0 ? filters.noOfPages : 1}}</strong> of
+              <strong>{{totalRecords}}</strong>
+            </p>
+          </div>
+
+          <div class="col-lg-6 col-md-12">
+            <ul class="pagination ta-right text-md-left unstyled">
+              <li class="prev" (click)="filters.pageNo == '1' && goToPrevious()">
+                Previous
+              </li>
+              <li *ngFor="let item of range" [ngClass]="filters.pageNo == (item + 1) ? 'active-page' : ''"
+                (click)="goToPage(item)">
+                {{item + 1}}
+              </li>
+              <li class="next" (click)="filters.pageNo == (range[range.length - 1] + 1) && goToNext()">
+                Next
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

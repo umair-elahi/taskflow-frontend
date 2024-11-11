@@ -1,0 +1,54 @@
+nav {
+  position: relative;
+  height: 100%;
+  .logo {
+    img {
+      width: 100%;
+      margin: auto;
+    }
+  }
+  &.sidemenu-nav {
+    div {
+      &.profile-img {
+        text-align: center;
+        img {
+          width: 75px;
+          padding: 3px;
+          border-radius: 50%;
+          border: 2px solid #014c72;
+          margin: 0 auto;
+          box-shadow: 0 5px 25px 0 rgba(0, 0, 0, 0.4);
+        }
+        p {
+          text-align: center;
+          color: #014c72;
+        }
+      }
+    }
+    .execution-count {
+      float: right;
+      .count {
+        padding: 3px;
+        border-radius: 0;
+        position: relative;
+        right: 5px;
+        font-size: 12px;
+        font-weight: 500;
+        height: 35px;
+        width: 35px;
+        display: block;
+        text-align: center;
+        border-radius: 50%;
+        margin-top: -4px;
+      }
+    }
+  }
+}
+
+
+.task-count {
+  font-weight: bold;
+  margin-left: 8px;
+  color: #007bff;
+}
+

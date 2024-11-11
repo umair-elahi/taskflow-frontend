@@ -1,0 +1,86 @@
+<h1 mat-dialog-title>List Data - {{data.name}}</h1>
+<div mat-dialog-content>
+  <form name="listForm" *ngIf="isFormBinded" [formGroup]="listForm" novalidate id="form-test"
+    class="form-horizontal form-bordered form-control-borderless">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <div class="col-xs-12">
+            Name
+            <input type="text" formControlName="value" name="value" class="form-control">
+            <p class="custom-error" *ngIf="listForm.get('value').hasError('required') && listForm.get('value').touched">
+              Name is required.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <div class="col-xs-12">
+            Display
+            <input type="text" formControlName="display" name="display" class="form-control">
+            <p class="custom-error"
+              *ngIf="listForm.get('display').hasError('required') && listForm.get('display').touched">
+              Display is required.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <br />
+        <button type="submit" class="btn btn-sm btn-success pull-right" [disabled]="listForm.invalid" (click)="save()">
+          Save
+        </button>
+        <a type="reset" (click)="isFormBinded=false;" class="btn btn-sm btn-warning pull-right">
+          Cancel </a>
+      </div>
+    </div>
+    <br>
+    <br>
+  </form>
+  <div class="row">
+    <!-- Table -->
+    <a (click)="add()" class="btn btn-primary pull-right btn-new-record">
+      Add New List
+    </a>
+    <br />
+    <br />
+    <section class="data-table">
+      <div class="mtpx-40 hidden-sm-up"></div>
+      <table class="w-100 mbpx-10 table-strip">
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Actions</th>
+        </tr>
+        <tr class="table-footer">
+          <td colspan="3">
+            <input type="text" class="form-control" name="firstname" placeholder="Search By Name"
+              [(ngModel)]="filters.searchArray[0].value">
+          </td>
+        </tr>
+        <tr
+          *ngFor="let list of lists | filter:{filtrationKeys: ['value'], filtrationValues: [filters.searchArray[0].value]}">
+          <td>{{list.value}}</td>
+          <td>{{list.display}}</td>
+          <td>
+            <i class="fas fa-pencil-alt rec-action" data-toggle="tooltip" title="" data-original-title="Edit"
+              (click)="edit(list)"></i>
+            <i class="fas fa-trash rec-action" data-toggle="tooltip" title="" data-original-title="Delete"
+              (click)="deleteRecord(list.id)"></i>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-center" *ngIf="lists.length == 0" colspan="3">
+            No Lists Data Available
+          </td>
+        </tr>
+      </table>
+    </section>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button class="btn btn-default pull-right" (click)="onNoClick()" cdkFocusInitial>Close</button>
+</div>

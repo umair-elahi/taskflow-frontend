@@ -1,0 +1,120 @@
+.label {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: white;
+  margin: 2px;
+  position: relative;
+}
+
+.delete-icon {
+  position: absolute;
+  top: 5px;
+  right: 5px; 
+  font-size: 14px;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  padding: 2px;
+  margin-top:-5px;
+  margin-right: 5px;
+  width:10px;
+  height: 10px;
+}
+
+.delete-icon:hover {
+  color: rgb(0, 89, 255); 
+}
+
+.execution-count {
+  font-size: 1.1em;
+  font-weight: 600;
+  margin-left: 10px;
+  color: #333;
+}
+
+.task-container {
+  display: flex;
+  justify-content: flex-end; /* Align items to the right */
+  align-items: center; /* Vertically align the items */
+  width: 100%; /* Ensure the container takes full width */
+}
+
+.task-labels {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: 20px; /* Space between labels and button */
+}
+
+.task-label {
+  background-color: #ffffff;
+  border-radius: 4px;
+  padding: 10px 15px;
+  margin: 5px;
+  width: 150px;
+  text-align: center;
+  font-size: 14px;
+  position: relative; /* Ensure the delete icon is positioned relative to the label */
+}
+
+.add-label-button {
+  margin-top: 7px;
+  margin-left: 10px;
+}
+
+.add-label-icon {
+  color: #007bff;
+  cursor: pointer;
+  font-size: 1.2em;
+  margin-left: auto;
+}
+
+.important-background {
+  background-color: inherit !important;
+}
+
+.task-label {
+  color: black !important;
+  background-color: #59a7ff !important;
+  padding: 2px !important;
+  margin: 2px !important;
+  border-radius: 20px !important;
+}
+
+.read-status {
+  color: #25D366 !important;  /* WhatsApp green color */
+  font-size: 1.2em !important; /* Slightly larger for visibility */
+  display: inline-flex !important;
+  align-items: center !important;
+  margin-left: 10px !important;
+  transition: transform 0.3s ease !important; /* Animation */
+  margin-left: 20px !important;
+  background-color: transparent !important;
+}
+
+.read-status i {
+  animation: fadeIn 0.3s ease, bounce 0.5s ease !important; /* Fade and bounce animation */
+}
+
+/* Keyframes for animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

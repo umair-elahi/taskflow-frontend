@@ -1,0 +1,35 @@
+<h1 mat-dialog-title>Re Assign</h1>
+<div mat-dialog-content>
+  <form name="userForm" *ngIf="isFormBinded" [formGroup]="userForm" novalidate id="form-test"
+    class="form-horizontal form-bordered form-control-borderless">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <div class="col-xs-12">
+            Assign To
+            <ng-select [items]="users" bindLabel="email" bindValue="id" name="userId" formControlName="userId"
+              placeholder="Select User">
+            </ng-select>
+            <p class="custom-error"
+              *ngIf="userForm.get('userId').hasError('required') && userForm.get('userId').touched">
+              User is required.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-md-12">
+        <br />
+        <button type="submit" class="btn btn-sm btn-success pull-right" [disabled]="userForm.invalid" (click)="send()">
+          Reassign
+        </button>
+        <a (click)="onNoClick()" class="btn btn-sm btn-warning pull-right">
+          Cancel </a>
+      </div>
+    </div>
+    <br>
+    <br>
+  </form>
+</div>

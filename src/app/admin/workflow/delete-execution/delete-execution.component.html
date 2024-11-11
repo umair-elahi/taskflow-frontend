@@ -1,0 +1,48 @@
+<div class="col-md-12">
+  <div class="box bg-white">
+    <div class="box-header">
+      <h4 class="fw-normal title fs-medium d-inline-block">Delete Executions</h4>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            Select Application
+            <ng-select [items]="applications" bindLabel="name" bindValue="id" name="id"
+              [(ngModel)]="rptFilter.applicationId" placeholder="Select Application">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            Select Status
+            <ng-select [items]="statuses" bindLabel="name" bindValue="value" name="id" [(ngModel)]="rptFilter.status"
+              placeholder="Select Status">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            Start Date
+            <input type="date" name="startDate" [(ngModel)]="rptFilter.startDate" class="form-control">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            End Date
+            <input type="date" name="endDate" [(ngModel)]="rptFilter.endDate" class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <br>
+          <button type="submit" class="btn btn-sm btn-success pull-right"
+            [disabled]="!rptFilter.applicationId || !rptFilter.status" (click)="removeData()">
+            Delete Records & Files
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

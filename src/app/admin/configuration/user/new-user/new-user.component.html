@@ -1,0 +1,174 @@
+<div class="col-md-12">
+  <div class="box bg-white">
+    <div class="box-header">
+      <h4 class="fw-normal title fs-medium d-inline-block">New User</h4>
+    </div>
+    <div class="box-body">
+      <form name="userForm" *ngIf="isFormBinded" [formGroup]="userForm" novalidate id="form-test"
+        class="form-horizontal form-bordered form-control-borderless">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="col-xs-12">
+                First Name
+                <input type="text" formControlName="firstName" name="firstName" class="form-control">
+                <p class="custom-error"
+                  *ngIf="userForm.get('firstName').hasError('required') && userForm.get('firstName').touched">
+                  {{userForm.controls.firstName.value}} First Name is required.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="col-xs-12">
+                Last Name
+                <input type="text" formControlName="lastName" name="lastName" class="form-control">
+                <p class="custom-error"
+                  *ngIf="userForm.get('lastName').hasError('required') && userForm.get('lastName').touched">
+                  Last Name is required.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="col-xs-12">
+                Role
+                <ng-select [items]="roles" bindLabel="name" bindValue="id" name="RoleId" [multiple]="true"
+                  formControlName="roleIds" placeholder="Select Role">
+                </ng-select>
+                <p class="custom-error"
+                  *ngIf="userForm.get('roleIds').hasError('required') && userForm.get('roleIds').touched">
+                  Roles is required.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="col-xs-12">
+                Department
+                <ng-select [items]="departments" bindLabel="name" bindValue="id" name="DepartmentId"
+                  formControlName="departmentId" placeholder="Select Role">
+                </ng-select>
+                <p class="custom-error"
+                  *ngIf="userForm.get('departmentId').hasError('required') && userForm.get('departmentId').touched">
+                  Department is required.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="col-xs-12">
+                Office Location
+                <ng-select [items]="officeLocations" bindLabel="name" bindValue="id" name="officeLocationId"
+                  formControlName="officeLocationId" placeholder="Select Role">
+                </ng-select>
+                <p class="custom-error"
+                  *ngIf="userForm.get('officeLocationId').hasError('required') && userForm.get('officeLocationId').touched">
+                  Office Location is required.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="col-xs-12">
+                Manager
+                <ng-select [items]="managers" bindLabel="email" bindValue="id" name="managerId"
+                  formControlName="managerId" placeholder="Select Manager">
+                </ng-select>
+                <p class="custom-error"
+                  *ngIf="userForm.get('managerId').hasError('required') && userForm.get('managerId').touched">
+                  Manager is required.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="col-xs-12">
+                Email
+                <input type="text" formControlName="email" name="email" class="form-control">
+                <p class="custom-error"
+                  *ngIf="userForm.get('email').hasError('required') && userForm.get('email').touched">
+                  Email is required.
+                </p>
+                <p class="custom-error"
+                  *ngIf="userForm.get('email').hasError('email') && userForm.get('email').touched">
+                  Invalid email address
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="col-xs-12">
+                Password
+                <input type="password" formControlName="password" name="password" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="col-xs-12">
+                Contact No
+                <input type="text" formControlName="contactNo" name="contactNo" class="form-control">
+                <p class="custom-error"
+                  *ngIf="userForm.get('contactNo').hasError('required') && userForm.get('contactNo').touched">
+                  Contact No address
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="col-xs-12">
+                Gender
+                <ng-select [items]="genders" bindLabel="name" bindValue="name" name="gender" formControlName="gender"
+                  placeholder="Select Gender">
+                </ng-select>
+                <p class="custom-error"
+                  *ngIf="userForm.get('gender').hasError('required') && userForm.get('gender').touched">
+                  Gender is required.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              Profile Picture
+              <input type="file" class="form-control" (change)="handleFileInput($event.target.files)" accept="image/*"
+                #Image />
+            </div>
+          </div>
+          <div class="col-md-3" *ngIf="imagePath">
+            <div id="myDiv">
+              <img [attr.src]="imagePath" height="60px" width="60px" alt="" id="img">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9">
+          </div>
+          <div class="col-md-3">
+            <div class="form-group form-actions">
+              <a type="reset" [routerLink]="['/admin', 'users']" class="btn btn-sm btn-warning">
+                Cancel </a>
+              <button type="submit" class="btn btn-sm btn-success" [disabled]="userForm.invalid" (click)="saveUser()">
+                Save </button>
+            </div>
+            <div class="col-md-1"></div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+@import "assets/partials/bootstrap";
+@import "assets/partials/offsets";
+@import "assets/partials/variables";
+@import "assets/partials/icon-fonts";
+@import "assets/partials/mixins";
+@import "assets/partials/global";
+@import "assets/partials/btn";
+@import "assets/partials/header";
+@import "assets/partials/footer";
+@import "assets/partials/form";
+@import "assets/partials/box";
+@import "assets/partials/all-sections";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.fr-toolbar .fr-command.fr-btn i,
+.fr-popup .fr-command.fr-btn i,
+.fr-toolbar .fr-command.fr-btn svg,
+.fr-popup .fr-command.fr-btn svg {
+    position: absolute !important;
+    top: 12px !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 auto !important;
+}
+
+.data-table {
+    .status {
+        padding: 4px 15px;
+        color: aliceblue;
+        border-radius: 5px;
+        display: block;
+
+        &.success {
+            background-color: #2cc4cd;
+        }
+
+        &.danger {
+            background-color: #ff6262;
+        }
+
+        &.warning {
+            background-color: #f0ad4e;
+        }
+
+        &.primary {
+            background-color: #6c8bef;
+
+
+        }
+    }
+}
+
+.female {
+    background-color: #ff79fc;
+}
+
+.male {
+    background-color: #39ccff;
+}

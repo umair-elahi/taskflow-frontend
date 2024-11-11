@@ -1,0 +1,83 @@
+<div class="col-md-12">
+  <div class="box bg-white">
+    <div class="box-header">
+      <h4 class="fw-normal title fs-medium d-inline-block">User</h4>
+      <a [routerLink]="['/admin', 'user', 'new']" class="btn btn-primary pull-right btn-new-record">
+        Add New User
+      </a>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <!-- Table -->
+        <section class="data-table">
+          <div class="mtpx-40 hidden-sm-up"></div>
+          <table class="w-100 mbpx-10 table-strip">
+            <tr class="table-footer">
+              <td colspan="6">
+                <input type="text" class="form-control w-50 " name="firstname" placeholder="Search By First Name"
+                  [(ngModel)]="filters.searchText[0].value">
+              </td>
+            </tr>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Created On</th>
+              <th>Modified On</th>
+              <th>Actions</th>
+            </tr>
+            <tr
+              *ngFor="let user of users | filter:{filtrationKeys: ['firstName'], filtrationValues: [filters.searchText[0].value]}">
+              <td>{{user.firstName}}</td>
+              <td>{{user.lastName}}</td>
+              <td>{{user.email}}</td>
+              <td>{{user.createdAt ? (user.createdAt | date:'medium') : 'N/A' }}</td>
+              <td>{{user.modifiedAt ? (user.modifiedAt | date:'medium') : 'N/A' }}</td>
+              <td>
+                <i class="fas fa-pencil-alt rec-action" data-toggle="tooltip" title="" data-original-title="Edit"
+                  [routerLink]="['/admin', 'user' , user.id]"></i>
+                <i class="fas fa-trash rec-action" data-toggle="tooltip" title="" data-original-title="Delete"
+                  (click)="deleteUser(user.id)"></i>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center" *ngIf="users.length == 0" colspan="6">
+                No users Available
+              </td>
+            </tr>
+          </table>
+          <div class="col-lg-6 col-md-12">
+            <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getListData()"
+              aria-controls="example-datatable" class="form-control">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="-1">All</option>
+            </select>
+
+            <p class="mtpx-10 text-sm-center paging-size-info">
+              Showing
+              <strong>{{filters.pageNo}}</strong> -
+              <strong>{{filters.noOfPages > 0 ? filters.noOfPages : 1}}</strong> of
+              <strong>{{totalRecords}}</strong>
+            </p>
+          </div>
+
+          <div class="col-lg-6 col-md-12">
+            <ul class="pagination ta-right text-md-left unstyled">
+              <li class="prev" (click)="filters.pageNo == '1' && goToPrevious()">
+                Previous
+              </li>
+              <li *ngFor="let item of range" [ngClass]="filters.pageNo == (item + 1) ? 'active-page' : ''"
+                (click)="goToPage(item)">
+                {{item + 1}}
+              </li>
+              <li class="next" (click)="filters.pageNo == (range[range.length - 1] + 1) && goToNext()">
+                Next
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
