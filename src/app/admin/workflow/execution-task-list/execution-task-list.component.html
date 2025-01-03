@@ -54,7 +54,6 @@
             <mat-expansion-panel *ngFor="let list of lists" class="mat-detail-panel" (opened)="openAccordianItem(list)">
               <mat-expansion-panel-header>
                 <mat-panel-title class="width-25-p">
-                  <!-- {{list.name}} - {{selectedField.name}} -->
                   {{list.name}} - {{list.title || 'N/A'}}
                 </mat-panel-title>
                 <mat-panel-description>
@@ -72,7 +71,6 @@
                         color: #000001 !important;">
                     <div class="task-labels">
                       <div 
-                        
                         *ngFor="let label of list.labels; let i = index" 
                         [ngStyle]="{ 'color': getTextColor(label.color) }" 
                         class="task-label">
@@ -81,29 +79,14 @@
                           &times; <!-- Cross icon for delete -->
                         </span>
                       </div>
-
-
                     </div>
                     <div class="add-label-icon">
                       <i class="fas fa-tag" (click)="openLabelPopup(list)"></i>
                     </div>
-
-
                     <span class="read-status" *ngIf="list.read">
                       <i class="fas fa-check-double"></i>
                     </span>
-                    
-                    
-
                   </div>
-                  
-                  
-                  
-                  
-                  
-
-
-                  
                   <span class="width-50-p">
                     <i *ngIf="status === 'draft'" class="fas fa-trash trash-icon" data-toggle="tooltip" title=""
                       data-original-title="Delete" (click)="$event.stopPropagation(); deleteRecord(list.id)"
@@ -120,7 +103,6 @@
                     <i mat-raised-button matTooltip="{{section.helpText}}" class="info-icon fas fa-question-circle">
                     </i>
                   </div>
-
                   <div class="row box-body">
                     <form [formGroup]="section.formlyProp.templateOptionsForm" class="design-form-acc execution-form">
                       <formly-form [fields]="section.formlyProp.fields" [options]="section.formlyProp.options"
@@ -134,14 +116,14 @@
                     <agm-marker [latitude]="list.latitude" [longitude]="list.longitude"></agm-marker>
                   </agm-map>
                 </div>
-                <div class="comment-box"
-                  *ngIf="list.applicationExecutionWorkflows && list.applicationExecutionWorkflows.length && list.applicationExecutionWorkflows[0].comments && list.applicationExecutionWorkflows[0].comments.length">
+                <!-- Comments Section -->
+                <div class="comment-box" *ngIf="list.allComments && list.allComments.length">
                   <div class="row">
                     <span class="header">Comments</span>
                     <span class="view-comment-link" (click)="list.viewComment = !list.viewComment">View Comments</span>
                   </div>
                   <div *ngIf="list.viewComment">
-                    <div class="row line-item" *ngFor="let com of list.applicationExecutionWorkflows[0].comments">
+                    <div class="row line-item" *ngFor="let com of list.allComments">
                       <div class="comment-initial">
                         <span class="sp-latter lighten-2">{{com.userName?.charAt(0)}}</span>
                       </div>
@@ -224,10 +206,6 @@
                 (change)="goToPage(filters.pageNo)">
                 <option *ngFor="let item of range" value="{{item+1}}">{{item+1}}</option>
               </select>
-              <!-- <li *ngFor="let item of range" [ngClass]="filters.pageNo == (item + 1) ? 'active-page' : ''"
-                (click)="goToPage(item)">
-                {{item + 1}}
-              </li> -->
               <li (click)="goToNext()">
                 Next
               </li>

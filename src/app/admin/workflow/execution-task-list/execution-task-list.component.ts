@@ -277,6 +277,15 @@ export class ExecutionListComponent implements OnInit {
         listObj.applicationExecutionWorkflows = execData.data.applicationExecutionWorkflows;
         listObj.latitude = execData.data.latitude;
         listObj.longitude = execData.data.longitude;
+
+        // Aggregate comments from all workflows
+        listObj.allComments = [];
+        listObj.applicationExecutionWorkflows.forEach(workflow => {
+          if (workflow.comments) {
+            listObj.allComments = listObj.allComments.concat(workflow.comments);
+          }
+        });
+
         await this.parseData(listObj);
         listObj.isDataLoaded = true;
       }
@@ -828,4 +837,3 @@ loadLabelsForTasks(tasks: any[]) {
 
 
 }
-
