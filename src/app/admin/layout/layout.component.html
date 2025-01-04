@@ -20,9 +20,7 @@
     <section class=" togglemain box main-box sec-padding --small pbpx-0 matchheight toggle auto ">
         <div class="container">
             <div class="col-md-9">
-                <h5 class="title fw-normal text-md-center">{{title}} <small
-                        class="fs-default fw-thin pl-1">{{subTitle}}</small>
-                </h5>
+                <h5 class="title fw-normal text-md-center" style="font-variant: small-caps;">{{title}} / {{subTitle}}</h5>
             </div>
             <div class="mtpx-20 hidden-sm-up"></div>
             <div class="col-md-3">
@@ -36,7 +34,7 @@
             <div class="container">
                 <router-outlet></router-outlet>
                 <div class="example-button-container" matTooltip="Create New Application"
-                    style="position: fixed;bottom: 0;z-index: 9999;margin-left: 80%;">
+                    style="position: fixed;bottom: 0;z-index: 9999; right: 8px;">
                     <button mat-fab color="primary" aria-label="Example icon button with a delete icon"
                         [routerLink]="['/workflow', 'list']">
                         <span class="fas fa-plus" style="margin-top: -9px;display: table;"></span>
@@ -46,4 +44,6 @@
         </div>
     </section>
     <!-- End Section Body -->
+
+    <app-footer></app-footer>
 </main>

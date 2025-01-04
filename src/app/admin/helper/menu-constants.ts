@@ -72,7 +72,7 @@ export const MenuConstants = [
                 count: 'withdraw'
             },
             {
-                Name: 'Delete Exceutions',
+                Name: 'Delete Executions',
                 Icon: 'fa-times',
                 Link: ['/workflow', 'delete-executions']
             }

@@ -1,10 +1,10 @@
-<div class="login-page bg-cover bg-norepeat bg-center" style="background-image: url('../../../../assets/images/54087.jpg'); position: absolute; top: 0; left: 0; width: 100%; height: 200%; z-index: -1;"></div>
+<!-- <div class="login-page bg-cover bg-norepeat bg-center" style="background-image: url('../../../../assets/images/54087.jpg'); position: absolute; top: 0; left: 0; width: 100%; height: 200%; z-index: -1;"></div>
 <section class="login-page bg-cover bg-norepeat bg-center" style="position: relative;">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
                 <div class="box login-box-img">
-                    <!-- Content for the login box image -->
+                    Content for the login box image
                 </div>
             </div>
             <div class="col-md-4 offset-md-4">
@@ -13,6 +13,52 @@
                     <div class="login-box-body ta-center">
                         <figure class="bg-cover bg-norepeat bg-center img-login-logo" style="background: url('../../../../assets/images/Task_Flow-removebg-preview.png'); background-size: 80px auto; padding: 0 20px;">
                         </figure>
+                        <form name="loginForm" [formGroup]="loginForm" novalidate id="form-login" class="relative-block">
+                            <div class="form-group">
+                                <div class="col-xs-12 ta-left col-nopadd">
+                                    Email
+                                    <input type="text" formControlName="email" name="email" class="form-control">
+                                    <p class="custom-error" *ngIf="loginForm.get('email').hasError('required') && loginForm.get('email').touched">
+                                        Email is required.
+                                    </p>
+                                    <p class="custom-error" *ngIf="loginForm.get('email').hasError('email') && loginForm.get('email').touched">
+                                        Please enter a valid email.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group d-table w-100">
+                                <div class="col-xs-12 ta-left col-nopadd">
+                                    Password
+                                    <input type="password" formControlName="password" name="password" class="form-control">
+                                    <p class="custom-error" *ngIf="loginForm.get('password').hasError('required') && loginForm.get('password').touched">
+                                        Password is required.
+                                    </p>
+                                </div>
+                            </div>
+                            <br>
+                            <input type="submit" name="" value="Login" class="bg-primary fc-white" (click)="login()">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+<section class="login-page" style="position: relative; background: radial-gradient(circle, #b70000, #800000, #330000); height: 100vh;">
+<div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="box login-box-img">
+                    <!-- Content for the login box image -->
+                </div>
+            </div>
+            <div class="col-md-4 offset-md-4">
+                <div class="box login-box bg-white matchheight mt-16 mb-16" style="position: relative;">
+
+                    <div class="login-box-body ta-center">
+                        <!-- <figure class="bg-cover bg-norepeat bg-center img-login-logo" style="background: url('../../../../assets/images/Task_Flow-removebg-preview.png'); background-size: 80px auto; padding: 0 20px;">
+                        </figure> -->
                         <form name="loginForm" [formGroup]="loginForm" novalidate id="form-login" class="relative-block">
                             <div class="form-group">
                                 <div class="col-xs-12 ta-left col-nopadd">
