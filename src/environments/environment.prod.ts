@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  apiBase: 'http://localhost:3000/api/',
-  apiImage: 'http://localhost:3000/api/images/',
+  apiBase: 'https://aetasaal.duckdns.org/api/',
+  apiImage: 'https://aetasaal.duckdns.org/api/images/',
   downloadimage: 'http://34.199.172.154/uploads/',
   appName: 'Taskflow 2.0',
   googleAPIKey: 'AIzaSyAC_Sr8Spc8-D5wjzMGlh0EaPHsLhEtxE0',
