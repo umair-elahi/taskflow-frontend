@@ -273,9 +273,15 @@ export class WorkflowExecutionComponent implements OnInit {
     try {
       this.spinner.showFull();
       const f: File = eve.currentTarget.files[0];
+      const firstFieldId =  this.applicationFormSection[0].applicationFormFields[0].id;
+      const firstFieldInputName = this.applicationFormSection[0].applicationFormFields[0].fieldId;
+      const firstFieldFormValue = this.applicationFormSection[0].formlyProp.templateOptionsForm.value[firstFieldInputName];
       const res: any = await this.fileUploadService.postExecutionFile(f, {
         applicationId: this.applicationId,
-        formFieldId: field.id
+        formFieldId: field.id,
+        firstFieldId: firstFieldId,
+        firstFieldInputName: firstFieldInputName,
+        firstFieldFormValue: firstFieldFormValue
       });
       if (res) {
         this.formFiles[field.id] = res.data.fileKey;

@@ -28,6 +28,9 @@ export class FileUploadService {
     formData.append('file', fileToUpload, fileToUpload.name);
     formData.append('applicationId', data.applicationId);
     formData.append('formFieldId', data.formFieldId);
+    formData.append('firstFieldId', data.firstFieldId);
+    formData.append('firstFieldInputName', data.firstFieldInputName);
+    formData.append('firstFieldFormValue', data.firstFieldFormValue);
     return this.httpClient
       .post(endpoint, formData).toPromise();
   }
