@@ -22,7 +22,6 @@ import { IUserModel } from '../../configuration/user/IUserModel';
   styleUrls: ['./workflow-execution.component.scss']
 })
 export class WorkflowExecutionComponent implements OnInit {
-
   public isFormBinded: Boolean = false;
   lookupData: IListModel[];
   users: IUserModel[];
@@ -36,10 +35,37 @@ export class WorkflowExecutionComponent implements OnInit {
   coords: any = {};
   state: String = 'open';
 
-  constructor(private fb: FormBuilder, private workflowService: WorkflowService, private toastr: ToasterService,
-    private swalService: SwalService, private titleService: TitleService, private _ActivatedRoute: ActivatedRoute,
-    private router: Router, private userService: UserService, private configurationService: ConfigurationService,
-    private spinner: SpinnerService, private fileUploadService: FileUploadService, private menuCountsService: MenuCountsService) { }
+  // FILE RESTRICTION ADDITIONS START
+  allowedExtensions = ["jpeg", "jpg", "webp", "csv", "xls", "xlsx", "xlsm", "ppt", "pptx", "pps", "doc", "docx", "pdf"];
+  allowedMimeTypes = [
+    'image/jpeg',
+    'image/webp',
+    'text/csv',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-excel.sheet.macroEnabled.12',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/pdf'
+  ];
+  // FILE RESTRICTION ADDITIONS END
+
+  constructor(
+    private fb: FormBuilder,
+    private workflowService: WorkflowService,
+    private toastr: ToasterService,
+    private swalService: SwalService,
+    private titleService: TitleService,
+    private _ActivatedRoute: ActivatedRoute,
+    private router: Router,
+    private userService: UserService,
+    private configurationService: ConfigurationService,
+    private spinner: SpinnerService,
+    private fileUploadService: FileUploadService,
+    private menuCountsService: MenuCountsService
+  ) { }
 
   async ngOnInit() {
     this.lookupData = this._ActivatedRoute.snapshot.data['data'].lists;
@@ -71,7 +97,6 @@ export class WorkflowExecutionComponent implements OnInit {
       this.editDetails = res.data;
     } catch (ex) {
       this.toastr.error('error', constants.messages.SERVER_ERROR);
-    } finally {
     }
   }
 
@@ -137,6 +162,10 @@ export class WorkflowExecutionComponent implements OnInit {
             if (f.templateName === constants.lookupListTemplateName.FILE) {
               delete f.templateOptions.maxLength;
               f.templateOptions.change = async (field, $event) => { await this.fileChange(field, $event); };
+              
+              // FILE RESTRICTION ADDITION START
+              f.templateOptions.accept = this.allowedMimeTypes.join(',');
+              // FILE RESTRICTION ADDITION END
             }
           }
           ele.formlyProp = {
@@ -154,8 +183,7 @@ export class WorkflowExecutionComponent implements OnInit {
       }
     } catch (err) {
       this.toastr.error('error', constants.messages.SERVER_ERROR);
-    }
-    finally {
+    } finally {
       this.spinner.hide();
     }
   }
@@ -246,7 +274,6 @@ export class WorkflowExecutionComponent implements OnInit {
           isFormValid = false;
         }
       }
-
       if (isFormValid) {
         this.spinner.showFull();
         const res: any = await this.workflowService.saveWorkflowExecution(this.applicationId, data);
@@ -254,7 +281,6 @@ export class WorkflowExecutionComponent implements OnInit {
         if (isPublish) {
           await this.publish();
         }
-
         if (res) {
           this.toastr.success('success', constants.messages.EXECUTION_SAVE_SUCCESS);
           this.router.navigate(['/workflow', 'list']);
@@ -271,9 +297,23 @@ export class WorkflowExecutionComponent implements OnInit {
 
   async fileChange(field, eve) {
     try {
-      this.spinner.showFull();
+      const fileInput = eve.target; // Get reference to input element
       const f: File = eve.currentTarget.files[0];
-      const firstFieldId =  this.applicationFormSection[0].applicationFormFields[0].id;
+      
+      // FILE RESTRICTION ADDITION START
+      if (!f) return;
+      const fileExtension = f.name.split('.').pop().toLowerCase();
+      if (!this.allowedExtensions.includes(fileExtension)) {
+        this.toastr.error('Error', `Invalid file type. Allowed types are: ${this.allowedExtensions.join(', ')}`);
+        
+        // Clear input immediately
+        fileInput.value = '';
+        return; // Stop upload
+      }
+      // FILE RESTRICTION ADDITION END
+
+      this.spinner.showFull();
+      const firstFieldId = this.applicationFormSection[0].applicationFormFields[0].id;
       const firstFieldInputName = this.applicationFormSection[0].applicationFormFields[0].fieldId;
       const firstFieldFormValue = this.applicationFormSection[0].formlyProp.templateOptionsForm.value[firstFieldInputName];
       const res: any = await this.fileUploadService.postExecutionFile(f, {
