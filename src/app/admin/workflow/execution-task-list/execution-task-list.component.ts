@@ -71,6 +71,25 @@ export class ExecutionListComponent implements OnInit {
   list: any;
   taskCount: number;
 
+  // FILE RESTRICTION ADDITIONS START
+  allowedExtensions = ["jpeg", "jpg", "webp", "csv", "xls", "xlsx", "xlsm", "ppt", "pptx", "pps", "doc", "docx", "pdf"];
+  allowedMimeTypes = [
+    'image/jpeg',
+    'image/webp',
+    'text/csv',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-excel.sheet.macroEnabled.12',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/pdf'
+  ];
+  // FILE RESTRICTION ADDITIONS END
+
+  applicationData: any
+
   constructor(
     private toastr: ToasterService,
     private swalService: SwalService,
@@ -298,6 +317,8 @@ export class ExecutionListComponent implements OnInit {
 
   async parseData(listObj) {
     const formFields = {};
+    this.applicationData = listObj.application;
+
     for (const ef of listObj.applicationExecutionForms) {
       formFields[ef.applicationFormFieldId] = ef.value;
       formFields[ef.applicationFormFieldId + '_id'] = ef.id;
@@ -364,7 +385,14 @@ export class ExecutionListComponent implements OnInit {
           }
         } else if (field.templateName === constants.lookupListTemplateName.FILE) {
           delete field.templateOptions.maxLength;
-          field.templateOptions.change = async (control, $event) => { await this.fileChange(control, $event); };
+          
+          // Add accept attribute with MIME types
+          field.templateOptions.accept = this.allowedMimeTypes.join(',');
+          
+          // Existing change handler
+          field.templateOptions.change = async (control, $event) => { 
+            await this.fileChange(control, $event); 
+          };
         }
         field.className = 'col-md-4';
         if (field.permission === this.permissions.READONLY ||
@@ -422,11 +450,36 @@ export class ExecutionListComponent implements OnInit {
 
   async fileChange(field, eve) {
     try {
-      this.spinner.showFull();
+      const fileInput = eve.target; // Reference to the file input
       const f: File = eve.currentTarget.files[0];
+      const firstFieldId = this.applicationData.applicationFormSections[0].applicationFormFields[0].id;
+      const firstFieldInputName = this.applicationData.applicationFormSections[0].applicationFormFields[0].fieldId;
+      const firstFieldFormValue = this.applicationData.applicationFormSections[0].formlyProp.templateOptionsForm.value[firstFieldInputName]
+      
+      // Validate file type
+      if (!f) return;
+      const fileExtension = f.name.split('.').pop().toLowerCase();
+      if (!this.allowedExtensions.includes(fileExtension)) {
+        this.toastr.error('Error', `Invalid file type. Allowed types: ${this.allowedExtensions.join(', ')}`);
+        fileInput.value = ''; // Clear invalid selection
+        return;
+      }
+
+      console.log('Request Payload:', {
+        applicationId: field.applicationId,
+        formFieldId: field.id,
+        firstFieldId,
+        firstFieldInputName,
+        firstFieldFormValue
+      });
+  
+      this.spinner.showFull();
       const res: any = await this.fileUploadService.postExecutionFile(f, {
         applicationId: field.applicationId,
-        formFieldId: field.id
+        formFieldId: field.id,
+        firstFieldId: firstFieldId,
+        firstFieldInputName: firstFieldInputName,
+        firstFieldFormValue: firstFieldFormValue
       });
       if (res) {
         this.formFiles[field.id] = res.data.fileKey;
