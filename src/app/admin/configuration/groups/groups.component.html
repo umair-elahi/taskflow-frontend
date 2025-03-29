@@ -1,127 +1,168 @@
-<div class="col-md-12">
-  <div class="box bg-white">
-    <div class="box-header">
-      <h4 class="fw-normal title fs-medium d-inline-block">Groups</h4>
-      <a (click)="add()" class="btn btn-primary pull-right btn-new-record">
+<div class="group-container">
+  <div class="group-card">
+    <!-- Card Header -->
+    <div class="group-card-header">
+      <h4 class="group-title">Groups</h4>
+      <button class="group-btn group-btn-primary" (click)="add()">
+        <i class="group-icon-plus"></i>
         Add New Group
-      </a>
+      </button>
     </div>
-    <div class="box-body">
 
-      <form name="groupForm" *ngIf="isFormBinded" [formGroup]="groupForm" novalidate id="form-test"
-        class="form-horizontal form-bordered form-control-borderless">
-        <div class="row">
-          <div class="col-md-3">
-            <div class="form-group">
-              <div class="col-xs-12">
-                Name
-                <input type="text" formControlName="name" name="name" class="form-control">
-                <p class="custom-error"
-                  *ngIf="groupForm.get('name').hasError('required') && groupForm.get('name').touched">
-                  Name is required.
-                </p>
-              </div>
-            </div>
+    <!-- Card Body -->
+    <div class="group-card-body">
+      <!-- Form Section -->
+      <form name="groupForm" *ngIf="isFormBinded" [formGroup]="groupForm" novalidate id="form-test" class="group-form">
+        <div class="group-form-grid">
+          <!-- Name Field -->
+          <div class="group-form-field">
+            <label for="name" class="group-label">Name</label>
+            <input type="text" id="name" formControlName="name" name="name" class="group-input">
+            <p class="group-error" *ngIf="groupForm.get('name').hasError('required') && groupForm.get('name').touched">
+              Name is required.
+            </p>
           </div>
-          <div class="col-md-7">
-            <div class="form-group">
-              <div class="col-xs-12">
-                Users
-                <ng-select [items]="users" multiple="true" bindLabel="email" bindValue="id" name="userIds"
-                  formControlName="userIds" placeholder="Select Users">
-                </ng-select>
-                <p class="custom-error"
-                  *ngIf="groupForm.get('userIds').hasError('required') && groupForm.get('userIds').touched">
-                  Users is required.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <br />
-            <button type="submit" class="btn btn-sm btn-success pull-right" [disabled]="groupForm.invalid"
-              (click)="save()">
-              Save
-            </button>
-            <a type="reset" (click)="isFormBinded=false;" class="btn btn-sm btn-warning pull-right">
-              Cancel </a>
+
+          <!-- Users Field -->
+          <div class="group-form-field group-form-field-large">
+            <label for="userIds" class="group-label">Users</label>
+            <ng-select 
+              id="userIds"
+              [items]="users" 
+              multiple="true" 
+              bindLabel="email" 
+              bindValue="id" 
+              name="userIds"
+              formControlName="userIds" 
+              placeholder="Select Users"
+              class="group-select">
+            </ng-select>
+            <p class="group-error" *ngIf="groupForm.get('userIds').hasError('required') && groupForm.get('userIds').touched">
+              Users is required.
+            </p>
           </div>
         </div>
-        <br>
-        <br>
+
+        <!-- Form Actions -->
+        <div class="group-form-actions">
+          <button type="submit" class="group-btn group-btn-success" [disabled]="groupForm.invalid" (click)="save()">
+            Save
+          </button>
+          <button type="button" class="group-btn group-btn-warning" (click)="isFormBinded = false;">
+            Cancel
+          </button>
+        </div>
       </form>
-      <div class="row">
+      
+      <!-- Table Section -->
+      <div class="group-table-wrapper">
+        <!-- Search Bar (Mobile) -->
+        <div class="group-search-mobile">
+          <input type="text" class="group-input" name="searchMobile" placeholder="Search By Name" [(ngModel)]="filters.searchArray[0].value">
+        </div>
+
         <!-- Table -->
-        <section class="data-table">
-          <div class="mtpx-40 hidden-sm-up"></div>
-          <table class="w-100 mbpx-10 table-strip">
-            <tr>
-              <th>Name</th>
-              <th>Total Users</th>
-              <th>Created On</th>
-              <th>Modified On</th>
-              <th>Actions</th>
-            </tr>
-            <tr class="table-footer">
-              <td colspan="5">
-                <input type="text" class="form-control" name="firstname" placeholder="Search By Name"
-                  [(ngModel)]="filters.searchArray[0].value">
-              </td>
-            </tr>
-            <tr
-              *ngFor="let group of groups | filter:{filtrationKeys: ['name'], filtrationValues: [filters.searchArray[0].value]}">
-              <td>{{group.name}}</td>
-              <td>{{group.userIds.length}}</td>
-              <td>{{group.createdAt ? (group.createdAt | date:'medium') : 'N/A' }}</td>
-              <td>{{group.updatedAt ? (group.updatedAt | date:'medium') : 'N/A' }}</td>
-              <td>
-                <i class="fas fa-pencil-alt rec-action" data-toggle="tooltip" title="" data-original-title="Edit"
-                  (click)="edit(group)"></i>
-                <i class="fas fa-trash rec-action" data-toggle="tooltip" title="" data-original-title="Delete"
-                  (click)="deleteRecord(group.id)"></i>
-              </td>
-            </tr>
-            <tr>
-              <td class="text-center" *ngIf="groups.length == 0" colspan="5">
-                No group Available
-              </td>
-            </tr>
+        <div class="group-table-container">
+          <table class="group-table">
+            <thead class="group-table-head">
+              <tr>
+                <th class="group-th group-th-name">Name</th>
+                <th class="group-th group-th-users">Total Users</th>
+                <th class="group-th group-th-date group-hide-md">Created On</th>
+                <th class="group-th group-th-date group-hide-md">Modified On</th>
+                <th class="group-th group-th-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Search Row (Desktop) -->
+              <tr class="group-table-search group-hide-sm">
+                <td colspan="5">
+                  <input type="text" class="group-input" name="firstname" placeholder="Search By Name" [(ngModel)]="filters.searchArray[0].value">
+                </td>
+              </tr>
+              
+              <!-- Data Rows -->
+              <tr *ngFor="let group of groups | filter:{filtrationKeys: ['name'], filtrationValues: [filters.searchArray[0].value]}" class="group-table-row">
+                <td class="group-td group-td-name" data-label="Name">{{ group.name }}</td>
+                <td class="group-td group-td-users" data-label="Total Users">{{ group.userIds.length }}</td>
+                <td class="group-td group-td-date group-hide-md" data-label="Created On">{{ group.createdAt ? (group.createdAt | date:'medium') : 'N/A' }}</td>
+                <td class="group-td group-td-date group-hide-md" data-label="Modified On">{{ group.updatedAt ? (group.updatedAt | date:'medium') : 'N/A' }}</td>
+                <td class="group-td group-td-actions" data-label="Actions">
+                  <div class="group-actions">
+                    <button class="group-btn-icon" title="Edit" (click)="edit(group)">
+                      <i class="fas fa-pencil-alt"></i>
+                    </button>
+                    <button class="group-btn-icon" title="Delete" (click)="deleteRecord(group.id)">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              
+              <!-- Empty State -->
+              <tr *ngIf="groups.length == 0">
+                <td class="group-td-empty" colspan="5">
+                  No Group Available
+                </td>
+              </tr>
+            </tbody>
           </table>
-          <div class="col-lg-6 col-md-12">
-            <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()"
-              aria-controls="example-datatable" class="form-control">
+        </div>
+
+        <!-- Mobile Data Cards (Alternative to table for very small screens) -->
+        <div class="group-mobile-cards">
+          <div *ngFor="let group of groups | filter:{filtrationKeys: ['name'], filtrationValues: [filters.searchArray[0].value]}" class="group-mobile-card">
+            <div class="group-mobile-card-header">
+              <h3 class="group-mobile-card-title">{{ group.name }}</h3>
+              <div class="group-mobile-actions">
+                <button class="group-btn-icon" title="Edit" (click)="edit(group)">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+                <button class="group-btn-icon" title="Delete" (click)="deleteRecord(group.id)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <div class="group-mobile-card-body">
+              <p><strong>Total Users:</strong> {{ group.userIds.length }}</p>
+              <p><strong>Created:</strong> {{ group.createdAt ? (group.createdAt | date:'medium') : 'N/A' }}</p>
+              <p><strong>Modified:</strong> {{ group.updatedAt ? (group.updatedAt | date:'medium') : 'N/A' }}</p>
+            </div>
+          </div>
+          
+          <!-- Empty State for Mobile Cards -->
+          <div *ngIf="groups.length == 0" class="group-mobile-empty">
+            No Group Available
+          </div>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="group-pagination-container">
+          <div class="group-page-size">
+            <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()" class="group-select-sm">
               <option value="10">10</option>
               <option value="20">20</option>
               <option value="30">30</option>
               <option value="-1">All</option>
             </select>
-
-            <p class="mtpx-10 text-sm-center paging-size-info">
-              Showing
-              <strong>{{filters.pageNo}}</strong> -
-              <strong>{{filters.noOfPages > 0 ? filters.noOfPages : 1}}</strong> of
-              <strong>{{totalRecords}}</strong>
+            <p class="group-paging-info">
+              Showing <strong>{{ filters.pageNo }}</strong> - 
+              <strong>{{ filters.noOfPages > 0 ? filters.noOfPages : 1 }}</strong> of 
+              <strong>{{ totalRecords }}</strong>
             </p>
           </div>
-
-          <div class="col-lg-6 col-md-12">
-            <ul class="pagination ta-right text-md-left unstyled">
-              <li class="prev" (click)="filters.pageNo == '1' && goToPrevious()">
-                Previous
+          <div class="group-pagination">
+            <ul class="group-pagination-list">
+              <li class="group-pagination-item group-pagination-prev" [class.group-pagination-disabled]="filters.pageNo == '1'" (click)="filters.pageNo != '1' && goToPrevious()">Previous</li>
+              <li *ngFor="let item of range" class="group-pagination-item" [class.group-pagination-active]="filters.pageNo == (item + 1)" (click)="goToPage(item)">
+                {{ item + 1 }}
               </li>
-              <li *ngFor="let item of range" [ngClass]="filters.pageNo == (item + 1) ? 'active-page' : ''"
-                (click)="goToPage(item)">
-                {{item + 1}}
-              </li>
-              <li class="next" (click)="filters.pageNo == (range[range.length - 1] + 1) && goToNext()">
-                Next
-              </li>
+              <li class="group-pagination-item group-pagination-next" [class.group-pagination-disabled]="filters.pageNo == (range[range.length - 1] + 1)" (click)="filters.pageNo != (range[range.length - 1] + 1) && goToNext()">Next</li>
             </ul>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   </div>
 </div>
+

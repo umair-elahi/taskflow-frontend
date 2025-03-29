@@ -1,102 +1,153 @@
-<div class="col-md-12">
-  <div class="box bg-white">
-    <div class="box-header">
-      <h4 class="fw-normal title fs-medium d-inline-block">Application Timeline</h4>
+<div class="timeline-container">
+  <div class="timeline-card">
+    <!-- Card Header -->
+    <div class="timeline-card-header">
+      <h4 class="timeline-title">Application Timeline</h4>
     </div>
-    <div class="box-body">
-      <div class="row">
-        <div class="col-md-3">
-          <div class="form-group">
-            Select Application
-            <ng-select [items]="applications" bindLabel="name" name="applicationId" [(ngModel)]="rptFilter.application"
-              placeholder="Select Application">
-            </ng-select>
-          </div>
+    
+    <!-- Card Body -->
+    <div class="timeline-card-body">
+      <!-- Filter Form -->
+      <div class="timeline-form-grid">
+        <div class="timeline-form-field">
+          <label for="applicationId" class="timeline-label">Select Application</label>
+          <ng-select 
+            [items]="applications || []" 
+            bindLabel="name" 
+            name="applicationId" 
+            id="applicationId"
+            [(ngModel)]="rptFilter.application"
+            placeholder="Select Application"
+            class="timeline-select">
+          </ng-select>
         </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            Start Date
-            <input type="date" name="startDate" [(ngModel)]="rptFilter.startDate" class="form-control">
-          </div>
+        
+        <div class="timeline-form-field">
+          <label for="startDate" class="timeline-label">Start Date</label>
+          <input 
+            type="date" 
+            id="startDate"
+            name="startDate" 
+            [(ngModel)]="rptFilter.startDate" 
+            class="timeline-input">
         </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            End Date
-            <input type="date" name="endDate" [(ngModel)]="rptFilter.endDate" class="form-control">
-          </div>
+        
+        <div class="timeline-form-field">
+          <label for="endDate" class="timeline-label">End Date</label>
+          <input 
+            type="date" 
+            id="endDate"
+            name="endDate" 
+            [(ngModel)]="rptFilter.endDate" 
+            class="timeline-input">
         </div>
-        <div class="col-md-3">
-          <button type="submit" class="btn btn-sm btn-success pull-right" (click)="findReport()">
+        
+        <div class="timeline-form-actions">
+          <button 
+            type="submit" 
+            class="timeline-btn timeline-btn-success" 
+            (click)="findReport()">
+            <i class="fas fa-search timeline-icon-search"></i>
             Find Report
           </button>
         </div>
       </div>
-      <div class="row">
-        <!-- Table -->
-        <section class="data-table">
-          <mat-accordion>
-            <mat-expansion-panel *ngFor="let list of items" class="mat-detail-panel">
-              <mat-expansion-panel-header>
-                <mat-panel-title class="width-25-p">
-                  {{list.title || 'N/A'}}
-                </mat-panel-title>
-              </mat-expansion-panel-header>
-              <a class="btn btn-default pull-right"
-                [routerLink]="['/workflow', list.applicationId, 'execute', list.id, 'read']">
-                View Details
-                <i class="fas fa-eye"></i>
-              </a>
-              <a class="btn btn-default pull-right" (click)="sendForReassign(list)">
-                Reassign
-                <i class="fas fa-refresh"></i>
-              </a>
-              <button type="submit" class="btn btn-sm btn-success pull-right"
-                *ngIf="list.timeline && list.timeline.length" (click)="printReport(list)">
-                Print Report
-              </button>
-              <br />
-              <br />
-              <table class="w-100 mbpx-10 table-strip">
-                <tr>
-                  <th>
-                    Workflow
-                    <i class="fas" (click)="getSortedResults('workflowType', list)"
-                      [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-                  </th>
-                  <th>Started At
-                    <i class="fas" (click)="getSortedResults('startedAt', list)"
-                      [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-                  </th>
-                  <th>Ended At
-                    <i class="fas" (click)="getSortedResults('endAt', list)"
-                      [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-                  </th>
-                  <th>Total Duration
-                    <i class="fas" (click)="getSortedResults('timestamp', list)"
-                      [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-                  </th>
-                </tr>
-                <tr *ngFor="let tl of list.timeline">
-                  <td>{{tl.workflowType}}</td>
-                  <td>{{tl.startedAt ? (tl.startedAt | date:'medium') : 'N/A' }}</td>
-                  <td>{{tl.endAt ? (tl.endAt | date:'medium') : 'N/A' }}</td>
-                  <td>{{tl.timestamp ? tl.timestamp : 'N/A' }}</td>
-                </tr>
-                <tr>
-                  <td class="text-center" *ngIf="list.timeline.length == 0" colspan="4">
-                    No Timeline Available
-                  </td>
-                </tr>
-              </table>
-            </mat-expansion-panel>
-          </mat-accordion>
-          <div class="row" *ngIf="!items.length">
-            <div class="col-md-12 alert-info">
-              <span>No Data Available</span>
+      
+      <!-- Results Section -->
+      <div class="timeline-accordion-wrapper">
+        <mat-accordion>
+          <mat-expansion-panel *ngFor="let list of items || []" class="timeline-panel">
+            <mat-expansion-panel-header class="timeline-panel-header">
+              <mat-panel-title class="timeline-panel-title">
+                {{list?.title || 'N/A'}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            
+            <div class="timeline-panel-content">
+              <div class="timeline-panel-actions">
+                <a 
+                  class="timeline-btn timeline-btn-default" 
+                  [routerLink]="['/workflow', list?.applicationId, 'execute', list?.id, 'read']">
+                  <span>View Details</span>
+                  <i class="fas fa-eye timeline-icon-right"></i>
+                </a>
+                
+                <a 
+                  class="timeline-btn timeline-btn-default" 
+                  (click)="sendForReassign(list)">
+                  <span>Reassign</span>
+                  <i class="fas fa-refresh timeline-icon-right"></i>
+                </a>
+                
+                <button 
+                  type="button" 
+                  class="timeline-btn timeline-btn-success" 
+                  *ngIf="list?.timeline && list.timeline.length" 
+                  (click)="printReport(list)">
+                  <i class="fas fa-print timeline-icon-left"></i>
+                  <span>Print Report</span>
+                </button>
+              </div>
+              
+              <div class="timeline-table-container">
+                <table class="timeline-table">
+                  <thead class="timeline-table-head">
+                    <tr>
+                      <th class="timeline-th">
+                        Workflow
+                        <i class="fas timeline-sort-icon" 
+                          (click)="getSortedResults('workflowType', list)"
+                          [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                      </th>
+                      <th class="timeline-th">
+                        Started At
+                        <i class="fas timeline-sort-icon" 
+                          (click)="getSortedResults('startedAt', list)"
+                          [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                      </th>
+                      <th class="timeline-th">
+                        Ended At
+                        <i class="fas timeline-sort-icon" 
+                          (click)="getSortedResults('endAt', list)"
+                          [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                      </th>
+                      <th class="timeline-th">
+                        Total Duration
+                        <i class="fas timeline-sort-icon" 
+                          (click)="getSortedResults('timestamp', list)"
+                          [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let tl of list?.timeline || []" class="timeline-table-row">
+                      <td class="timeline-td" data-label="Workflow">{{tl?.workflowType || 'N/A'}}</td>
+                      <td class="timeline-td" data-label="Started At">{{tl?.startedAt ? (tl.startedAt | date:'medium') : 'N/A' }}</td>
+                      <td class="timeline-td" data-label="Ended At">{{tl?.endAt ? (tl.endAt | date:'medium') : 'N/A' }}</td>
+                      <td class="timeline-td" data-label="Total Duration">{{tl?.timestamp ? tl.timestamp : 'N/A' }}</td>
+                    </tr>
+                    
+                    <!-- Empty State -->
+                    <tr *ngIf="!list?.timeline || list.timeline.length == 0">
+                      <td class="timeline-td-empty" colspan="4">
+                        No Timeline Available
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-        </section>
+          </mat-expansion-panel>
+        </mat-accordion>
+        
+        <!-- Empty State -->
+        <div class="timeline-empty-state" *ngIf="!items || !items.length">
+          <i class="fas fa-info-circle timeline-empty-icon"></i>
+          <p>No Data Available</p>
+        </div>
       </div>
     </div>
   </div>
-</div>
+  </div>
+  
+  

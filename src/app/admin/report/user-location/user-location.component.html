@@ -1,61 +1,131 @@
-<div class="col-md-12">
-  <div class="box bg-white">
-    <div class="box-header">
-      <h4 class="fw-normal title fs-medium d-inline-block">User Location</h4>
+<div class="user-location-container">
+  <div class="user-location-card">
+    <!-- Card Header -->
+    <div class="user-location-card-header">
+      <h4 class="user-location-title">User Location</h4>
     </div>
-    <div class="box-body">
-      <div class="row">
-        <div class="col-md-3">
-          <div class="form-group">
-            Select User
-            <ng-select [items]="users" bindLabel="email" name="userId" [(ngModel)]="rptFilter.user"
-              placeholder="Select User">
-            </ng-select>
-          </div>
+    
+    <!-- Card Body -->
+    <div class="user-location-card-body">
+      <!-- Filter Form -->
+      <div class="user-location-form-grid">
+        <div class="user-location-form-field">
+          <label for="userId" class="user-location-label">Select User</label>
+          <ng-select 
+            [items]="users || []" 
+            bindLabel="email" 
+            name="userId" 
+            id="userId"
+            [(ngModel)]="rptFilter.user"
+            placeholder="Select User"
+            class="user-location-select">
+          </ng-select>
         </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            Start Date
-            <input type="date" name="startDate" [(ngModel)]="rptFilter.startDate" class="form-control">
-          </div>
+        
+        <div class="user-location-form-field">
+          <label for="startDate" class="user-location-label">Start Date</label>
+          <input 
+            type="date" 
+            id="startDate"
+            name="startDate" 
+            [(ngModel)]="rptFilter.startDate" 
+            class="user-location-input">
         </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            End Date
-            <input type="date" name="endDate" [(ngModel)]="rptFilter.endDate" class="form-control">
-          </div>
+        
+        <div class="user-location-form-field">
+          <label for="endDate" class="user-location-label">End Date</label>
+          <input 
+            type="date" 
+            id="endDate"
+            name="endDate" 
+            [(ngModel)]="rptFilter.endDate" 
+            class="user-location-input">
         </div>
-        <div class="col-md-3">
-          <button type="submit" class="btn btn-sm btn-success pull-right" (click)="findReport()">
+        
+        <div class="user-location-form-actions">
+          <button 
+            type="submit" 
+            class="user-location-btn user-location-btn-success" 
+            (click)="findReport()">
+            <i class="fas fa-search user-location-icon-left"></i>
             Find Report
           </button>
         </div>
       </div>
-      <div class="row">
-        <!-- Table -->
-        <section class="data-table">
-          <table class="w-100 mbpx-10 table-strip">
-            <tr>
-              <th>Last Sync At</th>
-              <th>Action</th>
-            </tr>
-            <tr *ngFor="let tl of items">
-              <td>{{tl.createdAt | date:'medium'}} ({{getFromNow(tl.createdAt)}})</td>
-              <td>
-                <a class="btn btn-primary" (click)="showMap(tl)">
-                  View In Map
-                  <i class="fas fa-map"></i>
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td class="text-center" *ngIf="items.length == 0" colspan="4">
-                No Location Available
-              </td>
-            </tr>
+      
+      <!-- Table Section -->
+      <div class="user-location-table-wrapper">
+        <div class="user-location-table-container">
+          <table class="user-location-table">
+            <thead class="user-location-table-head">
+              <tr>
+                <th class="user-location-th">Last Sync At</th>
+                <th class="user-location-th user-location-th-actions">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Data Rows -->
+              <tr *ngFor="let tl of items || []" class="user-location-table-row">
+                <td class="user-location-td" data-label="Last Sync At">
+                  {{tl?.createdAt ? (tl.createdAt | date:'medium') : 'N/A'}} 
+                  <span class="user-location-time-ago" *ngIf="tl?.createdAt">({{getFromNow(tl.createdAt)}})</span>
+                </td>
+                <td class="user-location-td user-location-td-actions" data-label="Action">
+                  <button 
+                    class="user-location-btn user-location-btn-primary" 
+                    (click)="showMap(tl)">
+                    <span>View In Map</span>
+                    <i class="fas fa-map user-location-icon-right"></i>
+                  </button>
+                </td>
+              </tr>
+              
+              <!-- Empty State -->
+              <tr *ngIf="!items || items.length == 0">
+                <td class="user-location-td-empty" colspan="2">
+                  <div class="user-location-empty-state">
+                    <i class="fas fa-map-marker-alt user-location-empty-icon"></i>
+                    <p>No Location Available</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
           </table>
-        </section>
+        </div>
+        
+        <!-- Mobile Data Cards (Alternative to table for very small screens) -->
+        <div class="user-location-mobile-cards">
+          <div *ngFor="let tl of items || []" class="user-location-mobile-card">
+            <div class="user-location-mobile-card-header">
+              <h3 class="user-location-mobile-card-title">Last Sync</h3>
+            </div>
+            <div class="user-location-mobile-card-body">
+              <div class="user-location-mobile-info">
+                <p class="user-location-mobile-date">
+                  {{tl?.createdAt ? (tl.createdAt | date:'medium') : 'N/A'}}
+                </p>
+                <p class="user-location-mobile-time-ago" *ngIf="tl?.createdAt">
+                  {{getFromNow(tl.createdAt)}}
+                </p>
+              </div>
+              <button 
+                class="user-location-btn user-location-btn-primary user-location-btn-block" 
+                (click)="showMap(tl)">
+                <span>View In Map</span>
+                <i class="fas fa-map user-location-icon-right"></i>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Empty State for Mobile Cards -->
+          <div *ngIf="!items || items.length == 0" class="user-location-mobile-empty">
+            <i class="fas fa-map-marker-alt user-location-empty-icon"></i>
+            <p>No Location Available</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+  </div>
+  
+  

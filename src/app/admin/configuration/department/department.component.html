@@ -1,125 +1,159 @@
-<div class="col-md-12">
-  <div class="box bg-white">
-    <div class="box-header">
-      <h4 class="fw-normal title fs-medium d-inline-block">Departments</h4>
-      <a (click)="add()" class="btn btn-primary pull-right btn-new-record">
+<div class="dept-container">
+  <div class="dept-card">
+    <!-- Card Header -->
+    <div class="dept-card-header">
+      <h4 class="dept-title">Departments</h4>
+      <button class="dept-btn dept-btn-primary" (click)="add()">
+        <i class="dept-icon-plus"></i>
         Add New Department
-      </a>
+      </button>
     </div>
-    <div class="box-body">
 
-      <form name="departmentForm" *ngIf="isFormBinded" [formGroup]="departmentForm" novalidate id="form-test"
-        class="form-horizontal form-bordered form-control-borderless">
-        <div class="row">
-          <div class="col-md-3">
-            <div class="form-group">
-              <div class="col-xs-12">
-                Name
-                <input type="text" formControlName="name" name="name" class="form-control">
-                <p class="custom-error"
-                  *ngIf="departmentForm.get('name').hasError('required') && departmentForm.get('name').touched">
-                  Name is required.
-                </p>
-              </div>
-            </div>
+    <!-- Card Body -->
+    <div class="dept-card-body">
+      <!-- Form Section -->
+      <form name="departmentForm" *ngIf="isFormBinded" [formGroup]="departmentForm" novalidate id="form-test" class="dept-form">
+        <div class="dept-form-grid">
+          <!-- Name Field -->
+          <div class="dept-form-field">
+            <label for="name" class="dept-label">Name</label>
+            <input type="text" formControlName="name" name="name" id="name" class="dept-input">
+            <p class="dept-error" *ngIf="departmentForm.get('name').hasError('required') && departmentForm.get('name').touched">
+              Name is required.
+            </p>
           </div>
-          <div class="col-md-7">
-            <div class="form-group">
-              <div class="col-xs-12">
-                Department Head
-                <ng-select [items]="users" bindLabel="email" bindValue="id" name="userId"
-                  formControlName="userId" placeholder="Select User">
-                </ng-select>
-                <p class="custom-error"
-                  *ngIf="departmentForm.get('userId').hasError('required') && departmentForm.get('userId').touched">
-                  Department Head is required.
-                </p>
-              </div>
-            </div>
+
+          <!-- Department Head Field -->
+          <div class="dept-form-field">
+            <label for="userId" class="dept-label">Department Head</label>
+            <ng-select [items]="users" bindLabel="email" bindValue="id" name="userId" id="userId" formControlName="userId" placeholder="Select User" class="dept-select">
+            </ng-select>
+            <p class="dept-error" *ngIf="departmentForm.get('userId').hasError('required') && departmentForm.get('userId').touched">
+              Department Head is required.
+            </p>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-12">
-            <br />
-            <button type="submit" class="btn btn-sm btn-success pull-right" [disabled]="departmentForm.invalid"
-              (click)="save()">
-              Save
-            </button>
-            <a type="reset" (click)="isFormBinded=false;" class="btn btn-sm btn-warning pull-right">
-              Cancel </a>
-          </div>
+
+        <!-- Form Actions -->
+        <div class="dept-form-actions">
+          <button type="submit" class="dept-btn dept-btn-success" [disabled]="departmentForm.invalid" (click)="save()">
+            Save
+          </button>
+          <button type="button" class="dept-btn dept-btn-warning" (click)="isFormBinded = false;">
+            Cancel
+          </button>
         </div>
-        <br>
-        <br>
       </form>
-      <div class="row">
+      
+      <!-- Table Section -->
+      <div class="dept-table-wrapper">
+        <!-- Search Bar (Mobile) -->
+        <div class="dept-search-mobile">
+          <input type="text" class="dept-input" name="searchMobile" placeholder="Search By Name" [(ngModel)]="filters.searchArray[0].value">
+        </div>
+
         <!-- Table -->
-        <section class="data-table">
-          <div class="mtpx-40 hidden-sm-up"></div>
-          <table class="w-100 mbpx-10 table-strip">
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Created On</th>
-              <th>Modified On</th>
-              <th>Actions</th>
-            </tr>
-            <tr class="table-footer">
-              <td colspan="5">
-                <input type="text" class="form-control" name="firstname" placeholder="Search By Name" [(ngModel)]="filters.searchArray[0].value">
-              </td>
-            </tr>
-            <tr *ngFor="let department of departments | filter:{filtrationKeys: ['name'], filtrationValues: [filters.searchArray[0].value]}">
-              <td>{{department.name}}</td>
-              <td>{{department.user ? department.user.email : 'N/A'}}</td>
-              <td>{{department.createdAt ? (department.createdAt | date:'medium') : 'N/A' }}</td>
-              <td>{{department.updatedAt ? (department.updatedAt | date:'medium') : 'N/A' }}</td>
-              <td>
-                <i class="fas fa-pencil-alt rec-action" data-toggle="tooltip" title="" data-original-title="Edit"
-                  (click)="edit(department)"></i>
-                <i class="fas fa-trash rec-action" data-toggle="tooltip" title="" data-original-title="Delete"
-                  (click)="deleteRecord(department.id)"></i>
-              </td>
-            </tr>
-            <tr>
-              <td class="text-center" *ngIf="departments.length == 0" colspan="5">
-                No Department Available
-              </td>
-            </tr>         
+        <div class="dept-table-container">
+          <table class="dept-table">
+            <thead class="dept-table-head">
+              <tr>
+                <th class="dept-th dept-th-name">Name</th>
+                <th class="dept-th dept-th-email dept-hide-sm">Email</th>
+                <th class="dept-th dept-th-date dept-hide-md">Created On</th>
+                <th class="dept-th dept-th-date dept-hide-md">Modified On</th>
+                <th class="dept-th dept-th-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Search Row (Desktop) -->
+              <tr class="dept-table-search dept-hide-sm">
+                <td colspan="5">
+                  <input type="text" class="dept-input" name="firstname" placeholder="Search By Name" [(ngModel)]="filters.searchArray[0].value">
+                </td>
+              </tr>
+              
+              <!-- Data Rows -->
+              <tr *ngFor="let department of departments | filter:{filtrationKeys: ['name'], filtrationValues: [filters.searchArray[0].value]}" class="dept-table-row">
+                <td class="dept-td dept-td-name" data-label="Name">{{ department.name }}</td>
+                <td class="dept-td dept-td-email dept-hide-sm" data-label="Email">{{ department.user ? department.user.email : 'N/A' }}</td>
+                <td class="dept-td dept-td-date dept-hide-md" data-label="Created On">{{ department.createdAt ? (department.createdAt | date:'medium') : 'N/A' }}</td>
+                <td class="dept-td dept-td-date dept-hide-md" data-label="Modified On">{{ department.updatedAt ? (department.updatedAt | date:'medium') : 'N/A' }}</td>
+                <td class="dept-td dept-td-actions" data-label="Actions">
+                  <div class="dept-actions">
+                    <button class="dept-btn-icon" title="Edit" (click)="edit(department)">
+                      <i class="fas fa-pencil-alt"></i>
+                    </button>
+                    <button class="dept-btn-icon" title="Delete" (click)="deleteRecord(department.id)">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              
+              <!-- Empty State -->
+              <tr *ngIf="departments.length == 0">
+                <td class="dept-td-empty" colspan="5">
+                  No Department Available
+                </td>
+              </tr>
+            </tbody>
           </table>
-          <div class="col-lg-6 col-md-12">
-            <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()"
-              aria-controls="example-datatable" class="form-control">
+        </div>
+
+        <!-- Mobile Data Cards (Alternative to table for very small screens) -->
+        <div class="dept-mobile-cards">
+          <div *ngFor="let department of departments | filter:{filtrationKeys: ['name'], filtrationValues: [filters.searchArray[0].value]}" class="dept-mobile-card">
+            <div class="dept-mobile-card-header">
+              <h3 class="dept-mobile-card-title">{{ department.name }}</h3>
+              <div class="dept-mobile-actions">
+                <button class="dept-btn-icon" title="Edit" (click)="edit(department)">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+                <button class="dept-btn-icon" title="Delete" (click)="deleteRecord(department.id)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <div class="dept-mobile-card-body">
+              <p><strong>Email:</strong> {{ department.user ? department.user.email : 'N/A' }}</p>
+              <p><strong>Created:</strong> {{ department.createdAt ? (department.createdAt | date:'medium') : 'N/A' }}</p>
+              <p><strong>Modified:</strong> {{ department.updatedAt ? (department.updatedAt | date:'medium') : 'N/A' }}</p>
+            </div>
+          </div>
+          
+          <!-- Empty State for Mobile Cards -->
+          <div *ngIf="departments.length == 0" class="dept-mobile-empty">
+            No Department Available
+          </div>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="dept-pagination-container">
+          <div class="dept-page-size">
+            <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()" class="dept-select-sm">
               <option value="10">10</option>
               <option value="20">20</option>
               <option value="30">30</option>
               <option value="-1">All</option>
             </select>
-
-            <p class="mtpx-10 text-sm-center paging-size-info">
-              Showing
-              <strong>{{filters.pageNo}}</strong> -
-              <strong>{{filters.noOfPages > 0 ? filters.noOfPages : 1}}</strong> of
-              <strong>{{totalRecords}}</strong>
+            <p class="dept-paging-info">
+              Showing <strong>{{ filters.pageNo }}</strong> - 
+              <strong>{{ filters.noOfPages > 0 ? filters.noOfPages : 1 }}</strong> of 
+              <strong>{{ totalRecords }}</strong>
             </p>
           </div>
-
-          <div class="col-lg-6 col-md-12">
-            <ul class="pagination ta-right text-md-left unstyled">
-              <li class="prev" (click)="filters.pageNo == '1' && goToPrevious()">
-                Previous
+          <div class="dept-pagination">
+            <ul class="dept-pagination-list">
+              <li class="dept-pagination-item dept-pagination-prev" [class.dept-pagination-disabled]="filters.pageNo == '1'" (click)="filters.pageNo != '1' && goToPrevious()">Previous</li>
+              <li *ngFor="let item of range" class="dept-pagination-item" [class.dept-pagination-active]="filters.pageNo == (item + 1)" (click)="goToPage(item)">
+                {{ item + 1 }}
               </li>
-              <li *ngFor="let item of range" [ngClass]="filters.pageNo == (item + 1) ? 'active-page' : ''"
-                (click)="goToPage(item)">
-                {{item + 1}}
-              </li>
-              <li class="next" (click)="filters.pageNo == (range[range.length - 1] + 1) && goToNext()">
-                Next
-              </li>
+              <li class="dept-pagination-item dept-pagination-next" [class.dept-pagination-disabled]="filters.pageNo == (range[range.length - 1] + 1)" (click)="filters.pageNo != (range[range.length - 1] + 1) && goToNext()">Next</li>
             </ul>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   </div>
 </div>
+

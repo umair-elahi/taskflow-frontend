@@ -1,143 +1,246 @@
-<div class="col-md-12">
-  <div class="box bg-white">
-    <div class="box-header">
-      <h4 class="fw-normal title fs-medium d-inline-block">User Workload Report</h4>
+<div class="workload-container">
+  <div class="workload-card">
+    <!-- Card Header -->
+    <div class="workload-card-header">
+      <h4 class="workload-title">User Workload Report</h4>
     </div>
-    <div class="box-body">
-      <div class="row">
-        <div class="col-md-4">
-          <div class="form-group">
-            Select User
-            <ng-select [items]="users" bindLabel="firstName" name="userId" [(ngModel)]="user" placeholder="Select User">
-            </ng-select>
+    
+    <!-- Card Body -->
+    <div class="workload-card-body">
+      <!-- Filter Section -->
+      <div class="workload-filter-section">
+        <div class="workload-filter-grid">
+          <!-- User Selection -->
+          <div class="workload-filter-field">
+            <label class="workload-label">Select User</label>
+            <div class="workload-select-container">
+              <ng-select 
+                [items]="users" 
+                bindLabel="firstName" 
+                name="userId" 
+                [(ngModel)]="user" 
+                placeholder="Select User"
+                class="workload-select">
+              </ng-select>
+            </div>
           </div>
-        </div>
-        <div class="col-md-4">
-          <button type="submit" class="btn btn-sm btn-success pull-right" (click)="findReport()">
-            Find Report
-          </button>
-          <button type="submit" class="btn btn-sm btn-success pull-right" *ngIf="myItems && myItems.length"
-            (click)="printReport()">
-            Print Report
-          </button>
+          
+          <!-- Action Buttons -->
+          <div class="workload-filter-actions">
+            <button type="submit" class="workload-btn workload-btn-primary" (click)="findReport()">
+              <i class="fas fa-search workload-btn-icon"></i>
+              Find Report
+            </button>
+            <button type="submit" class="workload-btn workload-btn-success" *ngIf="myItems?.length" (click)="printReport()">
+              <i class="fas fa-print workload-btn-icon"></i>
+              Print Report
+            </button>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <!-- Table -->
-        <section class="data-table">
-          <div class="mtpx-40 hidden-sm-up"></div>
-          <table class="w-100 mbpx-10 table-strip">
-            <tr>
-              <th>
-                App Name
-                <i class="fas" (click)="getSortedResults('applicationName')"
-                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-              </th>
-              <th>Draft
-                <i class="fas" (click)="getSortedResults('draft')"
-                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-              </th>
-              <th>In Progress
-                <i class="fas" (click)="getSortedResults('inProgress')"
-                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-              </th>
-              <th>Completed
-                <i class="fas" (click)="getSortedResults('completed')"
-                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-              </th>
-              <th>Rejected
-                <i class="fas" (click)="getSortedResults('rejected')"
-                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-              </th>
-              <th>Withdraw
-                <i class="fas" (click)="getSortedResults('withdraw')"
-                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-              </th>
-              <th>Total
-                <i class="fas" (click)="getSortedResults('total')"
-                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-              </th>
-            </tr>
-            <tr class="table-footer">
-              <td colspan="7">
-                <input type="text" class="form-control" name="firstname" placeholder="Search By App Name"
-                  [(ngModel)]="filters.searchArray[0].value">
-              </td>
-            </tr>
-            <tr
-              *ngFor="let item of myItems | filter:{filtrationKeys: ['applicationName'], filtrationValues: [filters.searchArray[0].value]}">
-              <td>{{item.applicationName}}</td>
-              <td>
-                <span class="item-click" (click)="gotoDetailOther('draft', item.applicationId, item.draft)">
-                  {{item.draft}}
-                </span>
-              </td>
-              <td>
-                <span class="item-click" (click)="gotoDetailOther('draft', item.applicationId, item.inProgress)">
-                  {{item.inProgress}}
-                </span>
-              </td>
-              <td>
-                <span class="item-click" (click)="gotoDetailOther('approved', item.applicationId, item.completed)">
-                  {{item.completed}}
-                </span>
-              </td>
-              <td>
-                <span class="item-click" (click)="gotoDetailOther('rejected', item.applicationId, item.rejected)">
-                  {{item.rejected}}
-                </span>
-              </td>
-              <td>
-                <span class="item-click" (click)="gotoDetailOther('withdraw', item.applicationId, item.withdraw)">
-                  {{item.withdraw}}
-                </span>
-              </td>
-              <td>
-                <span class="item-click"
-                  (click)="gotoDetail(item.applicationId, (item.inProgress + item.completed + item.rejected))">
-                  {{item.total}}
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td class="text-center" *ngIf="myItems.length == 0" colspan="7">
-                No Data Available
-              </td>
-            </tr>
-          </table>
-          <div class="col-lg-6 col-md-12">
-            <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()"
-              aria-controls="example-datatable" class="form-control">
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">30</option>
-              <option value="-1">All</option>
-            </select>
+      
+      <!-- Table Section -->
+      <div class="workload-table-wrapper">
+        <!-- Search Bar (Mobile) -->
+        <div class="workload-search-mobile">
+          <div class="workload-search-container">
+            <i class="fas fa-search workload-search-icon"></i>
+            <input type="text" class="workload-input" name="searchMobile" placeholder="Search By App Name" [(ngModel)]="filters.searchArray[0].value">
+          </div>
+        </div>
 
-            <p class="mtpx-10 text-sm-center paging-size-info">
-              Showing
-              <strong>{{filters.pageNo}}</strong> -
-              <strong>{{filters.noOfPages > 0 ? filters.noOfPages : 1}}</strong> of
-              <strong>{{totalRecords}}</strong>
+        <!-- Table -->
+        <div class="workload-table-container">
+          <table class="workload-table">
+            <thead class="workload-table-head">
+              <tr>
+                <th class="workload-th workload-th-name">
+                  App Name
+                  <i class="fas workload-sort-icon" (click)="getSortedResults('applicationName')"
+                    [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                </th>
+                <th class="workload-th workload-th-count">
+                  Draft
+                  <i class="fas workload-sort-icon" (click)="getSortedResults('draft')"
+                    [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                </th>
+                <th class="workload-th workload-th-count">
+                  In Progress
+                  <i class="fas workload-sort-icon" (click)="getSortedResults('inProgress')"
+                    [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                </th>
+                <th class="workload-th workload-th-count">
+                  Completed
+                  <i class="fas workload-sort-icon" (click)="getSortedResults('completed')"
+                    [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                </th>
+                <th class="workload-th workload-th-count workload-hide-md">
+                  Rejected
+                  <i class="fas workload-sort-icon" (click)="getSortedResults('rejected')"
+                    [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                </th>
+                <th class="workload-th workload-th-count workload-hide-md">
+                  Withdraw
+                  <i class="fas workload-sort-icon" (click)="getSortedResults('withdraw')"
+                    [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                </th>
+                <th class="workload-th workload-th-count">
+                  Total
+                  <i class="fas workload-sort-icon" (click)="getSortedResults('total')"
+                    [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Search Row (Desktop) -->
+              <tr class="workload-table-search workload-hide-sm">
+                <td colspan="7">
+                  <div class="workload-search-container">
+                    <i class="fas fa-search workload-search-icon"></i>
+                    <input type="text" class="workload-input" name="firstname" placeholder="Search By App Name" [(ngModel)]="filters.searchArray[0].value">
+                  </div>
+                </td>
+              </tr>
+              
+              <!-- Data Rows -->
+              <tr *ngFor="let item of (myItems || []) | filter:{filtrationKeys: ['applicationName'], filtrationValues: [filters.searchArray[0].value]}" class="workload-table-row">
+                <td class="workload-td workload-td-name" data-label="App Name">{{ item.applicationName }}</td>
+                <td class="workload-td workload-td-count" data-label="Draft">
+                  <span class="workload-item-click" (click)="gotoDetailOther('draft', item.applicationId, item.draft)">
+                    {{ item.draft }}
+                  </span>
+                </td>
+                <td class="workload-td workload-td-count" data-label="In Progress">
+                  <span class="workload-item-click" (click)="gotoDetailOther('draft', item.applicationId, item.inProgress)">
+                    {{ item.inProgress }}
+                  </span>
+                </td>
+                <td class="workload-td workload-td-count" data-label="Completed">
+                  <span class="workload-item-click" (click)="gotoDetailOther('approved', item.applicationId, item.completed)">
+                    {{ item.completed }}
+                  </span>
+                </td>
+                <td class="workload-td workload-td-count workload-hide-md" data-label="Rejected">
+                  <span class="workload-item-click" (click)="gotoDetailOther('rejected', item.applicationId, item.rejected)">
+                    {{ item.rejected }}
+                  </span>
+                </td>
+                <td class="workload-td workload-td-count workload-hide-md" data-label="Withdraw">
+                  <span class="workload-item-click" (click)="gotoDetailOther('withdraw', item.applicationId, item.withdraw)">
+                    {{ item.withdraw }}
+                  </span>
+                </td>
+                <td class="workload-td workload-td-count" data-label="Total">
+                  <span class="workload-item-click workload-item-total" (click)="gotoDetail(item.applicationId, (item.inProgress + item.completed + item.rejected))">
+                    {{ item.total }}
+                  </span>
+                </td>
+              </tr>
+              
+              <!-- Empty State -->
+              <tr *ngIf="!myItems || myItems.length == 0">
+                <td class="workload-td-empty" colspan="7">
+                  <div class="workload-empty-state">
+                    <i class="fas fa-chart-bar workload-empty-icon"></i>
+                    <p>No Data Available</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile Data Cards (Alternative to table for very small screens) -->
+        <div class="workload-mobile-cards">
+          <div *ngFor="let item of (myItems || []) | filter:{filtrationKeys: ['applicationName'], filtrationValues: [filters.searchArray[0].value]}" class="workload-mobile-card">
+            <div class="workload-mobile-card-header">
+              <h3 class="workload-mobile-card-title">{{ item.applicationName }}</h3>
+            </div>
+            <div class="workload-mobile-card-body">
+              <div class="workload-mobile-stat">
+                <span class="workload-mobile-label">Draft:</span>
+                <span class="workload-item-click" (click)="gotoDetailOther('draft', item.applicationId, item.draft)">
+                  {{ item.draft }}
+                </span>
+              </div>
+              <div class="workload-mobile-stat">
+                <span class="workload-mobile-label">In Progress:</span>
+                <span class="workload-item-click" (click)="gotoDetailOther('draft', item.applicationId, item.inProgress)">
+                  {{ item.inProgress }}
+                </span>
+              </div>
+              <div class="workload-mobile-stat">
+                <span class="workload-mobile-label">Completed:</span>
+                <span class="workload-item-click" (click)="gotoDetailOther('approved', item.applicationId, item.completed)">
+                  {{ item.completed }}
+                </span>
+              </div>
+              <div class="workload-mobile-stat">
+                <span class="workload-mobile-label">Rejected:</span>
+                <span class="workload-item-click" (click)="gotoDetailOther('rejected', item.applicationId, item.rejected)">
+                  {{ item.rejected }}
+                </span>
+              </div>
+              <div class="workload-mobile-stat">
+                <span class="workload-mobile-label">Withdraw:</span>
+                <span class="workload-item-click" (click)="gotoDetailOther('withdraw', item.applicationId, item.withdraw)">
+                  {{ item.withdraw }}
+                </span>
+              </div>
+              <div class="workload-mobile-stat workload-mobile-total">
+                <span class="workload-mobile-label">Total:</span>
+                <span class="workload-item-click workload-item-total" (click)="gotoDetail(item.applicationId, (item.inProgress + item.completed + item.rejected))">
+                  {{ item.total }}
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Empty State for Mobile Cards -->
+          <div *ngIf="!myItems || myItems.length == 0" class="workload-mobile-empty">
+            <i class="fas fa-chart-bar workload-empty-icon"></i>
+            <p>No Data Available</p>
+          </div>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="workload-pagination-container">
+          <div class="workload-page-size">
+            <div class="workload-select-wrapper">
+              <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()" class="workload-select-sm">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="-1">All</option>
+              </select>
+              <span class="workload-select-icon">
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </div>
+            <p class="workload-paging-info">
+              Showing <strong>{{ filters.pageNo }}</strong> - 
+              <strong>{{ filters.noOfPages > 0 ? filters.noOfPages : 1 }}</strong> of 
+              <strong>{{ totalRecords }}</strong>
             </p>
           </div>
-
-          <div class="col-lg-6 col-md-12">
-            <ul class="pagination ta-right text-md-left unstyled">
-              <li class="prev" (click)="filters.pageNo == '1' && goToPrevious()">
+          <div class="workload-pagination">
+            <ul class="workload-pagination-list">
+              <li class="prev" [class.disabled]="!range || filters.pageNo == '1'" (click)="range && filters.pageNo != '1' && goToPrevious()">
                 Previous
               </li>
-              <li *ngFor="let item of range" [ngClass]="filters.pageNo == (item + 1) ? 'active-page' : ''"
+              <li *ngFor="let item of range || []" [ngClass]="filters.pageNo == (item + 1) ? 'active-page' : ''"
                 (click)="goToPage(item)">
                 {{item + 1}}
               </li>
-              <li class="next" (click)="filters.pageNo == (range[range.length - 1] + 1) && goToNext()">
+              <li class="next" [class.disabled]="!range || !range.length || filters.pageNo == (range[range.length - 1] + 1)" 
+                  (click)="range && range.length > 0 && filters.pageNo != (range[range.length - 1] + 1) && goToNext()">
                 Next
               </li>
             </ul>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   </div>
 </div>
+

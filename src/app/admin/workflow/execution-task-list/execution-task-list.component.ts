@@ -59,7 +59,7 @@ export class ExecutionListComponent implements OnInit {
   status = '';
   title = '';
   appId: string = null;
-  serachText: String = '';
+  searchText: String = '';
   currentUserId: any = null;
   applications: any = [];
   rptFilter: any = {
@@ -67,7 +67,7 @@ export class ExecutionListComponent implements OnInit {
     startDate: moment().format('YYYY-MM-DD'),
     endDate: moment().format('YYYY-MM-DD')
   };
-  serachByMulti = '';
+  searchByMulti = '';
   list: any;
   taskCount: number;
 
@@ -89,6 +89,7 @@ export class ExecutionListComponent implements OnInit {
   // FILE RESTRICTION ADDITIONS END
 
   applicationData: any
+  selectedTab: string = 'application'; // Default selected tab
 
   constructor(
     private toastr: ToasterService,
@@ -144,8 +145,10 @@ export class ExecutionListComponent implements OnInit {
     this.totalTasks = this.lists.length;
     // this.executionListService.updateTaskCount(this.totalTasks); // Update the service with the new task count
   }
-
-
+  
+  selectTab(tab: string) {
+    this.selectedTab = tab;
+  }
   
 
   async setTitle() {
@@ -271,7 +274,7 @@ export class ExecutionListComponent implements OnInit {
     try {
       this.spinner.showFull();
       //@ts-ignore
-      const res: any = await this.workflowService.getMyParticipatedExecution(this.serachText);
+      const res: any = await this.workflowService.getMyParticipatedExecution(this.searchText);
       this.tempList = res.data;
       this.totalRecords = res.data.length;
       this.range = _.range(Math.ceil(res.data.length / parseInt(this.filters.noOfPages.toString(), 0)));
@@ -778,14 +781,14 @@ export class ExecutionListComponent implements OnInit {
 
   filterResultsByMultiFields() {
     let lst = this.tempList;
-    if (this.serachByMulti) {
+    if (this.searchByMulti) {
       lst = [];
       this.tempList.forEach((l) => {
-        if (l.name && l.name.toLowerCase().includes(this.serachByMulti.toLowerCase())) {
+        if (l.name && l.name.toLowerCase().includes(this.searchByMulti.toLowerCase())) {
           lst.push(l);
-        } else if (l.title && l.title.toLowerCase().includes(this.serachByMulti.toLowerCase())) {
+        } else if (l.title && l.title.toLowerCase().includes(this.searchByMulti.toLowerCase())) {
           lst.push(l);
-        } else if (l.createdByName && l.createdByName.toLowerCase().includes(this.serachByMulti.toLowerCase())) {
+        } else if (l.createdByName && l.createdByName.toLowerCase().includes(this.searchByMulti.toLowerCase())) {
           lst.push(l);
         }
       });

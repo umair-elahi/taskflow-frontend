@@ -1,0 +1,153 @@
+/* Container */
+.app-container {
+    max-width: 1200px;
+    margin: 1.5rem auto;
+    padding: 1rem;
+  }
+  
+  /* Create New App Button */
+  .create-app {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, var(--custom-color), #ff6b6b);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 2rem;
+    text-decoration: none;
+    justify-content: center;
+  }
+  .create-app:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+  }
+  .create-app .icon {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+  }
+
+.create-app .label {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+  
+  /* Applications List Grid */
+  .app-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .app-list .name {
+    color: var(--text-primary);
+  }
+  
+  /* App Card */
+  .app-card {
+    background: var(--background-light-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    word-break: break-all;
+  }
+  .app-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* App Card Header */
+  .app-card .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    column-gap: 5px;
+  }
+  .app-card .header .initial {
+    background: linear-gradient(135deg, var(--custom-color), #ff6b6b);
+    color: var(--text-primary);
+    font-weight: 700;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    margin-right: 1rem;
+  }
+  .app-card .header .info {
+    flex: 1;
+  }
+  .app-card .header .info .name {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  .app-card .header .info .email {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+  }
+  
+  /* Status Badge */
+  .app-card .status {
+    padding: 0.3rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .app-card .status.published {
+    background: rgba(22, 163, 74, 0.2);
+    color: var(--success);
+  }
+  .app-card .status.draft {
+    background: rgba(220, 38, 38, 0.2);
+    color: var(--danger);
+  }
+  
+  /* Description */
+  .app-card .description {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    flex: 1;
+  }
+  
+  /* App Actions */
+  .app-card .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+  .app-card .actions i {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    transition: color 0.2s ease;
+    cursor: pointer;
+  }
+  .app-card .actions i:hover {
+    color: var(--custom-color);
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .create-app {
+      padding: 0.75rem 1.25rem;
+      font-size: 0.9rem;
+    }
+    .app-card {
+      padding: 1rem;
+    }
+  }

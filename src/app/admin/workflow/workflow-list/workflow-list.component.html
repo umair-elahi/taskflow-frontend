@@ -1,49 +1,37 @@
-<div class="row">
-  <div class="col-md-3 mbpx-20">
-    <div class="box body-box bg-white mbpx-30 ripple-box height-147px" [routerLink]="['/workflow', 'create', 'new']">
-      <div class="innerdiv create-workflow-button">
-        <h5 class="fw-normal mbpx-20"><i class="fas fa-plus"></i>
-        </h5>
-        <p class="fs-medium mbpx-20">Create New App
-        </p>
+<section class="app-container">
+  <!-- Create New App -->
+  <div class="create-app" [routerLink]="['/workflow', 'create', 'new']">
+    <span class="icon"><i class="fas fa-plus"></i></span>
+    <span class="label">Create New App</span>
+  </div>
+
+  <!-- Applications List -->
+  <div class="app-list">
+    <div class="app-card" *ngFor="let item of applications">
+      <div class="header">
+        <span class="initial">{{ item.name[0] }}</span>
+        <div class="info">
+          <span class="name">{{ item.name }}</span>
+          <span class="email">{{ item.email || 'admin@aetasaal.com' }}</span>
+        </div>
+        <span class="status" [ngClass]="{'published': item.isPublished, 'draft': !item.isPublished}">
+          {{ item.isPublished ? 'Publish' : 'Draft' }}
+        </span>
+      </div>
+      <div class="description">
+        <span>{{ item.shortDescription }}</span>
+      </div>
+      <div class="actions">
+        <span *ngIf="item.isPublished" [routerLink]="['/workflow', item.id, 'execute', 'new', 'open']">
+          <i class="fas fa-plus"></i>
+        </span>
+        <span *ngIf="item.canEdit" [routerLink]="['/workflow', 'create', item.id]">
+          <i class="fas fa-pencil-alt"></i>
+        </span>
+        <span (click)="deleteApplication(item.id)">
+          <i class="fas fa-trash"></i>
+        </span>
       </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-3 mbpx-20" *ngFor="let item of applications">
-    <div class="hover-box bg-white height-147px">
-      <figure class="">
-        <div class="main-content">
-          <div class="col-md-4 d-table h-100 col-nopadd">
-            <h2 class="main-inner ">{{item.name[0]}}</h2>
-          </div>
-          <div class="right  col-md-8 ">
-            <p class="fs-medium">
-              {{item.name}}
-            </p>
-            <p class="fs-xsmall">
-              {{item.email || 'admin@aetasaal.com'}}
-            </p>
-          </div>
-        </div>
-        <span class="cross-tick">{{item.isPublished ? 'Publish' : 'Draft'}}</span>
-        <figcaption>
-          <div class="inner">
-            <div class="col-md-10 prpx-2">
-              <P>{{item.shortDescription}}</P>
-            </div>
-            <div class="col-md-2 plpx-1 prpx-1 bg-white h-100 hover-right ">
-              <ul class="unstyled ptpx-10 pbpx-10">
-                <li *ngIf="item.isPublished"><i class="fas fa-plus"
-                    [routerLink]="['/workflow', item.id, 'execute', 'new', 'open']"></i></li>
-                <li *ngIf="item.canEdit"><i class="fas fa-pencil-alt" [routerLink]="['/workflow', 'create', item.id]"></i></li>
-                <li><i class="fas fa-trash" (click)="deleteApplication(item.id)"></i></li>
-              </ul>
-            </div>
-          </div>
-        </figcaption>
-      </figure>
-    </div>
-  </div>
-</div>
+</section>

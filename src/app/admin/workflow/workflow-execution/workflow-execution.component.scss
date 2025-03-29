@@ -1,0 +1,201 @@
+.workflow-execution-content {
+    display: flex;
+    flex-direction: column;
+    color: var(--text-primary);
+    padding: 1rem 1.5rem;
+    row-gap: 1rem;
+}
+
+.workflow-execution-download-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.workflow-execution-download-buttons-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.workflow-execution-content-form-sections {
+    display: flex;
+    flex-direction: column;
+    color: var(--text-primary);
+    padding: 1rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    row-gap: 1rem;
+}
+
+.workflow-execution-content-form-sections div:first-child {
+    font-size: 2rem;
+    text-transform: capitalize;
+    line-height: 1.5;
+    padding: 1rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    text-align: center;
+}
+
+.workflow-execution-content-form-sections div:nth-child(2) {
+    padding: 1rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+}
+
+::ng-deep form input,
+::ng-deep form label,
+::ng-deep form textarea,
+::ng-deep form select,
+::ng-deep form button,
+::ng-deep form input[type="checkbox"],
+::ng-deep form input[type="radio"],
+::ng-deep form input[type="file"],
+::ng-deep form input[type="date"] {
+  // border: 1px solid red !important;
+  display: block;
+  width: 100% !important;
+  padding: 1rem !important;
+  margin-bottom: 0.5rem !important;
+  color: var(--text-primary);
+}
+
+::ng-deep form input {
+    border: none !important;
+    border-radius: 5px !important;
+    background-color: var(--input-bg);
+    // outline: 1px solid var(--input-border) !important;
+    color: var(--text-primary) !important;
+}
+
+::ng-deep form label {
+    font-weight: bold;
+    padding: 0 !important;
+}
+
+::ng-deep form input[type="file"] {
+    padding: 0.5rem !important;
+    cursor: pointer;
+    color: var(--text-placeholder) !important;
+}
+
+::ng-deep form input[type="file"]::-webkit-file-upload-button {
+    background-color: var(--input-border);
+    color: var(--text-placeholder);
+    padding: 0.5rem;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+::ng-deep formly-field-radio .custom-radio {
+    display: flex;
+    align-items: center;
+}
+  
+::ng-deep formly-field-radio .custom-radio label {
+    order: -1;
+    text-align: center;
+}
+  
+::ng-deep formly-field-textarea textarea {
+    background-color: var(--input-bg);
+    color: var(--text-primary) !important;
+    border: none;
+    border-radius: 5px;
+}
+
+.workflow-action-buttons {
+    display: flex;
+    justify-content: center;
+    column-gap: 1rem;
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+  
+  @media screen and (max-width: 500px) {
+    .workflow-action-buttons {
+      flex-direction: column;
+    }
+    
+  }
+
+
+.workflow-action-buttons button {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    border: 3px solid var(--border-color);
+    color: var(--text-primary);
+    background: linear-gradient(135deg, var(--custom-color), #ff6b6b);
+    cursor: pointer;
+}
+
+a {
+    color: var(--primary); /* Your desired link color */
+    margin-top: 5px;
+    text-decoration: underline;
+    text-decoration-color: var(--primary);
+    text-decoration-thickness: 1px;
+    text-align: center;
+    text-underline-offset: 3px;
+  }
+
+  a:hover {
+    color: var(--primary-hover); /* Your desired link color */
+    text-decoration: underline;
+    text-decoration-color: var(--primary-hover);
+    text-decoration-thickness: 1px;
+  }
+
+  /* Modal Overlay */
+.file-preview-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.8); /* Dark overlay */
+    z-index: 9999;
+  }
+  
+  /* Modal Content Container */
+  .file-preview-modal-content {
+    position: relative;
+    background-color: #fff;
+    width: 90vw;   /* Responsive width */
+    height: 90vh;  /* Responsive height */
+    max-width: 1200px; /* Optional max-width for large screens */
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* So iframe doesn't exceed container */
+    border: 1px solid var(--border-color);
+  }
+  
+  /* Close Button Styling */
+  .close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 2rem;
+    color: var(--text-ptimary);
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+  }
+  
+  .close-button:hover {
+    background: linear-gradient(135deg, var(--custom-color), #ff6b6b);
+  }
+  
+  /* iFrame Styling */
+  .preview-iframe {
+    flex: 1; /* Grow to fill vertical space */
+    width: 100%;
+    border: none;
+  }
+  

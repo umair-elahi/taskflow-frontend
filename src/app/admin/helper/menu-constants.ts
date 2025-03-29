@@ -4,7 +4,7 @@ import { constants } from './constants';
 export const MenuConstants = [
     {
         Name: 'Workflow',
-        Icon: 'fas fa-network-wired',
+        Icon: 'fas fa-project-diagram',
         DefaultLink: '',
         Childrens: [
             {
@@ -73,14 +73,14 @@ export const MenuConstants = [
             },
             {
                 Name: 'Delete Executions',
-                Icon: 'fa-times',
+                Icon: 'fa-trash',
                 Link: ['/workflow', 'delete-executions']
             }
         ],
     },
     {
         Name: 'Admin',
-        Icon: 'fa-cogs',
+        Icon: 'fa-user-shield',
         DefaultLink: '',
         Childrens: [
             {
@@ -95,12 +95,12 @@ export const MenuConstants = [
             },
             {
                 Name: 'Departments',
-                Icon: 'fa-building',
+                Icon: 'fa-sitemap',
                 Link: ['/admin', 'departments']
             },
             {
                 Name: 'Groups',
-                Icon: 'fa-building',
+                Icon: 'fa-users',
                 Link: ['/admin', 'groups']
             },
             {
@@ -110,49 +110,49 @@ export const MenuConstants = [
             },
             {
                 Name: 'Users',
-                Icon: 'fa-users',
+                Icon: 'fa-user',
                 Link: ['/admin', 'users']
             },
             {
                 Name: 'Roles',
-                Icon: 'fa-users-cog',
+                Icon: 'fa-user-shield',
                 Link: ['/admin', 'roles']
             }
         ],
     },
     {
         Name: 'Report',
-        Icon: 'fa-cogs',
+        Icon: 'fa-file-alt',
         DefaultLink: '',
         Childrens: [
             {
                 Name: 'My Items',
-                Icon: 'fa-tachometer-alt',
+                Icon: 'fa-folder',
                 Link: ['/report', 'my-item']
             },
             {
                 Name: 'User Workload',
-                Icon: 'fa-building',
+                Icon: 'fa-tasks',
                 Link: ['/report', 'user-summary']
             },
             {
                 Name: 'Application Timeline',
-                Icon: 'fa-building',
+                Icon: 'fa-stream',
                 Link: ['/report', 'app-timeline']
             },
             {
                 Name: 'Application Metrics',
-                Icon: 'fa-building',
+                Icon: 'fa-chart-line',
                 Link: ['/report', 'app-metrics']
             },
             {
                 Name: 'Application Location',
-                Icon: 'fa-building',
+                Icon: 'fa-map-marker-alt',
                 Link: ['/report', 'app-location']
             },
             {
                 Name: 'User Location',
-                Icon: 'fa-building',
+                Icon: 'fa-map-marker',
                 Link: ['/report', 'user-location']
             },
             {

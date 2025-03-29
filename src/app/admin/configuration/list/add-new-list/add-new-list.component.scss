@@ -1,0 +1,147 @@
+/* Reset and Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Dialog Container */
+  .add-list-dialog {
+    font-family: Arial, sans-serif;
+    color: var(--text-primary);
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  /* Dialog Title */
+  .add-list-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  /* Dialog Content */
+  .add-list-content {
+    padding: 0 0 20px 0;
+  }
+  
+  /* Form */
+  .add-list-form {
+    background-color: var(--background-dark);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  
+  .add-list-form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  
+  .add-list-form-field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .add-list-label {
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+  
+  .add-list-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    font-size: 0.9rem;
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    transition: all 0.2s ease;
+  }
+  
+  .add-list-input:focus {
+    border-color: var(--custom-color);
+    outline: none;
+  }
+  
+  .add-list-error {
+    margin-top: 6px;
+    font-size: 0.8rem;
+    color: var(--danger);
+  }
+  
+  /* Form Actions */
+  .add-list-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+  
+  /* Buttons */
+  .add-list-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    color: var(--text-primary);
+    font-weight: 500;
+    white-space: nowrap;
+    min-width: 80px;
+  }
+  
+  .add-list-btn-success {
+    background: linear-gradient(135deg, var(--success), var(--success-hover));
+  }
+  
+  .add-list-btn-success:hover {
+    background: linear-gradient(135deg, var(--success-hover), var(--success));
+  }
+  
+  .add-list-btn-warning {
+    background: linear-gradient(135deg, var(--warning), var(--warning-hover));
+  }
+  
+  .add-list-btn-warning:hover {
+    background: linear-gradient(135deg, var(--warning-hover), var(--warning));
+  }
+  
+  .add-list-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  /* Media Queries */
+  @media (min-width: 576px) {
+    .add-list-form-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 575px) {
+    .add-list-form-actions {
+      flex-direction: column-reverse;
+      gap: 8px;
+    }
+  
+    .add-list-btn {
+      width: 100%;
+    }
+  
+    .add-list-form {
+      padding: 16px;
+    }
+  }
+  
+  

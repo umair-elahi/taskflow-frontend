@@ -1,65 +1,125 @@
-<div class="col-md-12">
-  <div class="box bg-white">
-    <div class="box-header">
-      <h4 class="fw-normal title fs-medium d-inline-block">Application Location</h4>
+<div class="location-container">
+  <div class="location-card">
+    <!-- Card Header -->
+    <div class="location-card-header">
+      <h4 class="location-title">Application Location</h4>
     </div>
-    <div class="box-body">
-      <div class="row">
-        <div class="col-md-3">
-          <div class="form-group">
-            Select Application
-            <ng-select [items]="applications" bindLabel="name" name="applicationId" [(ngModel)]="rptFilter.application"
-              placeholder="Select Application">
-            </ng-select>
-          </div>
+    
+    <!-- Card Body -->
+    <div class="location-card-body">
+      <!-- Filter Form -->
+      <div class="location-form-grid">
+        <div class="location-form-field">
+          <label for="applicationId" class="location-label">Select Application</label>
+          <ng-select 
+            [items]="applications || []" 
+            bindLabel="name" 
+            name="applicationId" 
+            id="applicationId"
+            [(ngModel)]="rptFilter.application"
+            placeholder="Select Application"
+            class="location-select">
+          </ng-select>
         </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            Start Date
-            <input type="date" name="startDate" [(ngModel)]="rptFilter.startDate" class="form-control">
-          </div>
+        
+        <div class="location-form-field">
+          <label for="startDate" class="location-label">Start Date</label>
+          <input 
+            type="date" 
+            id="startDate"
+            name="startDate" 
+            [(ngModel)]="rptFilter.startDate" 
+            class="location-input">
         </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            End Date
-            <input type="date" name="endDate" [(ngModel)]="rptFilter.endDate" class="form-control">
-          </div>
+        
+        <div class="location-form-field">
+          <label for="endDate" class="location-label">End Date</label>
+          <input 
+            type="date" 
+            id="endDate"
+            name="endDate" 
+            [(ngModel)]="rptFilter.endDate" 
+            class="location-input">
         </div>
-        <div class="col-md-3">
-          <button type="submit" class="btn btn-sm btn-success pull-right" (click)="findReport()">
+        
+        <div class="location-form-actions">
+          <button 
+            type="submit" 
+            class="location-btn location-btn-success" 
+            (click)="findReport()">
+            <i class="fas fa-search location-icon-left"></i>
             Find Report
           </button>
         </div>
       </div>
-      <div class="row">
-        <!-- Table -->
-        <section class="data-table">
-          <table class="w-100 mbpx-10 table-strip">
-            <tr>
-              <th>
-                Workflow
-                <i class="fas" (click)="getSortedResults('title')"
-                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-              </th>
-              <th>Action</th>
-            </tr>
-            <tr *ngFor="let tl of items">
-              <td>{{tl.title}}</td>
-              <td>
-                <a class="btn btn-primary" (click)="showMap(tl)">
-                  View In Map
-                  <i class="fas fa-map"></i>
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td class="text-center" *ngIf="items.length == 0" colspan="4">
-                No Location Available
-              </td>
-            </tr>
+      
+      <!-- Table Section -->
+      <div class="location-table-wrapper">
+        <div class="location-table-container">
+          <table class="location-table">
+            <thead class="location-table-head">
+              <tr>
+                <th class="location-th">
+                  Workflow
+                  <i class="fas location-sort-icon" 
+                    (click)="getSortedResults('title')"
+                    [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                </th>
+                <th class="location-th location-th-actions">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Data Rows -->
+              <tr *ngFor="let tl of items || []" class="location-table-row">
+                <td class="location-td" data-label="Workflow">{{tl?.title || 'N/A'}}</td>
+                <td class="location-td location-td-actions" data-label="Action">
+                  <button 
+                    class="location-btn location-btn-primary" 
+                    (click)="showMap(tl)">
+                    <span>View In Map</span>
+                    <i class="fas fa-map location-icon-right"></i>
+                  </button>
+                </td>
+              </tr>
+              
+              <!-- Empty State -->
+              <tr *ngIf="!items || items.length == 0">
+                <td class="location-td-empty" colspan="2">
+                  <div class="location-empty-state">
+                    <i class="fas fa-map-marker-alt location-empty-icon"></i>
+                    <p>No Location Available</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
           </table>
-        </section>
+        </div>
+        
+        <!-- Mobile Data Cards (Alternative to table for very small screens) -->
+        <div class="location-mobile-cards">
+          <div *ngFor="let tl of items || []" class="location-mobile-card">
+            <div class="location-mobile-card-header">
+              <h3 class="location-mobile-card-title">{{tl?.title || 'N/A'}}</h3>
+            </div>
+            <div class="location-mobile-card-body">
+              <button 
+                class="location-btn location-btn-primary location-btn-block" 
+                (click)="showMap(tl)">
+                <span>View In Map</span>
+                <i class="fas fa-map location-icon-right"></i>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Empty State for Mobile Cards -->
+          <div *ngIf="!items || items.length == 0" class="location-mobile-empty">
+            <i class="fas fa-map-marker-alt location-empty-icon"></i>
+            <p>No Location Available</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+  </div>
+  
+  

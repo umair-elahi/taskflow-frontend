@@ -1,228 +1,432 @@
-<div class="col-md-12">
-  <div class="box bg-white">
-    <div class="box-header">
-      <h4 class="fw-normal title fs-medium d-inline-block">My Items</h4>
+<div class="dashboard-container">
+  <!-- My Items Section -->
+  <div class="dashboard-card">
+    <div class="dashboard-card-header">
+      <h4 class="dashboard-title">My Items</h4>
     </div>
-    <div class="box-body">
-      <div class="row">
-        <!-- Table -->
-        <section class="data-table">
-          <div class="mtpx-40 hidden-sm-up"></div>
-          <table class="w-100 mbpx-10 table-strip">
-            <tr>
-              <th>
-                App Name
-                <i class="fas" (click)="getSortedResults('applicationName')"
-                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-              </th>
-              <th>Draft
-                <i class="fas" (click)="getSortedResults('draft')"
-                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-              </th>
-              <th>In Progress
-                <i class="fas" (click)="getSortedResults('inProgress')"
-                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-              </th>
-              <th>Completed
-                <i class="fas" (click)="getSortedResults('completed')"
-                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-              </th>
-              <th>Rejected
-                <i class="fas" (click)="getSortedResults('rejected')"
-                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-              </th>
-              <th>Withdraw
-                <i class="fas" (click)="getSortedResults('withdraw')"
-                  [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
-              </th>
-            </tr>
-            <tr class="table-footer">
-              <td colspan="5">
-                <input type="text" class="form-control" name="firstname" placeholder="Search By App Name"
-                  [(ngModel)]="filters.searchArray[0].value">
-              </td>
-              <td>
-                <button class="btn btn-primary" *ngIf="myItems && myItems.length"
-                  (click)="printMyItemReport()">Print</button>
-              </td>
-            </tr>
-            <tr
-              *ngFor="let item of myItems | filter:{filtrationKeys: ['applicationName'], filtrationValues: [filters.searchArray[0].value]}">
-              <td>{{item.applicationName}}</td>
-              <td>
-                <span class="item-click" (click)="gotoDetail('draft', item.applicationId, item.draft)">
-                  {{item.draft}}</span>
-              </td>
-              <td>
-                <span class="item-click" (click)="gotoDetail('draft', item.applicationId, item.inProgress)">
-                  {{item.inProgress}}</span>
-              </td>
-              <td>
-                <span class="item-click" (click)="gotoDetail('approved', item.applicationId, item.completed)">
-                  {{item.completed}}</span>
-              </td>
-              <td>
-                <span class="item-click" (click)="gotoDetail('rejected', item.applicationId, item.rejected)">
-                  {{item.rejected}}</span>
-              </td>
-              <td>
-                <span class="item-click" (click)="gotoDetail('withdraw', item.applicationId, item.withdraw)">
-                  {{item.withdraw}}</span>
-              </td>
-            </tr>
-            <tr>
-              <td class="text-center" *ngIf="myItems.length == 0" colspan="6">
-                No My Items Available
-              </td>
-            </tr>
-          </table>
-          <div class="col-lg-6 col-md-12">
-            <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()"
-              aria-controls="example-datatable" class="form-control">
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">30</option>
-              <option value="-1">All</option>
-            </select>
+    <div class="dashboard-card-body">
+      <!-- Table Section -->
+      <div class="dashboard-table-wrapper">
+        <!-- Search Bar (Mobile) -->
+        <div class="dashboard-search-mobile">
+          <div class="dashboard-search-container">
+            <i class="fas fa-search dashboard-search-icon"></i>
+            <input type="text" class="dashboard-input" name="searchMobile" placeholder="Search By App Name" [(ngModel)]="filters.searchArray[0].value">
+          </div>
+        </div>
 
-            <p class="mtpx-10 text-sm-center paging-size-info">
-              Showing
-              <strong>{{filters.pageNo}}</strong> -
-              <strong>{{filters.noOfPages > 0 ? filters.noOfPages : 1}}</strong> of
-              <strong>{{totalRecords}}</strong>
+        <!-- Table -->
+        <div class="dashboard-table-container">
+          <table class="dashboard-table">
+            <thead class="dashboard-table-head">
+              <tr>
+                <th class="dashboard-th">
+                  App Name
+                  <i class="fas dashboard-sort-icon" (click)="getSortedResults('applicationName')"
+                    [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                </th>
+                <th class="dashboard-th">
+                  Draft
+                  <i class="fas dashboard-sort-icon" (click)="getSortedResults('draft')"
+                    [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                </th>
+                <th class="dashboard-th">
+                  In Progress
+                  <i class="fas dashboard-sort-icon" (click)="getSortedResults('inProgress')"
+                    [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                </th>
+                <th class="dashboard-th">
+                  Completed
+                  <i class="fas dashboard-sort-icon" (click)="getSortedResults('completed')"
+                    [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                </th>
+                <th class="dashboard-th">
+                  Rejected
+                  <i class="fas dashboard-sort-icon" (click)="getSortedResults('rejected')"
+                    [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                </th>
+                <th class="dashboard-th">
+                  Withdraw
+                  <i class="fas dashboard-sort-icon" (click)="getSortedResults('withdraw')"
+                    [ngClass]="{'fa-sort-amount-up': filters.sortOrder == 'desc','fa-sort-amount-down': filters.sortOrder == 'asc'}"></i>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Search Row (Desktop) -->
+              <tr class="dashboard-table-search dashboard-hide-sm">
+                <td colspan="5">
+                  <div class="dashboard-search-container">
+                    <i class="fas fa-search dashboard-search-icon"></i>
+                    <input type="text" class="dashboard-input" name="firstname" placeholder="Search By App Name" [(ngModel)]="filters.searchArray[0].value">
+                  </div>
+                </td>
+                <td>
+                  <button class="dashboard-btn dashboard-btn-primary" *ngIf="myItems && myItems.length" (click)="printMyItemReport()">
+                    <i class="fas fa-print dashboard-btn-icon"></i>
+                    Print
+                  </button>
+                </td>
+              </tr>
+              
+              <!-- Data Rows -->
+              <tr *ngFor="let item of myItems | filter:{filtrationKeys: ['applicationName'], filtrationValues: [filters.searchArray[0].value]}" class="dashboard-table-row">
+                <td class="dashboard-td dashboard-td-name" data-label="App Name">{{ item.applicationName }}</td>
+                <td class="dashboard-td dashboard-td-count" data-label="Draft">
+                  <span class="dashboard-item-click" (click)="gotoDetail('draft', item.applicationId, item.draft)">
+                    {{ item.draft }}
+                  </span>
+                </td>
+                <td class="dashboard-td dashboard-td-count" data-label="In Progress">
+                  <span class="dashboard-item-click" (click)="gotoDetail('draft', item.applicationId, item.inProgress)">
+                    {{ item.inProgress }}
+                  </span>
+                </td>
+                <td class="dashboard-td dashboard-td-count" data-label="Completed">
+                  <span class="dashboard-item-click" (click)="gotoDetail('approved', item.applicationId, item.completed)">
+                    {{ item.completed }}
+                  </span>
+                </td>
+                <td class="dashboard-td dashboard-td-count" data-label="Rejected">
+                  <span class="dashboard-item-click" (click)="gotoDetail('rejected', item.applicationId, item.rejected)">
+                    {{ item.rejected }}
+                  </span>
+                </td>
+                <td class="dashboard-td dashboard-td-count" data-label="Withdraw">
+                  <span class="dashboard-item-click" (click)="gotoDetail('withdraw', item.applicationId, item.withdraw)">
+                    {{ item.withdraw }}
+                  </span>
+                </td>
+              </tr>
+              
+              <!-- Empty State -->
+              <tr *ngIf="myItems.length == 0">
+                <td class="dashboard-td-empty" colspan="6">
+                  <div class="dashboard-empty-state">
+                    <i class="fas fa-folder-open dashboard-empty-icon"></i>
+                    <p>No My Items Available</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile Data Cards (Alternative to table for very small screens) -->
+        <div class="dashboard-mobile-cards">
+          <div *ngFor="let item of myItems | filter:{filtrationKeys: ['applicationName'], filtrationValues: [filters.searchArray[0].value]}" class="dashboard-mobile-card">
+            <div class="dashboard-mobile-card-header">
+              <h3 class="dashboard-mobile-card-title">{{ item.applicationName }}</h3>
+            </div>
+            <div class="dashboard-mobile-card-body">
+              <div class="dashboard-mobile-stat">
+                <span class="dashboard-mobile-label">Draft:</span>
+                <span class="dashboard-item-click" (click)="gotoDetail('draft', item.applicationId, item.draft)">
+                  {{ item.draft }}
+                </span>
+              </div>
+              <div class="dashboard-mobile-stat">
+                <span class="dashboard-mobile-label">In Progress:</span>
+                <span class="dashboard-item-click" (click)="gotoDetail('draft', item.applicationId, item.inProgress)">
+                  {{ item.inProgress }}
+                </span>
+              </div>
+              <div class="dashboard-mobile-stat">
+                <span class="dashboard-mobile-label">Completed:</span>
+                <span class="dashboard-item-click" (click)="gotoDetail('approved', item.applicationId, item.completed)">
+                  {{ item.completed }}
+                </span>
+              </div>
+              <div class="dashboard-mobile-stat">
+                <span class="dashboard-mobile-label">Rejected:</span>
+                <span class="dashboard-item-click" (click)="gotoDetail('rejected', item.applicationId, item.rejected)">
+                  {{ item.rejected }}
+                </span>
+              </div>
+              <div class="dashboard-mobile-stat">
+                <span class="dashboard-mobile-label">Withdraw:</span>
+                <span class="dashboard-item-click" (click)="gotoDetail('withdraw', item.applicationId, item.withdraw)">
+                  {{ item.withdraw }}
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Empty State for Mobile Cards -->
+          <div *ngIf="myItems.length == 0" class="dashboard-mobile-empty">
+            <i class="fas fa-folder-open dashboard-empty-icon"></i>
+            <p>No My Items Available</p>
+          </div>
+          
+          <!-- Print Button for Mobile -->
+          <div class="dashboard-mobile-actions" *ngIf="myItems && myItems.length">
+            <button class="dashboard-btn dashboard-btn-primary" (click)="printMyItemReport()">
+              <i class="fas fa-print dashboard-btn-icon"></i>
+              Print
+            </button>
+          </div>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="dashboard-pagination-container">
+          <div class="dashboard-page-size">
+            <div class="dashboard-select-wrapper">
+              <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()" class="dashboard-select-sm">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="-1">All</option>
+              </select>
+              <span class="dashboard-select-icon">
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </div>
+            <p class="dashboard-paging-info">
+              Showing <strong>{{ filters.pageNo }}</strong> - 
+              <strong>{{ filters.noOfPages > 0 ? filters.noOfPages : 1 }}</strong> of 
+              <strong>{{ totalRecords }}</strong>
             </p>
           </div>
-
-          <div class="col-lg-6 col-md-12">
-            <ul class="pagination ta-right text-md-left unstyled">
-              <li class="prev" (click)="filters.pageNo == '1' && goToPrevious()">
-                Previous
+          <div class="dashboard-pagination">
+            <ul class="dashboard-pagination-list">
+              <li class="dashboard-pagination-item dashboard-pagination-prev" 
+                  [class.dashboard-pagination-disabled]="filters.pageNo == '1'" 
+                  (click)="filters.pageNo != '1' && goToPrevious()">
+                <i class="fas fa-chevron-left"></i>
+                <span class="dashboard-pagination-text">Previous</span>
               </li>
-              <li *ngFor="let item of range" [ngClass]="filters.pageNo == (item + 1) ? 'active-page' : ''"
-                (click)="goToPage(item)">
-                {{item + 1}}
+              <li *ngFor="let item of range" 
+                  class="dashboard-pagination-item" 
+                  [class.dashboard-pagination-active]="filters.pageNo == (item + 1)" 
+                  (click)="goToPage(item)">
+                {{ item + 1 }}
               </li>
-              <li class="next" (click)="filters.pageNo == (range[range.length - 1] + 1) && goToNext()">
-                Next
+              <li class="dashboard-pagination-item dashboard-pagination-next" 
+                  [class.dashboard-pagination-disabled]="filters.pageNo == (range[range.length - 1] + 1)" 
+                  (click)="filters.pageNo != (range[range.length - 1] + 1) && goToNext()">
+                <span class="dashboard-pagination-text">Next</span>
+                <i class="fas fa-chevron-right"></i>
               </li>
             </ul>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   </div>
-  <div class="box bg-white">
-    <div class="box-header">
-      <h4 class="fw-normal title fs-medium d-inline-block">Tasks I Worked On</h4>
-    </div>
-    <div class="box-body">
-      <div class="row">
-        <!-- Table -->
-        <section class="data-table">
-          <div class="mtpx-40 hidden-sm-up"></div>
-          <table class="w-100 mbpx-10 table-strip">
-            <tr>
-              <th>
-                App Name
-                <i class="fas" (click)="getParticipatedSortedResults('applicationName')"
-                  [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
-              </th>
-              <th>Draft
-                <i class="fas" (click)="getParticipatedSortedResults('draft')"
-                  [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
-              </th>
-              <th>In Progress
-                <i class="fas" (click)="getParticipatedSortedResults('inProgress')"
-                  [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
-              </th>
-              <th>Completed
-                <i class="fas" (click)="getParticipatedSortedResults('completed')"
-                  [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
-              </th>
-              <th>Rejected
-                <i class="fas" (click)="getParticipatedSortedResults('rejected')"
-                  [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
-              </th>
-              <th>Withdraw
-                <i class="fas" (click)="getParticipatedSortedResults('withdraw')"
-                  [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
-              </th>
-            </tr>
-            <tr class="table-footer">
-              <td colspan="5">
-                <input type="text" class="form-control" name="firstname" placeholder="Search By App Name"
-                  [(ngModel)]="filters.searchArray[0].value">
-              </td>
-              <td>
-                <button class="btn btn-primary" *ngIf="participatedItems && participatedItems.length"
-                  (click)="printTaskIWorkReport()">Print</button>
-              </td>
-            </tr>
-            <tr
-              *ngFor="let item of participatedItems | filter:{filtrationKeys: ['applicationName'], filtrationValues: [filters.searchArray[0].value]}">
-              <td>{{item.applicationName}}</td>
-              <td>
-                <span class="item-click" (click)="gotoDetail('draft', item.applicationId, item.draft)">
-                  {{item.draft}}</span>
-              </td>
-              <td>
-                <span class="item-click" (click)="gotoDetail('draft', item.applicationId, item.inProgress)">
-                  {{item.inProgress}}</span>
-              </td>
-              <td>
-                <span class="item-click" (click)="gotoDetail('approved', item.applicationId, item.completed)">
-                  {{item.completed}}</span>
-              </td>
-              <td>
-                <span class="item-click" (click)="gotoDetail('rejected', item.applicationId, item.rejected)">
-                  {{item.rejected}}</span>
-              </td>
-              <td>
-                <span class="item-click" (click)="gotoDetail('withdraw', item.applicationId, item.withdraw)">
-                  {{item.withdraw}}</span>
-              </td>
-            </tr>
-            <tr>
-              <td class="text-center" *ngIf="participatedItems.length == 0" colspan="6">
-                No Participated Items Available
-              </td>
-            </tr>
-          </table>
-          <div class="col-lg-6 col-md-12">
-            <select name="example-datatable_length" [(ngModel)]="participatedFilter.noOfPages"
-              (change)="getPaginatedDataParticipated()" aria-controls="example-datatable" class="form-control">
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">30</option>
-              <option value="-1">All</option>
-            </select>
 
-            <p class="mtpx-10 text-sm-center paging-size-info">
-              Showing
-              <strong>{{participatedFilter.pageNo}}</strong> -
-              <strong>{{participatedFilter.noOfPages > 0 ? participatedFilter.noOfPages : 1}}</strong> of
-              <strong>{{totalRecordsParticipated}}</strong>
+  <!-- Tasks I Worked On Section -->
+  <div class="dashboard-card">
+    <div class="dashboard-card-header">
+      <h4 class="dashboard-title">Tasks I Worked On</h4>
+    </div>
+    <div class="dashboard-card-body">
+      <!-- Table Section -->
+      <div class="dashboard-table-wrapper">
+        <!-- Search Bar (Mobile) -->
+        <div class="dashboard-search-mobile">
+          <div class="dashboard-search-container">
+            <i class="fas fa-search dashboard-search-icon"></i>
+            <input type="text" class="dashboard-input" name="searchMobile" placeholder="Search By App Name" [(ngModel)]="filters.searchArray[0].value">
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="dashboard-table-container">
+          <table class="dashboard-table">
+            <thead class="dashboard-table-head">
+              <tr>
+                <th class="dashboard-th">
+                  App Name
+                  <i class="fas dashboard-sort-icon" (click)="getParticipatedSortedResults('applicationName')"
+                    [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
+                </th>
+                <th class="dashboard-th">
+                  Draft
+                  <i class="fas dashboard-sort-icon" (click)="getParticipatedSortedResults('draft')"
+                    [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
+                </th>
+                <th class="dashboard-th">
+                  In Progress
+                  <i class="fas dashboard-sort-icon" (click)="getParticipatedSortedResults('inProgress')"
+                    [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
+                </th>
+                <th class="dashboard-th">
+                  Completed
+                  <i class="fas dashboard-sort-icon" (click)="getParticipatedSortedResults('completed')"
+                    [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
+                </th>
+                <th class="dashboard-th">
+                  Rejected
+                  <i class="fas dashboard-sort-icon" (click)="getParticipatedSortedResults('rejected')"
+                    [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
+                </th>
+                <th class="dashboard-th">
+                  Withdraw
+                  <i class="fas dashboard-sort-icon" (click)="getParticipatedSortedResults('withdraw')"
+                    [ngClass]="{'fa-sort-amount-up': participatedFilter.sortOrder == 'desc','fa-sort-amount-down': participatedFilter.sortOrder == 'asc'}"></i>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Search Row (Desktop) -->
+              <tr class="dashboard-table-search dashboard-hide-sm">
+                <td colspan="5">
+                  <div class="dashboard-search-container">
+                    <i class="fas fa-search dashboard-search-icon"></i>
+                    <input type="text" class="dashboard-input" name="firstname" placeholder="Search By App Name" [(ngModel)]="filters.searchArray[0].value">
+                  </div>
+                </td>
+                <td>
+                  <button class="dashboard-btn dashboard-btn-primary" *ngIf="participatedItems && participatedItems.length" (click)="printTaskIWorkReport()">
+                    <i class="fas fa-print dashboard-btn-icon"></i>
+                    Print
+                  </button>
+                </td>
+              </tr>
+              
+              <!-- Data Rows -->
+              <tr *ngFor="let item of participatedItems | filter:{filtrationKeys: ['applicationName'], filtrationValues: [filters.searchArray[0].value]}" class="dashboard-table-row">
+                <td class="dashboard-td dashboard-td-name" data-label="App Name">{{ item.applicationName }}</td>
+                <td class="dashboard-td dashboard-td-count" data-label="Draft">
+                  <span class="dashboard-item-click" (click)="gotoDetail('draft', item.applicationId, item.draft)">
+                    {{ item.draft }}
+                  </span>
+                </td>
+                <td class="dashboard-td dashboard-td-count" data-label="In Progress">
+                  <span class="dashboard-item-click" (click)="gotoDetail('draft', item.applicationId, item.inProgress)">
+                    {{ item.inProgress }}
+                  </span>
+                </td>
+                <td class="dashboard-td dashboard-td-count" data-label="Completed">
+                  <span class="dashboard-item-click" (click)="gotoDetail('approved', item.applicationId, item.completed)">
+                    {{ item.completed }}
+                  </span>
+                </td>
+                <td class="dashboard-td dashboard-td-count" data-label="Rejected">
+                  <span class="dashboard-item-click" (click)="gotoDetail('rejected', item.applicationId, item.rejected)">
+                    {{ item.rejected }}
+                  </span>
+                </td>
+                <td class="dashboard-td dashboard-td-count" data-label="Withdraw">
+                  <span class="dashboard-item-click" (click)="gotoDetail('withdraw', item.applicationId, item.withdraw)">
+                    {{ item.withdraw }}
+                  </span>
+                </td>
+              </tr>
+              
+              <!-- Empty State -->
+              <tr *ngIf="participatedItems.length == 0">
+                <td class="dashboard-td-empty" colspan="6">
+                  <div class="dashboard-empty-state">
+                    <i class="fas fa-folder-open dashboard-empty-icon"></i>
+                    <p>No Participated Items Available</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile Data Cards (Alternative to table for very small screens) -->
+        <div class="dashboard-mobile-cards">
+          <div *ngFor="let item of participatedItems | filter:{filtrationKeys: ['applicationName'], filtrationValues: [filters.searchArray[0].value]}" class="dashboard-mobile-card">
+            <div class="dashboard-mobile-card-header">
+              <h3 class="dashboard-mobile-card-title">{{ item.applicationName }}</h3>
+            </div>
+            <div class="dashboard-mobile-card-body">
+              <div class="dashboard-mobile-stat">
+                <span class="dashboard-mobile-label">Draft:</span>
+                <span class="dashboard-item-click" (click)="gotoDetail('draft', item.applicationId, item.draft)">
+                  {{ item.draft }}
+                </span>
+              </div>
+              <div class="dashboard-mobile-stat">
+                <span class="dashboard-mobile-label">In Progress:</span>
+                <span class="dashboard-item-click" (click)="gotoDetail('draft', item.applicationId, item.inProgress)">
+                  {{ item.inProgress }}
+                </span>
+              </div>
+              <div class="dashboard-mobile-stat">
+                <span class="dashboard-mobile-label">Completed:</span>
+                <span class="dashboard-item-click" (click)="gotoDetail('approved', item.applicationId, item.completed)">
+                  {{ item.completed }}
+                </span>
+              </div>
+              <div class="dashboard-mobile-stat">
+                <span class="dashboard-mobile-label">Rejected:</span>
+                <span class="dashboard-item-click" (click)="gotoDetail('rejected', item.applicationId, item.rejected)">
+                  {{ item.rejected }}
+                </span>
+              </div>
+              <div class="dashboard-mobile-stat">
+                <span class="dashboard-mobile-label">Withdraw:</span>
+                <span class="dashboard-item-click" (click)="gotoDetail('withdraw', item.applicationId, item.withdraw)">
+                  {{ item.withdraw }}
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Empty State for Mobile Cards -->
+          <div *ngIf="participatedItems.length == 0" class="dashboard-mobile-empty">
+            <i class="fas fa-folder-open dashboard-empty-icon"></i>
+            <p>No Participated Items Available</p>
+          </div>
+          
+          <!-- Print Button for Mobile -->
+          <div class="dashboard-mobile-actions" *ngIf="participatedItems && participatedItems.length">
+            <button class="dashboard-btn dashboard-btn-primary" (click)="printTaskIWorkReport()">
+              <i class="fas fa-print dashboard-btn-icon"></i>
+              Print
+            </button>
+          </div>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="dashboard-pagination-container">
+          <div class="dashboard-page-size">
+            <div class="dashboard-select-wrapper">
+              <select name="example-datatable_length" [(ngModel)]="participatedFilter.noOfPages" (change)="getPaginatedDataParticipated()" class="dashboard-select-sm">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="-1">All</option>
+              </select>
+              <span class="dashboard-select-icon">
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </div>
+            <p class="dashboard-paging-info">
+              Showing <strong>{{ participatedFilter.pageNo }}</strong> - 
+              <strong>{{ participatedFilter.noOfPages > 0 ? participatedFilter.noOfPages : 1 }}</strong> of 
+              <strong>{{ totalRecordsParticipated }}</strong>
             </p>
           </div>
-
-          <div class="col-lg-6 col-md-12">
-            <ul class="pagination ta-right text-md-left unstyled">
-              <li class="prev" (click)="participatedFilter.pageNo == '1' && goToPreviousParticipated()">
-                Previous
+          <div class="dashboard-pagination">
+            <ul class="dashboard-pagination-list">
+              <li class="dashboard-pagination-item dashboard-pagination-prev" 
+                  [class.dashboard-pagination-disabled]="participatedFilter.pageNo == '1'" 
+                  (click)="participatedFilter.pageNo != '1' && goToPreviousParticipated()">
+                <i class="fas fa-chevron-left"></i>
+                <span class="dashboard-pagination-text">Previous</span>
               </li>
-              <li *ngFor="let item of rangeParticipated"
-                [ngClass]="participatedFilter.pageNo == (item + 1) ? 'active-page' : ''"
-                (click)="goToPageParticipated(item)">
-                {{item + 1}}
+              <li *ngFor="let item of rangeParticipated" 
+                  class="dashboard-pagination-item" 
+                  [class.dashboard-pagination-active]="participatedFilter.pageNo == (item + 1)" 
+                  (click)="goToPageParticipated(item)">
+                {{ item + 1 }}
               </li>
-              <li class="next"
-                (click)="participatedFilter.pageNo == (rangeParticipated[rangeParticipated.length - 1] + 1) && goToNextParticipated()">
-                Next
+              <li class="dashboard-pagination-item dashboard-pagination-next" 
+                  [class.dashboard-pagination-disabled]="participatedFilter.pageNo == (rangeParticipated[rangeParticipated.length - 1] + 1)" 
+                  (click)="participatedFilter.pageNo != (rangeParticipated[rangeParticipated.length - 1] + 1) && goToNextParticipated()">
+                <span class="dashboard-pagination-text">Next</span>
+                <i class="fas fa-chevron-right"></i>
               </li>
             </ul>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   </div>
 </div>
+

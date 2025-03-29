@@ -1,23 +1,23 @@
-<nav class="sidemenu-nav relative-block">
-    <!-- <div class="logo">
-      <img src="../../../../assets/images/Task_Flow__1_-removebg-preview.png" alt="Logo" class="m-auto">
-    </div> -->
-    <div class="profile-img sec-padding --xsmall">
-      <img src="{{ user.pictureUrl || '../../../../../../assets/images/man.png' }}" alt="Profile Image">
-      <div class="clicknone">
-        <p class="fs-small mtpx-5">{{ user.firstName + ' ' + user.lastName }}</p>
-        <p class="fs-xsmall">{{ user.role }}</p>
-      </div>
-    </div>
-    <ul class="unstyled ripple">
-      <li *ngFor="let menu of menus" [ngClass]="{ 'active': title === menu.Name }">
-        <a [routerLink]="menu.Link" (click)="goTo(menu)">
-          <i class="fas {{ menu.Icon }} pr-5"></i>
-          <span class="clicknone">{{ menu.Name }}</span>
-          <span class="execution-count">{{ taskCount }}</span>
-
+<section class="side-menu" [class.hidden]="!isVisible">
+  <div class="user-bio">
+    <img src="{{ user.pictureUrl || '../../../../../../assets/images/man.png' }}" alt="Profile Image">
+    <p>{{ user.firstName + ' ' + user.lastName }}</p>
+    <button class="close-button" (click)="toggleSidebar()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="primary-menu">
+    <ul>
+      <li *ngFor="let menu of menus">
+        <a 
+          [routerLink]="menu.Link" 
+          routerLinkActive="active" 
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="goTo(menu)">
+          <i class="fas {{ menu.Icon }}"></i>
+          <span>{{ menu.Name }}</span>
         </a>
       </li>
     </ul>
-  </nav>
-  
+  </div>
+</section>

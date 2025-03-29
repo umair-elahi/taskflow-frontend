@@ -1,43 +1,38 @@
-<h1 mat-dialog-title>Add New List</h1>
-<div mat-dialog-content>
-  <form name="listForm" [formGroup]="listForm" *ngIf="isFormBinded" novalidate id="form-test"
-    class="form-horizontal form-bordered form-control-borderless">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <div class="col-xs-12">
-            Name
-            <input type="text" formControlName="name" name="name" class="form-control">
-            <p class="custom-error" *ngIf="listForm.get('name').hasError('required') && listForm.get('name').touched">
-              Name is required.
-            </p>
-          </div>
+<div class="add-list-dialog">
+  <h1 class="add-list-title">Add New List</h1>
+  
+  <div class="add-list-content">
+    <form name="listForm" [formGroup]="listForm" *ngIf="isFormBinded" novalidate id="form-test" class="add-list-form">
+      <div class="add-list-form-grid">
+        <!-- Name Field -->
+        <div class="add-list-form-field">
+          <label for="name" class="add-list-label">Name</label>
+          <input type="text" id="name" formControlName="name" name="name" class="add-list-input">
+          <p class="add-list-error" *ngIf="listForm.get('name').hasError('required') && listForm.get('name').touched">
+            Name is required.
+          </p>
+        </div>
+
+        <!-- Type Field -->
+        <div class="add-list-form-field">
+          <label for="type" class="add-list-label">Type</label>
+          <input type="text" id="type" formControlName="type" name="type" class="add-list-input">
+          <p class="add-list-error" *ngIf="listForm.get('type').hasError('required') && listForm.get('type').touched">
+            Type is required.
+          </p>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <div class="col-xs-12">
-            Type
-            <input type="text" formControlName="type" name="type" class="form-control">
-            <p class="custom-error" *ngIf="listForm.get('type').hasError('required') && listForm.get('type').touched">
-              Type is required.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <br />
-        <button type="submit" class="btn btn-sm btn-success pull-right" [disabled]="listForm.invalid" (click)="save()">
+
+      <!-- Form Actions -->
+      <div class="add-list-form-actions">
+        <button type="button" class="add-list-btn add-list-btn-warning" (click)="isFormBinded=false; onNoClick()">
+          Cancel
+        </button>
+        <button type="submit" class="add-list-btn add-list-btn-success" [disabled]="listForm.invalid" (click)="save()">
           Save
         </button>
-        <a type="reset" (click)="isFormBinded=false;" class="btn btn-sm btn-warning pull-right" (click)="onNoClick()"
-          cdkFocusInitial>
-          Cancel </a>
       </div>
-    </div>
-    <br>
-    <br>
-  </form>
+    </form>
+  </div>
 </div>
+

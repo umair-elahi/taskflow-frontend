@@ -1,34 +1,115 @@
-.card-box {
-  background: #700000;
-  text-align: left;
+/* Card Container */
+.card-container {
+  max-width: 400px;
+  width: 100%;
+  margin: 2rem auto;  /* Centered horizontally with vertical spacing */
+  background: var(--background-light-dark);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Create New App Link styled as card header */
+.create-link {
+  display: block;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, var(--custom-color), #ff6b6b);
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.create-link:hover {
+  background: linear-gradient(135deg, #ff6b6b, var(--custom-color));
+  transform: scale(1.02);
+}
+
+/* Process List */
+.process-list {
+  list-style: none;
+  margin: 0;
   padding: 0;
-  .cardContainer {
-    height: 160px;
-    position: relative;
-    padding: 20px;
-    color: #fff;
-    a {
-      font-size: 1.2rem;
-      font-weight: 500;
-      letter-spacing: 0.2px;
-      color: #fff;
-      cursor: pointer;
-    }
-    .processList {
-      padding: 10px 18px;
-      .processListItem {
-        padding-bottom: 10px;
-        list-style-type: disc;
-        color: #fff;
-        cursor: pointer;
-      }
-    }
+  background: var(--background-light-dark);
+}
+.process-list-item {
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.process-list-item:last-child {
+  border-bottom: none;
+}
+.process-list-item:hover {
+  background: var(--background-hover);
+}
+
+/* Card Footer */
+.card-footer {
+  padding: 1rem 1.5rem;
+  background: var(--background-dark);
+  text-align: center;
+}
+.card-button {
+  background: var(--primary);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.card-button:hover {
+  background: var(--primary-hover);
+  transform: scale(1.02);
+}
+
+/* Responsive Adjustments */
+
+/* For devices up to 768px */
+@media (max-width: 768px) {
+  .card-container {
+    margin: 1.5rem auto;
+    max-width: 90%;
   }
+  .create-link,
   .card-footer {
-    display: block;
-    width: 100%;
-    height: 62px;
-    padding: 5px;
-    background: white;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+  .process-list-item {
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+  }
+  .card-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* For devices up to 480px */
+@media (max-width: 480px) {
+  .card-container {
+    margin: 1rem auto;
+    max-width: 95%;
+  }
+  .create-link,
+  .card-footer {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+  }
+  .process-list-item {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+  .card-button {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.9rem;
   }
 }

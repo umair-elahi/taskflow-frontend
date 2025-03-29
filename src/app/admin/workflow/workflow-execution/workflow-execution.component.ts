@@ -15,6 +15,7 @@ import { FileUploadService } from '../../helper/services/file-upload.service';
 import { environment } from 'src/environments/environment';
 import { MenuCountsService } from '../../helper/services/menu-counts.service';
 import { IUserModel } from '../../configuration/user/IUserModel';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-workflow-execution',
@@ -52,6 +53,9 @@ export class WorkflowExecutionComponent implements OnInit {
   ];
   // FILE RESTRICTION ADDITIONS END
 
+  showModal = false;
+  sanitizedPreviewUrl: SafeResourceUrl = '';
+
   constructor(
     private fb: FormBuilder,
     private workflowService: WorkflowService,
@@ -64,6 +68,7 @@ export class WorkflowExecutionComponent implements OnInit {
     private configurationService: ConfigurationService,
     private spinner: SpinnerService,
     private fileUploadService: FileUploadService,
+    private sanitizer: DomSanitizer,
     private menuCountsService: MenuCountsService
   ) { }
 
@@ -77,6 +82,24 @@ export class WorkflowExecutionComponent implements OnInit {
       await this.getExecutionDetails();
     }
     await this.getApplication();
+  }
+
+  openModal(event: Event, fileLink: string) {
+    event.preventDefault(); // Prevent the default link behavior
+    
+    // Disable background scrolling
+    document.body.style.overflow = 'hidden';
+  
+    // Sanitize the file URL (if needed, you can build the URL similar to your getLink() method)
+    this.sanitizedPreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileLink);
+  
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
+    this.sanitizedPreviewUrl = '';
+    document.body.style.overflow = 'auto'; // Re-enable background scrolling
   }
 
   getLocation() {

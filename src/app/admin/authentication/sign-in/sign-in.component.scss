@@ -1,5 +1,347 @@
-.img-login-logo {
+/****************************************************
+ * Overall Layout
+ ****************************************************/
+ .login-container {
+  display: flex;
+  height: 100vh; // Full screen
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-primary);
+  background-color: var(--background-dark);
+
+  /* Responsive: stack vertically on smaller screens */
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: auto;
+  }
+}
+
+/****************************************************
+ * Left Panel (Blobs, Particles, Mouse Follower)
+ ****************************************************/
+.login-left-panel {
+  position: relative;
+  width: 50%;
+  /* Subtle gradient from a lighter top-left to a darker bottom-right */
+  background: linear-gradient(135deg, var(--background-light-dark) 0%, var(--background-light-dark) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  height: 95%;
+  align-self: center;
+  border-radius: 10px;
+  margin-left: 1.5rem;
+  border: 1px solid var(--border-color);
+
+  @media (max-width: 768px) {
+    width: 95%;
+    height: 150px; // a bit taller for small screens
+    margin: 0 auto;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .welcome-text {
+    position: relative;
+    z-index: 10; // above shapes
+    text-align: center;
+    color: var(--text-primary);
+
+    h2 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 400;
+    }
+
+    h1 {
+      color: var(--custom-color);
+      font-size: 1rem;
+    }
+  }
+}
+
+/****************************************************
+ * Animated Background (Blobs, Particles)
+ ****************************************************/
+.animated-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Add a grid pattern overlay */
+.login-left-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(rgba(30, 30, 30, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 30, 30, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  z-index: 999;
+}
+
+/* Blob Shapes */
+.blob-shape {
+  position: absolute;
+  background: var(--custom-color); // or a gradient if desired
+  opacity: 0.12;
+  animation: blobAnimation 10s infinite ease-in-out alternate;
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+
+  /* Adjust size/positions for a balanced look */
+  &.shape-1 {
+    width: 320px;
+    height: 320px;
+    top: -80px;
+    left: -80px;
+    animation-delay: 0s;
+  }
+  &.shape-2 {
+    width: 230px;
+    height: 230px;
+    top: 50%;
+    left: 30%;
+    transform: translateY(-50%);
+    animation-delay: 2s;
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+  &.shape-3 {
+    width: 350px;
+    height: 350px;
+    bottom: -100px;
+    right: -100px;
+    animation-delay: 4s;
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+}
+
+@keyframes blobAnimation {
+  0% {
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  }
+  25% {
+    border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%;
+  }
+  50% {
+    border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%;
+  }
+  75% {
+    border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%;
+  }
+  100% {
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  }
+}
+
+/****************************************************
+ * Floating Particles (Small Balls)
+ ****************************************************/
+.particles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--custom-color);
+  animation: floatParticle 4s infinite ease-in-out alternate;
+  opacity: 0.5;
+
+  /* Placed to give a scattered, balanced look */
+  &.p-1 {
+    top: 15%;
+    left: 25%;
+    animation-delay: 0s;
+  }
+  &.p-2 {
+    top: 35%;
+    left: 70%;
+    animation-delay: 0.5s;
+  }
+  &.p-3 {
+    top: 55%;
+    left: 40%;
+    animation-delay: 1s;
+  }
+  &.p-4 {
+    top: 10%;
+    left: 80%;
+    animation-delay: 1.5s;
+  }
+  &.p-5 {
+    top: 85%;
+    left: 15%;
+    animation-delay: 2s;
+  }
+  &.p-6 {
+    top: 60%;
+    left: 60%;
+    animation-delay: 2.5s;
+  }
+  &.p-7 {
+    top: 70%;
+    left: 80%;
+    animation-delay: 3s;
+  }
+  &.p-8 {
+    top: 25%;
+    left: 10%;
+    animation-delay: 3.5s;
+  }
+}
+
+@keyframes floatParticle {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-15px) translateX(10px);
+  }
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+}
+
+/****************************************************
+ * Mouse Follower (Rainbow Gradient)
+ ****************************************************/
+.mouse-follower {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle, rgba(255, 59, 59, 0.7) 10%, rgba(255, 59, 59, 0) 80%);
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow: 0 0 20px var(--custom-color);
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease-out, opacity 0.3s ease-out;
+  opacity: 0;
+}
+
+
+/****************************************************
+ * Right Panel (Form)
+ ****************************************************/
+.login-right-panel {
+  width: 50%;
+  background: var(--background-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-wrapper {
+    width: 80%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: var(--background-light-dark);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+
+    .form-title {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 600;
+      text-align: center;
+      color: var(--text-primary);
+    }
+
+    .form-subtitle {
+      margin: 5px 0 20px;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+
+    .login-form {
+      .form-group {
+        margin-bottom: 20px;
+
+        label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: 500;
+          color: var(--text-primary);
+        }
+
+        .form-control {
+          width: 100%;
+          padding: 10px;
+          padding-right: 35px;
+          border: 1px solid var(--border-color);
+          border-radius: 4px;
+          outline: none;
+          transition: border-color 0.3s;
+
+          &:focus {
+            outline: 2px solid var(--custom-color);
+          }
+        }
+
+        .custom-error {
+          margin-top: 5px;
+          font-size: 0.85rem;
+          color: var(--custom-color);
+        }
+      }
+
+      .form-submit {
+        text-align: center;
+
+        .login-button {
+          padding: 10px 20px;
+          background-color: var(--custom-color);
+          color: var(--text-primary);
+          border: none;
+          border-radius: 4px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background-color 0.3s;
+
+          &:hover {
+            background-color: #e63333;
+          }
+        }
+      }
+    }
+  }
+}
+
+.forgot-link {
   display: block;
-  height: 106px;
-  margin-bottom: 30px;
+  color: var(--custom-color);
+  margin-bottom: 1.5rem;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper .icon {
+  position: absolute;
+  right: 12px;
+  color: var(--text-placeholder);
+  font-size: 16px;
 }

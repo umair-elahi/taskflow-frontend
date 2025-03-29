@@ -1,104 +1,137 @@
-<div class="col-md-12">
-  <div class="box bg-white">
-    <div class="box-header">
-      <h4 class="fw-normal title fs-medium d-inline-block">Application Metrics</h4>
+<div class="metrics-container">
+  <div class="metrics-card">
+    <!-- Card Header -->
+    <div class="metrics-card-header">
+      <h4 class="metrics-title">Application Metrics</h4>
     </div>
-    <div class="box-body">
-      <div class="row">
-        <div class="col-md-3">
-          <div class="form-group">
-            Select Application
-            <ng-select [items]="applications" bindLabel="name" name="applicationId" [(ngModel)]="rptFilter.application"
-              placeholder="Select Application">
-            </ng-select>
-          </div>
+    
+    <!-- Card Body -->
+    <div class="metrics-card-body">
+      <!-- Filter Form -->
+      <div class="metrics-form-grid">
+        <div class="metrics-form-field">
+          <label for="applicationId" class="metrics-label">Select Application</label>
+          <ng-select 
+            [items]="applications || []" 
+            bindLabel="name" 
+            name="applicationId" 
+            id="applicationId"
+            [(ngModel)]="rptFilter.application"
+            placeholder="Select Application"
+            class="metrics-select">
+          </ng-select>
         </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            Start Date
-            <input type="date" name="startDate" [(ngModel)]="rptFilter.startDate" class="form-control">
-          </div>
+        
+        <div class="metrics-form-field">
+          <label for="startDate" class="metrics-label">Start Date</label>
+          <input 
+            type="date" 
+            id="startDate"
+            name="startDate" 
+            [(ngModel)]="rptFilter.startDate" 
+            class="metrics-input">
         </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            End Date
-            <input type="date" name="endDate" [(ngModel)]="rptFilter.endDate" class="form-control">
-          </div>
+        
+        <div class="metrics-form-field">
+          <label for="endDate" class="metrics-label">End Date</label>
+          <input 
+            type="date" 
+            id="endDate"
+            name="endDate" 
+            [(ngModel)]="rptFilter.endDate" 
+            class="metrics-input">
         </div>
-        <div class="col-md-3">
-          <button type="submit" class="btn btn-sm btn-success pull-right" (click)="findReport()">
+        
+        <div class="metrics-form-actions">
+          <button 
+            type="submit" 
+            class="metrics-btn metrics-btn-success" 
+            (click)="findReport()">
+            <i class="fas fa-search metrics-icon-left"></i>
             Find Report
           </button>
         </div>
       </div>
-      <br />
-      <div class="row">
-        <!-- Table -->
-        <div class="row">
-          <div class="col-md-4">
-            <div class="box body-box bg-white mbpx-30 ripple-box">
-              <div class="innerdiv">
-                <p class="fs-medium mbpx-20">Total Items
-                </p>
-                <h5 class="fw-normal mbpx-20 ">{{items.total || 0}} <i class="fas fa-shield-alt"></i>
-                </h5>
-              </div>
+      
+      <!-- Metrics Cards -->
+      <div class="metrics-cards-grid">
+        <!-- Total Items -->
+        <div class="metrics-stat-card">
+          <div class="metrics-stat-content">
+            <p class="metrics-stat-title">Total Items</p>
+            <div class="metrics-stat-value">
+              <span>{{items?.total || 0}}</span>
+              <i class="fas fa-shield-alt metrics-stat-icon"></i>
             </div>
           </div>
-          <div class="col-md-2">
-            <div class="box body-box bg-white mbpx-30 ripple-box"
-              (click)="rptFilter.application && gotoDetail('approved', rptFilter.application.id, items.completed)">
-              <div class="innerdiv">
-                <p class="fs-medium mbpx-20">Completed
-                </p>
-                <h5 class="fw-normal mbpx-20">{{items.completed || 0}} <i class="fas fa-check"></i>
-                </h5>
-              </div>
+        </div>
+        
+        <!-- Completed -->
+        <div class="metrics-stat-card metrics-clickable" 
+             (click)="rptFilter.application && gotoDetail('approved', rptFilter.application.id, items?.completed)">
+          <div class="metrics-stat-content">
+            <p class="metrics-stat-title">Completed</p>
+            <div class="metrics-stat-value metrics-completed">
+              <span>{{items?.completed || 0}}</span>
+              <i class="fas fa-check metrics-stat-icon"></i>
             </div>
           </div>
-          <div class="col-md-2">
-            <div class="box body-box bg-white mbpx-30 ripple-box"
-              (click)="rptFilter.application && gotoDetail('draft', rptFilter.application.id, items.inProgress)">
-              <div class="innerdiv">
-                <p class="fs-medium mbpx-20">In Progress
-                </p>
-                <h5 class="fw-normal mbpx-20">{{items.inProgress || 0}} <i class="fas fa-hourglass-end"></i>
-                </h5>
-              </div>
+        </div>
+        
+        <!-- In Progress -->
+        <div class="metrics-stat-card metrics-clickable" 
+             (click)="rptFilter.application && gotoDetail('draft', rptFilter.application.id, items?.inProgress)">
+          <div class="metrics-stat-content">
+            <p class="metrics-stat-title">In Progress</p>
+            <div class="metrics-stat-value metrics-in-progress">
+              <span>{{items?.inProgress || 0}}</span>
+              <i class="fas fa-hourglass-end metrics-stat-icon"></i>
             </div>
           </div>
-          <div class="col-md-2">
-            <div class="box body-box bg-white mbpx-30 ripple-box"
-              (click)="rptFilter.application && gotoDetail('rejected', rptFilter.application.id, items.rejected)">
-              <div class="innerdiv">
-                <p class="fs-medium mbpx-20">Rejected
-                </p>
-                <h5 class="fw-normal mbpx-20">{{items.rejected || 0}} <i class="fas fa-times"></i>
-                </h5>
-              </div>
+        </div>
+        
+        <!-- Rejected -->
+        <div class="metrics-stat-card metrics-clickable" 
+             (click)="rptFilter.application && gotoDetail('rejected', rptFilter.application.id, items?.rejected)">
+          <div class="metrics-stat-content">
+            <p class="metrics-stat-title">Rejected</p>
+            <div class="metrics-stat-value metrics-rejected">
+              <span>{{items?.rejected || 0}}</span>
+              <i class="fas fa-ban metrics-stat-icon"></i>
             </div>
           </div>
-          <div class="col-md-2">
-            <div class="box body-box bg-white mbpx-30 ripple-box"
-              (click)="rptFilter.application && gotoDetail('withdraw', rptFilter.application.id, items.withdraw)">
-              <div class="innerdiv">
-                <p class="fs-medium mbpx-20">Withdraw
-                </p>
-                <h5 class="fw-normal mbpx-20">{{items.withdraw || 0}} <i class="fas fa-times"></i>
-                </h5>
-              </div>
+        </div>
+        
+        <!-- Withdraw -->
+        <div class="metrics-stat-card metrics-clickable" 
+             (click)="rptFilter.application && gotoDetail('withdraw', rptFilter.application.id, items?.withdraw)">
+          <div class="metrics-stat-content">
+            <p class="metrics-stat-title">Withdraw</p>
+            <div class="metrics-stat-value metrics-withdraw">
+              <span>{{items?.withdraw || 0}}</span>
+              <i class="fas fa-times metrics-stat-icon"></i>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div [chart]="chart"></div>
+      
+      <!-- Charts -->
+      <div class="metrics-charts-grid">
+        <div class="metrics-chart-container">
+          <div [chart]="chart" class="metrics-chart"></div>
         </div>
-        <div class="col-md-6">
-          <div [chart]="pieChart"></div>
+        <div class="metrics-chart-container">
+          <div [chart]="pieChart" class="metrics-chart"></div>
         </div>
+      </div>
+      
+      <!-- Empty State (if needed) -->
+      <div class="metrics-empty-state" *ngIf="!items || (!items.total && !items.completed && !items.inProgress && !items.rejected && !items.withdraw)">
+        <i class="fas fa-chart-bar metrics-empty-icon"></i>
+        <p>No Data Available</p>
       </div>
     </div>
   </div>
-</div>
+  </div>
+  
+  

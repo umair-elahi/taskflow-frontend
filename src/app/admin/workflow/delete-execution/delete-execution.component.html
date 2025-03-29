@@ -1,48 +1,41 @@
-<div class="col-md-12">
-  <div class="box bg-white">
-    <div class="box-header">
-      <h4 class="fw-normal title fs-medium d-inline-block">Delete Executions</h4>
-    </div>
-    <div class="box-body">
-      <div class="row">
-        <div class="col-md-3">
-          <div class="form-group">
-            Select Application
-            <ng-select [items]="applications" bindLabel="name" bindValue="id" name="id"
-              [(ngModel)]="rptFilter.applicationId" placeholder="Select Application">
-            </ng-select>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            Select Status
-            <ng-select [items]="statuses" bindLabel="name" bindValue="value" name="id" [(ngModel)]="rptFilter.status"
-              placeholder="Select Status">
-            </ng-select>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            Start Date
-            <input type="date" name="startDate" [(ngModel)]="rptFilter.startDate" class="form-control">
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            End Date
-            <input type="date" name="endDate" [(ngModel)]="rptFilter.endDate" class="form-control">
-          </div>
-        </div>
+<section class="delete-execution-tasks-content">
+  <div class="delete-execution-tasks-header">
+    Delete Executions
+  </div>
+  <div>
+    <div class="delete-execution-tasks-report-box">
+      <div class="col col-1">
+        <span>
+          Select Application
+        </span>
+        <ng-select [items]="applications" bindLabel="name" bindValue="id" name="id"
+          [(ngModel)]="rptFilter.applicationId" placeholder="Select Application">
+        </ng-select>
       </div>
-      <div class="row">
-        <div class="col-md-12">
-          <br>
-          <button type="submit" class="btn btn-sm btn-success pull-right"
-            [disabled]="!rptFilter.applicationId || !rptFilter.status" (click)="removeData()">
-            Delete Records & Files
-          </button>
-        </div>
+      <div class="col col-2">
+        <span>Select Status</span>
+        <ng-select [items]="statuses" bindLabel="name" bindValue="value" name="id" [(ngModel)]="rptFilter.status"
+          placeholder="Select Status">
+        </ng-select>
       </div>
+      <div class="col col-3">
+        <span>Start Date</span>
+        <input type="date" name="startDate" [(ngModel)]="rptFilter.startDate" class="form-control">
+      </div>
+      <div class="col col-4">
+        <span>End Date</span>
+        <input type="date" name="endDate" [(ngModel)]="rptFilter.endDate" class="form-control">
+      </div>
+      <div class="col col-5">
+        <span>Records & Files</span>
+        <button type="submit" class="btn btn-sm btn-success pull-right"
+        [disabled]="!rptFilter.applicationId || !rptFilter.status" (click)="removeData()">
+        Delete
+      </button>
+      </div>
+    </div>    
+    <div class="delete-execution-tasks-body">
+      
     </div>
   </div>
-</div>
+</section>  

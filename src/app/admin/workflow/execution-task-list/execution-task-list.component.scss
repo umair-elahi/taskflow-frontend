@@ -1,120 +1,654 @@
-.label {
-  display: inline-block;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: white;
-  margin: 2px;
-  position: relative;
-}
-
-.delete-icon {
-  position: absolute;
-  top: 5px;
-  right: 5px; 
-  font-size: 14px;
-  color: rgb(0, 0, 0);
-  cursor: pointer;
-  padding: 2px;
-  margin-top:-5px;
-  margin-right: 5px;
-  width:10px;
-  height: 10px;
-}
-
-.delete-icon:hover {
-  color: rgb(0, 89, 255); 
-}
-
-.execution-count {
-  font-size: 1.1em;
-  font-weight: 600;
-  margin-left: 10px;
-  color: #333;
-}
-
-.task-container {
+.execution-tasks-content {
   display: flex;
-  justify-content: flex-end; /* Align items to the right */
-  align-items: center; /* Vertically align the items */
-  width: 100%; /* Ensure the container takes full width */
+  flex-direction: column;
+  background-color: var(--background-dark);
+  color: var(--text-primary);
 }
 
-.task-labels {
+.execution-tasks-header {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  padding: 1.5rem 1rem;
+}
+
+.execution-tasks-search-box input {
+  display: block;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem;
+  border-radius: 5px;
+  border: none;
+  margin-bottom: 1rem;
+  background-color: var(--background-light-dark);
+  color: var(--text-primary);
+}
+
+.execution-tasks-report-box {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 1rem 1rem;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  margin-left: 1rem;
+  margin-right: 1rem;
+  row-gap: 1.5rem;
+  background-color: var(--background-dark);
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .execution-tasks-report-box {
+    flex-direction: column;
+  }
+}
+
+.execution-tasks-report-box .col {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5rem;
+  align-items: center;
+  width: 200px !important;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  padding: 1rem;
+  color: var(--text-primary);
+}
+
+.execution-tasks-report-box .col-4 button {
+  background: linear-gradient(135deg, var(--custom-color), #ff6b6b);
+  color: var(--text-primary);
+}
+
+::ng-deep .ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  color: black;
+}
+
+::ng-deep .ng-select .ng-clear-wrapper,
+::ng-deep .ng-select .ng-clear-wrapper .ng-clear {
+  color: black !important;
+}
+
+::ng-deep .ng-select.ng-select-opened>.ng-select-container .ng-arrow {
+  border-color: transparent transparent black;
+}
+
+::ng-deep .ng-select .ng-arrow-wrapper .ng-arrow {
+  border-color: black transparent transparent;
+}
+
+::ng-deep .ng-select .ng-select-container {
+  width: 166px !important;
+  outline: 1px solid var(--border-color) !important;
+  outline-offset: 4px !important;
+  border-radius: 5px !important;
+  border: none !important;
+}
+
+.execution-tasks-report-box input,
+.execution-tasks-report-box button {
+  width: 100% !important;
+  height: 36px;
+  padding-left: 10px;
+  padding-right: 5px;
+  border-radius: 5px;
+  border: none !important;
+  outline: 1px solid var(--border-color);
+  outline-offset: 4px;
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.accordion-header .col {
+  flex-basis: 200px;
+  // flex-shrink: 0;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.accordion-header .col-5 {
+  flex-basis: auto;
+}
+
+@media (max-width: 500px) {
+  .accordion-header {
+    display: grid;
+    /* We want exactly 2 columns: one for the 4 stacked items, 
+       and one for the chevron icon */
+    grid-template-columns: auto auto;
+  
+    /* We want exactly 4 rows (one row per each of the first 4 items). */
+    grid-template-rows: repeat(4, auto);
+  
+    gap: 0.75rem 1rem; /* Optional gap between columns */
+    width: 100%; /* Adjust as needed */
+    /* height: ???   If you have a specific height, you can set it here. */
+  }
+  
+  /* 1) Place the first item (nth-child(1)) in row 1, column 1 */
+  .accordion-header .col:nth-child(1) {
+    grid-row: 1;
+    grid-column: 1;
+  }
+  
+  /* 2) Place the second item (nth-child(2)) in row 2, column 1 */
+  .accordion-header .col:nth-child(2) {
+    grid-row: 2;
+    grid-column: 1;
+  }
+  
+  /* 3) Third item in row 3, column 1 */
+  .accordion-header .col:nth-child(3) {
+    grid-row: 3;
+    grid-column: 1;
+  }
+  
+  /* 4) Fourth item in row 4, column 1 */
+  .accordion-header .col:nth-child(4) {
+    grid-row: 4;
+    grid-column: 1;
+  }
+  
+  /* 5) The last item (the chevron) spans rows 1-4 in column 2, vertically centered */
+  .accordion-header .col:nth-child(5) {
+    grid-row: 1 / 5; /* Spans from row 1 through row 4 */
+    grid-column: 2;
+  
+    /* Center it vertically within those 4 rows */
+    align-self: center;
+  
+    /* If you want it on the right side horizontally, use `end`. 
+       Or `center` if you want it in the middle horizontally. */
+    justify-self: end;
+  }
+  
+}
+
+mat-accordion {
+  padding: 1rem;
+}
+
+mat-expansion-panel {
+  background-color: var(--background-dark);
+}
+
+mat-expansion-panel-header {
+  padding: 0px;
+  height: initial !important;
+  padding: 2rem 2rem;
+  background-color: var(--background-light-dark);
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+}
+
+mat-expansion-panel:last-of-type mat-expansion-panel-header {
+  margin-bottom: 0;
+}
+
+.mat-expansion-panel-header:hover {
+  background-color: var(--background-hover) !important;
+}
+
+::ng-deep .mat-expansion-panel-body {
+  padding: 0 !important;
+  padding-bottom: 1rem !important;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+}
+
+.tab-container {
+  width: 100%;
+  margin: 20px auto;
+  background-color: var(--background-dark);
+  color: var(--text-primary);
+}
+
+.tab-header {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  background-color: var(--background-dark);
+  padding: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  background-color: var(--background-light-dark);
+  margin-right: 1rem;
+  border-radius: 5px;
+}
+
+.tab-item:hover {
+  background-color: var(--background-hover);
+}
+
+.tab-item:last-child {
+  margin-right: 0;
+}
+
+.tab-item.active {
+  /* Gradient Border */
+  border-bottom: 3px solid transparent;
+  border-image: linear-gradient(135deg, var(--custom-color), #ff6b6b) 1;
+  
+  /* Gradient Text */
+  background: linear-gradient(135deg, var(--custom-color), #ff6b6b);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+.tab-content {
+  padding: 20px;
+}
+
+.application-title,
+.comments-title,
+.details-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-variant: small-caps;
+}
+
+.application-content,
+.comments-content {
+  background-color: var(--background-light-dark);
+  padding: 1rem 1rem;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+}
+
+.details-content div p {
+  display: flex;
+  justify-content: space-between; /* Ensures two-column layout */
+  align-items: center; /* Vertically aligns text */
+  gap: 10px; /* Adds spacing between spans */
+  flex-wrap: wrap; /* Allows wrapping for responsiveness */
+  padding: 0.75rem 1rem;
+  background-color: var(--background-light-dark);
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 0.5rem;
+}
+
+.details-content div p span:first-child,
+.details-content div p span:last-child {
+  flex: 1; /* Ensures both spans take equal width */
+  min-width: 150px; /* Prevents text from shrinking too much */
+}
+
+.details-content div p span:first-child {
+  font-weight: bold; /* Makes the first span bold */
+}
+
+.details-content div p span:last-child {
+  text-align: left; /* Aligns value text to the left */
+}
+
+@media (max-width: 768px) { /* Adjust breakpoint for better responsiveness */
+  .details-content div p {
+    flex-direction: column; /* Stack items on small screens */
+    align-items: flex-start;
+  }
+
+  .details-content div p span:first-child,
+  .details-content div p span:last-child {
+    width: 100%; /* Makes spans take full width in small screens */
+    text-align: left; /* Align text left for readability */
+  }
+}
+
+
+.comment-detail {
   display: flex;
   flex-wrap: wrap;
-  margin-right: 20px; /* Space between labels and button */
+  align-items: center;
+  margin-bottom: 0.5rem;
+  background-color: var(--background-light-dark);
 }
 
-.task-label {
-  background-color: #ffffff;
-  border-radius: 4px;
-  padding: 10px 15px;
-  margin: 5px;
-  width: 150px;
-  text-align: center;
-  font-size: 14px;
-  position: relative; /* Ensure the delete icon is positioned relative to the label */
+@media (max-width: 500px) {
+  .comment-detail {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .user-name-initial-letter {
+    align-self: center;
+  }
+
 }
 
-.add-label-button {
-  margin-top: 7px;
-  margin-left: 10px;
+.no-comments {
+  background-color: var(--background-light-dark);
+  padding: 1rem 1.5rem;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
 }
 
-.add-label-icon {
-  color: #007bff;
+.no-records {
+  background-color: var(--background-light-dark);
+  padding: 1rem 1.5rem;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.user-name-initial-letter {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--custom-color), #ff6b6b);
+  color: var(--text-primary);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.user-name {
+  font-weight: bold;
+  margin-right: 5px;
+  font-variant: small-caps;
+}
+
+.comment-time {
+  color: gray;
+  font-size: 0.9rem;
+  margin-right: 5px;
+  font-variant: small-caps;
+}
+
+.comments {
+  font-style: italic;
+}
+
+.clarification-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  background-color: var(--background-light-dark);
+  color: var(--text-primary);
+  padding: 1rem 1rem;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.clarification-box textarea {
+  border: none;
+  outline: 1px solid var(--input-border);
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  padding: 1rem;
+  border-radius: 5px;
+  resize: vertical;
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #555 #222; /* Thumb and track colors */
+}
+
+.clarification-box textarea:focus {
+  outline: 2px solid var(--input-border);
+}
+
+/* Scrollbar styles for WebKit browsers (Chrome, Edge, Safari) */
+textarea::-webkit-scrollbar {
+  width: 8px; /* Thin scrollbar */
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: #555; /* Dark gray thumb */
+  border-radius: 4px; /* Rounded edges */
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+  background-color: #777; /* Lighter gray on hover */
+}
+
+textarea::-webkit-scrollbar-track {
+  background-color: #222; /* Dark track */
+}
+
+.application-content-header {
+  font-size: 2rem;
+  text-transform: capitalize;
+  line-height: 1.5;
+}
+
+.application-sections {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 1rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.application-sections > *:nth-child(1) {
+  padding: 1rem 1rem;
+  flex: 0 1 500px;
+}
+
+.application-sections > *:nth-child(2) {
+  flex: 0 1 500px;
+  border: 1px solid var(--border-color);
+  padding: 1rem 1rem;
+  border-radius: 5px;
+}
+
+::ng-deep form input,
+::ng-deep form label,
+::ng-deep form textarea,
+::ng-deep form select,
+::ng-deep form button,
+::ng-deep form input[type="checkbox"],
+::ng-deep form input[type="radio"],
+::ng-deep form input[type="file"],
+::ng-deep form input[type="date"] {
+  // border: 1px solid red !important;
+  display: block;
+  width: 100% !important;
+  padding: 1rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+::ng-deep form input {
+  border: none !important;
+  border-radius: 5px !important;
+  background-color: var(--input-bg);
+  // outline: 1px solid var(--input-border) !important;
+  color: var(--text-primary) !important;
+}
+
+:host ::ng-deep form input::placeholder {
+  color: var(--text-placeholder) !important;
+}
+
+
+::ng-deep form input:focus {
+  border: none !important;
+  // outline: 2px solid var(--input-border) !important;
+}
+
+::ng-deep form label {
+  font-weight: bold;
+  padding: 0 !important;
+}
+
+::ng-deep form input[type="file"] {
+  padding: 0.5rem !important;
   cursor: pointer;
-  font-size: 1.2em;
-  margin-left: auto;
+  color: var(--text-placeholder) !important;
 }
 
-.important-background {
-  background-color: inherit !important;
+::ng-deep form input[type="file"]::-webkit-file-upload-button {
+  background-color: var(--input-border);
+  color: var(--text-placeholder);
+  padding: 0.5rem;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.task-label {
-  color: black !important;
-  background-color: #59a7ff !important;
-  padding: 2px !important;
-  margin: 2px !important;
-  border-radius: 20px !important;
+::ng-deep formly-field-radio .custom-radio {
+  display: flex;
+  align-items: center;
 }
 
-.read-status {
-  color: #25D366 !important;  /* WhatsApp green color */
-  font-size: 1.2em !important; /* Slightly larger for visibility */
-  display: inline-flex !important;
-  align-items: center !important;
-  margin-left: 10px !important;
-  transition: transform 0.3s ease !important; /* Animation */
-  margin-left: 20px !important;
-  background-color: transparent !important;
+::ng-deep formly-field-radio .custom-radio label {
+  order: -1;
+  text-align: center;
 }
 
-.read-status i {
-  animation: fadeIn 0.3s ease, bounce 0.5s ease !important; /* Fade and bounce animation */
+::ng-deep formly-field-textarea textarea {
+  background-color: var(--input-bg);
+  color: var(--text-primary) !important;
+  border: none;
+  border-radius: 5px;
 }
 
-/* Keyframes for animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  column-gap: 1rem;
+  flex-wrap: wrap;
+  row-gap: 10px;
+}
+
+@media screen and (max-width: 500px) {
+  .action-buttons {
+    flex-direction: column;
   }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  
 }
 
-@keyframes bounce {
-  0% {
-    transform: scale(1);
+.action-buttons button {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  border: 3px solid var(--border-color);
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--custom-color), #ff6b6b);
+  cursor: pointer;
+}
+
+.action-buttons a {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  border: 3px solid var(--border-color);
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--custom-color), #ff6b6b);
+  cursor: pointer;
+}
+
+.draft-edit button,
+.draft-delete button {
+  width: 100%;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: space-between; /* Space between the two columns */
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+/* Left column takes more space */
+.info-column {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.info-column p {
+  display: inline-block;
+}
+
+/* Right column for navigation buttons */
+.pagination-controls {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Style the navigation list */
+.pagination-controls ul {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Optional: Style the navigation buttons (li elements) */
+.nav-btn {
+  cursor: pointer;
+  padding: 5px 10px;
+  background: linear-gradient(135deg, var(--custom-color), #ff6b6b);
+  border-radius: 5px;
+  transition: background-color 0.2s;
+  padding: 0.5rem;
+}
+
+.nav-btn:hover {
+  background: linear-gradient(135deg, #ff6b6b, var(--custom-color));
+}
+
+.info-column select,
+.pagination-controls select {
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+/* Responsive design for mobile screens */
+@media (max-width: 768px) {
+  .pagination-container {
+    flex-direction: column;
+    align-items: stretch;
   }
-  50% {
-    transform: scale(1.2);
+  
+  .info-column,
+  .pagination-controls {
+    width: 100%;
+    text-align: center;
   }
-  100% {
-    transform: scale(1);
+  
+  .pagination-controls {
+    justify-content: center;
+  }
+  
+  .info-column {
+    justify-content: center;
   }
 }

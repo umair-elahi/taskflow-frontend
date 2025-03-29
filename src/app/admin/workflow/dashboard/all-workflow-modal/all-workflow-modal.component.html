@@ -1,27 +1,38 @@
-<h1 mat-dialog-title>All Apps</h1>
-<div mat-dialog-content>
-  <table class="w-100 mbpx-10 table-strip">
-    <tr>
-      <th>App Name</th>
-      <th>Actions</th>
-    </tr>
-    <tr *ngFor="let app of applications">
-      <td style="width: 74%;">
-        {{app.name}}
-        <i mat-raised-button matTooltip="{{app.shortDescription}}" class="fas fa-info-circle"
-          style="float: right;font-size: 26px;"></i>
-      </td>
-      <td>
-        <button mat-button (click)="initiateApp(app.id)" class="btn btn-primary">Initiate App</button>
-      </td>
-    </tr>
-    <tr>
-      <td class="text-center" *ngIf="applications.length == 0" colspan="6">
+<div class="modal-overlay" [ngClass]="{'open': true}">
+  <div class="modal-content">
+    <!-- Modal Header -->
+    <header class="modal-header">
+      <h2>All Apps</h2>
+    </header>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <table class="modal-table">
+        <thead>
+          <tr>
+            <th>App Name</th>
+            <th>Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let app of applications">
+            <td>{{ app.name }}</td>
+            <td>{{ app.shortDescription }}</td>
+            <td>
+              <button class="action-button" (click)="initiateApp(app.id)">Initiate App</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="no-data" *ngIf="applications.length === 0">
         No Apps Available
-      </td>
-    </tr>
-  </table>
-</div>
-<div mat-dialog-actions class="pull-right">
-  <button mat-button (click)="onNoClick()" class="btn btn-default">Close</button>
+      </div>
+    </div>
+
+    <!-- Modal Footer -->
+    <footer class="modal-footer">
+      <button class="close-button" (click)="onNoClick()">Close</button>
+    </footer>
+  </div>
 </div>

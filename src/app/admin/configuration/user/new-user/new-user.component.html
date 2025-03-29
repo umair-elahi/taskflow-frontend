@@ -1,174 +1,199 @@
-<div class="col-md-12">
-  <div class="box bg-white">
-    <div class="box-header">
-      <h4 class="fw-normal title fs-medium d-inline-block">New User</h4>
+<div class="user-form-container">
+  <div class="user-form-card">
+    <!-- Card Header -->
+    <div class="user-form-card-header">
+      <h4 class="user-form-title">New User</h4>
     </div>
-    <div class="box-body">
-      <form name="userForm" *ngIf="isFormBinded" [formGroup]="userForm" novalidate id="form-test"
-        class="form-horizontal form-bordered form-control-borderless">
-        <div class="row">
-          <div class="col-md-3">
-            <div class="form-group">
-              <div class="col-xs-12">
-                First Name
-                <input type="text" formControlName="firstName" name="firstName" class="form-control">
-                <p class="custom-error"
-                  *ngIf="userForm.get('firstName').hasError('required') && userForm.get('firstName').touched">
-                  {{userForm.controls.firstName.value}} First Name is required.
-                </p>
-              </div>
+
+    <!-- Card Body -->
+    <div class="user-form-card-body">
+      <form name="userForm" *ngIf="isFormBinded" [formGroup]="userForm" novalidate id="form-test" class="user-form">
+        <!-- Personal Information Section -->
+        <div class="user-form-section">
+          <h5 class="user-form-section-title">Personal Information</h5>
+          <div class="user-form-grid">
+            <!-- First Name -->
+            <div class="user-form-field">
+              <label for="firstName" class="user-form-label">First Name</label>
+              <input type="text" id="firstName" formControlName="firstName" name="firstName" class="user-form-input">
+              <p class="user-form-error" *ngIf="userForm.get('firstName').hasError('required') && userForm.get('firstName').touched">
+                {{userForm.controls.firstName.value}} First Name is required.
+              </p>
+            </div>
+
+            <!-- Last Name -->
+            <div class="user-form-field">
+              <label for="lastName" class="user-form-label">Last Name</label>
+              <input type="text" id="lastName" formControlName="lastName" name="lastName" class="user-form-input">
+              <p class="user-form-error" *ngIf="userForm.get('lastName').hasError('required') && userForm.get('lastName').touched">
+                Last Name is required.
+              </p>
+            </div>
+
+            <!-- Email -->
+            <div class="user-form-field">
+              <label for="email" class="user-form-label">Email</label>
+              <input type="text" id="email" formControlName="email" name="email" class="user-form-input">
+              <p class="user-form-error" *ngIf="userForm.get('email').hasError('required') && userForm.get('email').touched">
+                Email is required.
+              </p>
+              <p class="user-form-error" *ngIf="userForm.get('email').hasError('email') && userForm.get('email').touched">
+                Invalid email address
+              </p>
+            </div>
+
+            <!-- Password -->
+            <div class="user-form-field">
+              <label for="password" class="user-form-label">Password</label>
+              <input type="password" id="password" formControlName="password" name="password" class="user-form-input">
+            </div>
+
+            <!-- Contact No -->
+            <div class="user-form-field">
+              <label for="contactNo" class="user-form-label">Contact No</label>
+              <input type="text" id="contactNo" formControlName="contactNo" name="contactNo" class="user-form-input">
+              <p class="user-form-error" *ngIf="userForm.get('contactNo').hasError('required') && userForm.get('contactNo').touched">
+                Contact No is required.
+              </p>
+            </div>
+
+            <!-- Gender -->
+            <div class="user-form-field">
+              <label for="gender" class="user-form-label">Gender</label>
+              <ng-select 
+                id="gender"
+                [items]="genders" 
+                bindLabel="name" 
+                bindValue="name" 
+                name="gender" 
+                formControlName="gender"
+                placeholder="Select Gender"
+                class="user-form-select">
+              </ng-select>
+              <p class="user-form-error" *ngIf="userForm.get('gender').hasError('required') && userForm.get('gender').touched">
+                Gender is required.
+              </p>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <div class="col-xs-12">
-                Last Name
-                <input type="text" formControlName="lastName" name="lastName" class="form-control">
-                <p class="custom-error"
-                  *ngIf="userForm.get('lastName').hasError('required') && userForm.get('lastName').touched">
-                  Last Name is required.
-                </p>
-              </div>
+        </div>
+
+        <!-- Organization Information Section -->
+        <div class="user-form-section">
+          <h5 class="user-form-section-title">Organization Information</h5>
+          <div class="user-form-grid">
+            <!-- Role -->
+            <div class="user-form-field">
+              <label for="roleIds" class="user-form-label">Role</label>
+              <ng-select 
+                id="roleIds"
+                [items]="roles" 
+                bindLabel="name" 
+                bindValue="id" 
+                name="RoleId" 
+                [multiple]="true"
+                formControlName="roleIds" 
+                placeholder="Select Role"
+                class="user-form-select">
+              </ng-select>
+              <p class="user-form-error" *ngIf="userForm.get('roleIds').hasError('required') && userForm.get('roleIds').touched">
+                Roles is required.
+              </p>
+            </div>
+
+            <!-- Department -->
+            <div class="user-form-field">
+              <label for="departmentId" class="user-form-label">Department</label>
+              <ng-select 
+                id="departmentId"
+                [items]="departments" 
+                bindLabel="name" 
+                bindValue="id" 
+                name="DepartmentId"
+                formControlName="departmentId" 
+                placeholder="Select Department"
+                class="user-form-select">
+              </ng-select>
+              <p class="user-form-error" *ngIf="userForm.get('departmentId').hasError('required') && userForm.get('departmentId').touched">
+                Department is required.
+              </p>
+            </div>
+
+            <!-- Office Location -->
+            <div class="user-form-field">
+              <label for="officeLocationId" class="user-form-label">Office Location</label>
+              <ng-select 
+                id="officeLocationId"
+                [items]="officeLocations" 
+                bindLabel="name" 
+                bindValue="id" 
+                name="officeLocationId"
+                formControlName="officeLocationId" 
+                placeholder="Select Office Location"
+                class="user-form-select">
+              </ng-select>
+              <p class="user-form-error" *ngIf="userForm.get('officeLocationId').hasError('required') && userForm.get('officeLocationId').touched">
+                Office Location is required.
+              </p>
+            </div>
+
+            <!-- Manager -->
+            <div class="user-form-field">
+              <label for="managerId" class="user-form-label">Manager</label>
+              <ng-select 
+                id="managerId"
+                [items]="managers" 
+                bindLabel="email" 
+                bindValue="id" 
+                name="managerId"
+                formControlName="managerId" 
+                placeholder="Select Manager"
+                class="user-form-select">
+              </ng-select>
+              <p class="user-form-error" *ngIf="userForm.get('managerId').hasError('required') && userForm.get('managerId').touched">
+                Manager is required.
+              </p>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <div class="col-xs-12">
-                Role
-                <ng-select [items]="roles" bindLabel="name" bindValue="id" name="RoleId" [multiple]="true"
-                  formControlName="roleIds" placeholder="Select Role">
-                </ng-select>
-                <p class="custom-error"
-                  *ngIf="userForm.get('roleIds').hasError('required') && userForm.get('roleIds').touched">
-                  Roles is required.
-                </p>
-              </div>
+        </div>
+
+        <!-- Profile Picture Section -->
+        <div class="user-form-section">
+          <h5 class="user-form-section-title">Profile Picture</h5>
+          <div class="user-form-grid user-form-grid-profile">
+            <div class="user-form-field">
+              <label for="profilePicture" class="user-form-label">Upload Image</label>
+              <input 
+                type="file" 
+                id="profilePicture" 
+                class="user-form-input user-form-file" 
+                (change)="handleFileInput($event.target.files)" 
+                accept="image/*"
+                #Image />
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <div class="col-xs-12">
-                Department
-                <ng-select [items]="departments" bindLabel="name" bindValue="id" name="DepartmentId"
-                  formControlName="departmentId" placeholder="Select Role">
-                </ng-select>
-                <p class="custom-error"
-                  *ngIf="userForm.get('departmentId').hasError('required') && userForm.get('departmentId').touched">
-                  Department is required.
-                </p>
+            
+            <div class="user-form-field user-form-preview" *ngIf="imagePath">
+              <div class="user-form-image-container">
+                <img [attr.src]="imagePath" alt="Profile Preview" class="user-form-image">
               </div>
             </div>
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-md-3">
-            <div class="form-group">
-              <div class="col-xs-12">
-                Office Location
-                <ng-select [items]="officeLocations" bindLabel="name" bindValue="id" name="officeLocationId"
-                  formControlName="officeLocationId" placeholder="Select Role">
-                </ng-select>
-                <p class="custom-error"
-                  *ngIf="userForm.get('officeLocationId').hasError('required') && userForm.get('officeLocationId').touched">
-                  Office Location is required.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <div class="col-xs-12">
-                Manager
-                <ng-select [items]="managers" bindLabel="email" bindValue="id" name="managerId"
-                  formControlName="managerId" placeholder="Select Manager">
-                </ng-select>
-                <p class="custom-error"
-                  *ngIf="userForm.get('managerId').hasError('required') && userForm.get('managerId').touched">
-                  Manager is required.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <div class="col-xs-12">
-                Email
-                <input type="text" formControlName="email" name="email" class="form-control">
-                <p class="custom-error"
-                  *ngIf="userForm.get('email').hasError('required') && userForm.get('email').touched">
-                  Email is required.
-                </p>
-                <p class="custom-error"
-                  *ngIf="userForm.get('email').hasError('email') && userForm.get('email').touched">
-                  Invalid email address
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <div class="col-xs-12">
-                Password
-                <input type="password" formControlName="password" name="password" class="form-control">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <div class="col-xs-12">
-                Contact No
-                <input type="text" formControlName="contactNo" name="contactNo" class="form-control">
-                <p class="custom-error"
-                  *ngIf="userForm.get('contactNo').hasError('required') && userForm.get('contactNo').touched">
-                  Contact No address
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-3">
-            <div class="form-group">
-              <div class="col-xs-12">
-                Gender
-                <ng-select [items]="genders" bindLabel="name" bindValue="name" name="gender" formControlName="gender"
-                  placeholder="Select Gender">
-                </ng-select>
-                <p class="custom-error"
-                  *ngIf="userForm.get('gender').hasError('required') && userForm.get('gender').touched">
-                  Gender is required.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              Profile Picture
-              <input type="file" class="form-control" (change)="handleFileInput($event.target.files)" accept="image/*"
-                #Image />
-            </div>
-          </div>
-          <div class="col-md-3" *ngIf="imagePath">
-            <div id="myDiv">
-              <img [attr.src]="imagePath" height="60px" width="60px" alt="" id="img">
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-9">
-          </div>
-          <div class="col-md-3">
-            <div class="form-group form-actions">
-              <a type="reset" [routerLink]="['/admin', 'users']" class="btn btn-sm btn-warning">
-                Cancel </a>
-              <button type="submit" class="btn btn-sm btn-success" [disabled]="userForm.invalid" (click)="saveUser()">
-                Save </button>
-            </div>
-            <div class="col-md-1"></div>
-          </div>
+        <!-- Form Actions -->
+        <div class="user-form-actions">
+          <a [routerLink]="['/admin', 'users']" class="user-form-btn user-form-btn-warning">
+            Cancel
+          </a>
+          <button 
+            type="submit" 
+            class="user-form-btn user-form-btn-success" 
+            [disabled]="userForm.invalid" 
+            (click)="saveUser()">
+            Save
+          </button>
         </div>
       </form>
     </div>
   </div>
 </div>
+

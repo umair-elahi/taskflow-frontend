@@ -214,7 +214,7 @@ export class CreateWorkflowComponent implements OnInit {
   async addEmptyWorkflow(workflowType: string) {
     const wf: IApplicationWorkflow = {
       id: null,
-      name: 'Untitled ' + workflowType + ' Task',
+      name: 'Untitled ' + workflowType + ' stage',
       applicationId: this.applicationForm.controls['id'].value,
       type: workflowType,
       showMap: true,

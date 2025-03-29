@@ -1,125 +1,159 @@
-<div class="col-md-12">
-  <div class="box bg-white">
-    <div class="box-header">
-      <h4 class="fw-normal title fs-medium d-inline-block">Office Location</h4>
-      <a (click)="add()" class="btn btn-primary pull-right btn-new-record">
+<div class="office-container">
+  <div class="office-card">
+    <!-- Card Header -->
+    <div class="office-card-header">
+      <h4 class="office-title">Office Location</h4>
+      <button class="office-btn office-btn-primary" (click)="add()">
+        <i class="office-icon-plus"></i>
         Add New Office Location
-      </a>
+      </button>
     </div>
-    <div class="box-body">
 
-      <form name="officeLocationForm" *ngIf="isFormBinded" [formGroup]="officeLocationForm" novalidate id="form-test"
-        class="form-horizontal form-bordered form-control-borderless">
-        <div class="row">
-          <div class="col-md-3">
-            <div class="form-group">
-              <div class="col-xs-12">
-                Name
-                <input type="text" formControlName="name" name="name" class="form-control">
-                <p class="custom-error"
-                  *ngIf="officeLocationForm.get('name').hasError('required') && officeLocationForm.get('name').touched">
-                  Name is required.
-                </p>
-              </div>
-            </div>
+    <!-- Card Body -->
+    <div class="office-card-body">
+      <!-- Form Section -->
+      <form name="officeLocationForm" *ngIf="isFormBinded" [formGroup]="officeLocationForm" novalidate id="form-test" class="office-form">
+        <div class="office-form-grid">
+          <!-- Name Field -->
+          <div class="office-form-field">
+            <label for="name" class="office-label">Name</label>
+            <input type="text" formControlName="name" name="name" id="name" class="office-input">
+            <p class="office-error" *ngIf="officeLocationForm.get('name').hasError('required') && officeLocationForm.get('name').touched">
+              Name is required.
+            </p>
           </div>
-          <div class="col-md-7">
-            <div class="form-group">
-              <div class="col-xs-12">
-                Office Location Head
-                <ng-select [items]="users" bindLabel="email" bindValue="id" name="userId"
-                  formControlName="userId" placeholder="Select User">
-                </ng-select>
-                <p class="custom-error"
-                  *ngIf="officeLocationForm.get('userId').hasError('required') && officeLocationForm.get('userId').touched">
-                  Offlice Location Head is required.
-                </p>
-              </div>
-            </div>
+
+          <!-- Office Location Head Field -->
+          <div class="office-form-field">
+            <label for="userId" class="office-label">Office Location Head</label>
+            <ng-select [items]="users" bindLabel="email" bindValue="id" name="userId" id="userId" formControlName="userId" placeholder="Select User" class="office-select">
+            </ng-select>
+            <p class="office-error" *ngIf="officeLocationForm.get('userId').hasError('required') && officeLocationForm.get('userId').touched">
+              Office Location Head is required.
+            </p>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-12">
-            <br />
-            <button type="submit" class="btn btn-sm btn-success pull-right" [disabled]="officeLocationForm.invalid"
-              (click)="save()">
-              Save
-            </button>
-            <a type="reset" (click)="isFormBinded=false;" class="btn btn-sm btn-warning pull-right">
-              Cancel </a>
-          </div>
+
+        <!-- Form Actions -->
+        <div class="office-form-actions">
+          <button type="submit" class="office-btn office-btn-primary" [disabled]="officeLocationForm.invalid" (click)="save()">
+            Save
+          </button>
+          <button type="button" class="office-btn office-btn-secondary" (click)="isFormBinded = false;">
+            Cancel
+          </button>
         </div>
-        <br>
-        <br>
       </form>
-      <div class="row">
+      
+      <!-- Table Section -->
+      <div class="office-table-wrapper">
+        <!-- Search Bar (Mobile) -->
+        <div class="office-search-mobile">
+          <input type="text" class="office-input" name="searchMobile" placeholder="Search By Name" [(ngModel)]="filters.searchArray[0].value">
+        </div>
+
         <!-- Table -->
-        <section class="data-table">
-          <div class="mtpx-40 hidden-sm-up"></div>
-          <table class="w-100 mbpx-10 table-strip">
-            <tr>
-              <th>Name</th>
-              <th>Location Head</th>
-              <th>Created On</th>
-              <th>Modified On</th>
-              <th>Actions</th>
-            </tr>
-            <tr class="table-footer">
-              <td colspan="5">
-                <input type="text" class="form-control" name="firstname" placeholder="Search By Name" [(ngModel)]="filters.searchArray[0].value">
-              </td>
-            </tr>
-            <tr *ngFor="let officeLocation of officeLocations | filter:{filtrationKeys: ['name'], filtrationValues: [filters.searchArray[0].value]}">
-              <td>{{officeLocation.name}}</td>
-              <td>{{officeLocation.user ? officeLocation.user.email : 'N/A'}}</td>
-              <td>{{officeLocation.createdAt ? (officeLocation.createdAt | date:'medium') : 'N/A' }}</td>
-              <td>{{officeLocation.updatedAt ? (officeLocation.updatedAt | date:'medium') : 'N/A' }}</td>
-              <td>
-                <i class="fas fa-pencil-alt rec-action" data-toggle="tooltip" title="" data-original-title="Edit"
-                  (click)="edit(officeLocation)"></i>
-                <i class="fas fa-trash rec-action" data-toggle="tooltip" title="" data-original-title="Delete"
-                  (click)="deleteRecord(officeLocation.id)"></i>
-              </td>
-            </tr>
-            <tr>
-              <td class="text-center" *ngIf="officeLocations.length == 0" colspan="5">
-                No Office Locations Available
-              </td>
-            </tr>         
+        <div class="office-table-container">
+          <table class="office-table">
+            <thead class="office-table-head">
+              <tr>
+                <th class="office-th office-th-name">Name</th>
+                <th class="office-th office-th-head office-hide-sm">Location Head</th>
+                <th class="office-th office-th-date office-hide-md">Created On</th>
+                <th class="office-th office-th-date office-hide-md">Modified On</th>
+                <th class="office-th office-th-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Search Row (Desktop) -->
+              <tr class="office-table-search office-hide-sm">
+                <td colspan="5">
+                  <input type="text" class="office-input" name="firstname" placeholder="Search By Name" [(ngModel)]="filters.searchArray[0].value">
+                </td>
+              </tr>
+              
+              <!-- Data Rows -->
+              <tr *ngFor="let officeLocation of officeLocations | filter:{filtrationKeys: ['name'], filtrationValues: [filters.searchArray[0].value]}" class="office-table-row">
+                <td class="office-td office-td-name" data-label="Name">{{ officeLocation.name }}</td>
+                <td class="office-td office-td-head office-hide-sm" data-label="Location Head">{{ officeLocation.user ? officeLocation.user.email : 'N/A' }}</td>
+                <td class="office-td office-td-date office-hide-md" data-label="Created On">{{ officeLocation.createdAt ? (officeLocation.createdAt | date:'medium') : 'N/A' }}</td>
+                <td class="office-td office-td-date office-hide-md" data-label="Modified On">{{ officeLocation.updatedAt ? (officeLocation.updatedAt | date:'medium') : 'N/A' }}</td>
+                <td class="office-td office-td-actions" data-label="Actions">
+                  <div class="office-actions">
+                    <button class="office-btn-icon" title="Edit" (click)="edit(officeLocation)">
+                      <i class="office-icon-edit"></i>
+                    </button>
+                    <button class="office-btn-icon" title="Delete" (click)="deleteRecord(officeLocation.id)">
+                      <i class="office-icon-delete"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              
+              <!-- Empty State -->
+              <tr *ngIf="officeLocations.length == 0">
+                <td class="office-td-empty" colspan="5">
+                  No Office Locations Available
+                </td>
+              </tr>
+            </tbody>
           </table>
-          <div class="col-lg-6 col-md-12">
-            <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()"
-              aria-controls="example-datatable" class="form-control">
+        </div>
+
+        <!-- Mobile Data Cards (Alternative to table for very small screens) -->
+        <div class="office-mobile-cards">
+          <div *ngFor="let officeLocation of officeLocations | filter:{filtrationKeys: ['name'], filtrationValues: [filters.searchArray[0].value]}" class="office-mobile-card">
+            <div class="office-mobile-card-header">
+              <h3 class="office-mobile-card-title">{{ officeLocation.name }}</h3>
+              <div class="office-mobile-actions">
+                <button class="office-btn-icon" title="Edit" (click)="edit(officeLocation)">
+                  <i class="office-icon-edit"></i>
+                </button>
+                <button class="office-btn-icon" title="Delete" (click)="deleteRecord(officeLocation.id)">
+                  <i class="office-icon-delete"></i>
+                </button>
+              </div>
+            </div>
+            <div class="office-mobile-card-body">
+              <p><strong>Location Head:</strong> {{ officeLocation.user ? officeLocation.user.email : 'N/A' }}</p>
+              <p><strong>Created:</strong> {{ officeLocation.createdAt ? (officeLocation.createdAt | date:'medium') : 'N/A' }}</p>
+              <p><strong>Modified:</strong> {{ officeLocation.updatedAt ? (officeLocation.updatedAt | date:'medium') : 'N/A' }}</p>
+            </div>
+          </div>
+          
+          <!-- Empty State for Mobile Cards -->
+          <div *ngIf="officeLocations.length == 0" class="office-mobile-empty">
+            No Office Locations Available
+          </div>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="office-pagination-container">
+          <div class="office-page-size">
+            <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()" class="office-select-sm">
               <option value="10">10</option>
               <option value="20">20</option>
               <option value="30">30</option>
               <option value="-1">All</option>
             </select>
-
-            <p class="mtpx-10 text-sm-center paging-size-info">
-              Showing
-              <strong>{{filters.pageNo}}</strong> -
-              <strong>{{filters.noOfPages > 0 ? filters.noOfPages : 1}}</strong> of
-              <strong>{{totalRecords}}</strong>
+            <p class="office-paging-info">
+              Showing <strong>{{ filters.pageNo }}</strong> - 
+              <strong>{{ filters.noOfPages > 0 ? filters.noOfPages : 1 }}</strong> of 
+              <strong>{{ totalRecords }}</strong>
             </p>
           </div>
-
-          <div class="col-lg-6 col-md-12">
-            <ul class="pagination ta-right text-md-left unstyled">
-              <li class="prev" (click)="filters.pageNo == '1' && goToPrevious()">
-                Previous
+          <div class="office-pagination">
+            <ul class="office-pagination-list">
+              <li class="office-pagination-item office-pagination-prev" [class.office-pagination-disabled]="filters.pageNo == '1'" (click)="filters.pageNo != '1' && goToPrevious()">Previous</li>
+              <li *ngFor="let item of range" class="office-pagination-item" [class.office-pagination-active]="filters.pageNo == (item + 1)" (click)="goToPage(item)">
+                {{ item + 1 }}
               </li>
-              <li *ngFor="let item of range" [ngClass]="filters.pageNo == (item + 1) ? 'active-page' : ''"
-                (click)="goToPage(item)">
-                {{item + 1}}
-              </li>
-              <li class="next" (click)="filters.pageNo == (range[range.length - 1] + 1) && goToNext()">
-                Next
-              </li>
+              <li class="office-pagination-item office-pagination-next" [class.office-pagination-disabled]="filters.pageNo == (range[range.length - 1] + 1)" (click)="filters.pageNo != (range[range.length - 1] + 1) && goToNext()">Next</li>
             </ul>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
