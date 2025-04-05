@@ -114,14 +114,14 @@
   }
   
   .workload-btn-primary {
-    background: linear-gradient(135deg, var(--custom-color), #ff6b6b);
-    box-shadow: 0 2px 4px rgba(255, 59, 59, 0.2);
+    background: linear-gradient(135deg, var(--success), var(--success-hover));
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
   }
   
   .workload-btn-primary:hover {
-    background: linear-gradient(135deg, #ff6b6b, var(--custom-color));
+    background: linear-gradient(135deg, var(--success-hover), var(--success));
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(255, 59, 59, 0.3);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
   }
   
   .workload-btn-success {
@@ -686,4 +686,49 @@
     }
   }
   
+
+
+  ::ng-deep select {
+    background-color: var(--background-light-dark) !important;
+    color: var(--text-primary) !important;
+  }
+  
+  ::ng-deep .mat-select-arrow {
+    padding-right: 8px;
+  }
+  
+  ::ng-deep .ng-select-container {
+    background-color: var(--background-light-dark) !important;
+    color: var(--text-primary) !important;
+  }
+  
+  ::ng-deep .ng-option {
+    background-color: var(--background-light-dark) !important;
+    color: var(--text-primary) !important;
+  }
+  
+  ::ng-deep .ng-placeholder,
+  ::ng-deep .ng-clear-wrapper {
+    color: var(--text-primary) !important;
+  }
+  
+  ::ng-deep .ng-arrow-wrapper .ng-arrow {
+    border-color: var(--text-primary) transparent transparent !important;
+  }
+  
+  
+  ::ng-deep ng-select input {
+    caret-color: var(--text-primary);
+    color: var(--text-primary) !important;
+  }
+  
+  ::ng-deep textarea {
+    background-color: var(--background-light-dark) !important;
+    color: var(--text-primary) !important;
+  }
+  
+  ::ng-deep input[type="date"] {
+    background-color: var(--background-light-dark) !important;
+    color: var(--text-primary) !important;
+  }
   

@@ -236,6 +236,7 @@ export class ExecutionListComponent implements OnInit {
   this.updateTotalTasks();
       this.spinner.showFull();
       let promise = null;
+      let clarityPromise = null;
       switch (this.status) {
         case ApplicationWorkflowType.APPROVAL:
           promise = this.workflowService.getAllMyExecutions(constants.executionStatus.DRAFT, ApplicationWorkflowType.APPROVAL, this.appId);
@@ -248,6 +249,7 @@ export class ExecutionListComponent implements OnInit {
           break;
         case constants.executionStatus.INPROGRESS:
           promise = this.workflowService.getAllMyExecutions(constants.executionStatus.INPROGRESS, null, this.appId);
+          clarityPromise = this.workflowService.getAllMyExecutions(constants.executionStatus.CLARITY, null, this.appId);
           break;
         case constants.executionStatus.PARTICIPATED:
           promise = this.workflowService.getMyParticipatedExecution();
@@ -259,8 +261,16 @@ export class ExecutionListComponent implements OnInit {
           promise = this.workflowService.getAllMyExecutions(this.status, null, this.appId);
       }
       const res: any = await promise;
-      this.tempList = res.data;
-      this.totalRecords = res.data.length;
+      if (clarityPromise) {
+        const clarityRes: any = await clarityPromise;
+        // console.log('clarity Request', clarityRes.data);
+        this.tempList = res.data.concat(clarityRes.data);
+        console.log('tempList', this.tempList);
+      } else {
+        this.tempList = res.data;
+      }
+      // this.tempList = res.data;
+      this.totalRecords = this.tempList.length;
       this.range = _.range(Math.ceil(res.data.length / parseInt(this.filters.noOfPages.toString(), 0)));
       this.getPaginatedData();
     } catch (err) {

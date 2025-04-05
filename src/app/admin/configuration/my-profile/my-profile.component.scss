@@ -66,3 +66,53 @@ button {
     border-radius: 5px;
     color: var(--text-primary);
 }
+
+::ng-deep select {
+    background-color: var(--background-light-dark) !important;
+    color: var(--text-primary) !important;
+  }
+  
+  ::ng-deep .mat-select-arrow {
+    padding-right: 8px;
+  }
+  
+  ::ng-deep .ng-select-container {
+    background-color: var(--background-light-dark) !important;
+    color: var(--text-primary) !important;
+  }
+  
+  ::ng-deep .ng-option {
+    background-color: var(--background-light-dark) !important;
+    color: var(--text-primary) !important;
+  }
+  
+  ::ng-deep .ng-placeholder,
+  ::ng-deep .ng-clear-wrapper {
+    color: var(--text-primary) !important;
+  }
+  
+  ::ng-deep .ng-arrow-wrapper .ng-arrow {
+    border-color: var(--text-primary) transparent transparent !important;
+  }
+  
+  
+  ::ng-deep ng-select input {
+    caret-color: var(--text-primary);
+    color: var(--text-primary) !important;
+  }
+  
+  ::ng-deep textarea {
+    background-color: var(--background-light-dark) !important;
+    color: var(--text-primary) !important;
+  }
+  
+  ::ng-deep input[type="date"] {
+    background-color: var(--background-light-dark) !important;
+    color: var(--text-primary) !important;
+  }
+  
+  ::ng-deep .ng-value-container .ng-value {
+    background: linear-gradient(135deg, var(--custom-color), #ff6b6b) !important;
+  }
+
+  

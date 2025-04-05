@@ -60,11 +60,11 @@
   }
   
   .office-btn-primary {
-    background: linear-gradient(135deg, var(--custom-color), #ff6b6b);
+    background: linear-gradient(135deg, var(--success), var(--success-hover));
   }
   
   .office-btn-primary:hover {
-    background: linear-gradient(135deg, #ff6b6b, var(--custom-color));
+    background: linear-gradient(135deg, var(--success-hover), var(--success));
   }
   
   .office-btn-primary:disabled {
@@ -73,12 +73,12 @@
   }
   
   .office-btn-secondary {
-    background-color: transparent;
+    background: linear-gradient(135deg, var(--warning), var(--warning-hover));
     border: 1px solid var(--border-color);
   }
   
   .office-btn-secondary:hover {
-    background-color: var(--background-hover);
+    background: linear-gradient(135deg, var(--warning-hover), var(--warning));
   }
   
   .office-btn-icon {
@@ -551,4 +551,10 @@
     }
   }
   
-  
+  .add-btn {
+    background: linear-gradient(135deg, var(--custom-color), #ff6b6b);
+  }
+
+  .add-btn:hover {
+    background: linear-gradient(135deg, #ff6b6b, var(--custom-color));
+  }

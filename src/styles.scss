@@ -156,3 +156,47 @@ body {
 .swal2-cancel:hover {
   background: linear-gradient(135deg, #5a6268, #6c757d) !important;
 }
+
+::ng-deep select {
+  background-color: var(--background-light-dark) !important;
+  color: var(--text-primary) !important;
+}
+
+::ng-deep .mat-select-arrow {
+  padding-right: 8px;
+}
+
+::ng-deep .ng-select-container {
+  background-color: var(--background-light-dark) !important;
+  color: var(--text-primary) !important;
+}
+
+::ng-deep .ng-option {
+  background-color: var(--background-light-dark) !important;
+  color: var(--text-primary) !important;
+}
+
+::ng-deep .ng-placeholder,
+::ng-deep .ng-clear-wrapper {
+  color: var(--text-primary) !important;
+}
+
+::ng-deep .ng-arrow-wrapper .ng-arrow {
+  border-color: var(--text-primary) transparent transparent !important;
+}
+
+
+::ng-deep ng-select input {
+  caret-color: var(--text-primary);
+  color: var(--text-primary) !important;
+}
+
+::ng-deep textarea {
+  background-color: var(--background-light-dark) !important;
+  color: var(--text-primary) !important;
+}
+
+::ng-deep input[type="date"] {
+  background-color: var(--background-light-dark) !important;
+  color: var(--text-primary) !important;
+}
