@@ -115,4 +115,7 @@ button {
     background: linear-gradient(135deg, var(--custom-color), #ff6b6b) !important;
   }
 
-  
+  ::ng-deep input {
+    background-color: var(--background-light-dark) !important;
+    color: var(--text-primary) !important;
+  }

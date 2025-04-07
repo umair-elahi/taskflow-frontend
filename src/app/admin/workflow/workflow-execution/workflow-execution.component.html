@@ -37,7 +37,76 @@
 <!-- Fullscreen Modal Overlay for File Preview -->
 <div class="file-preview-modal" *ngIf="showModal">
   <div class="file-preview-modal-content">
-    <i class="fas fa-times close-button" (click)="closeModal()"></i>
-    <iframe [src]="sanitizedPreviewUrl" class="preview-iframe"></iframe>
+    <!-- Simplified header with only download button -->
+    <div class="file-preview-header">
+      <div class="file-controls">
+        <a [href]="currentFilePath" download class="download-button">
+          <i class="fas fa-download"></i> Download
+        </a>
+      </div>
+    </div>
+    
+    <!-- Close button positioned outside the header -->
+    <a class="close-button" (click)="closeModal()">
+      <i class="fas fa-times"></i>
+    </a>
+
+    <!-- Content container -->
+    <div class="file-preview-body custom-scrollbar">
+      <!-- Image preview (jpeg, jpg, webp) -->
+      <div *ngIf="sanitizedImageUrl && isImageFile(currentFilePath)" class="image-preview-container">
+        <div class="image-controls">
+          <button (click)="zoomIn()" title="Zoom In">
+            <i class="fas fa-search-plus"></i>
+          </button>
+          <button (click)="zoomOut()" title="Zoom Out">
+            <i class="fas fa-search-minus"></i>
+          </button>
+          <button (click)="resetZoom()" title="Reset Zoom">
+            <i class="fas fa-expand"></i>
+          </button>
+        </div>
+        <div class="image-wrapper custom-scrollbar">
+          <img [src]="sanitizedImageUrl" class="image-preview" />
+        </div>
+      </div>
+      
+      <!-- PDF preview -->
+      <iframe 
+        *ngIf="sanitizedPreviewUrl && isPdfFile(currentFilePath)" 
+        [src]="sanitizedPreviewUrl" 
+        class="preview-iframe">
+      </iframe>
+      
+      <!-- Office documents preview (xls, xlsx, xlsm, ppt, pptx, pps, doc, docx) -->
+      <iframe 
+        *ngIf="sanitizedPreviewUrl && isOfficeFile(currentFilePath)" 
+        [src]="sanitizedPreviewUrl" 
+        class="preview-iframe">
+      </iframe>
+      
+      <!-- CSV preview -->
+      <div *ngIf="sanitizedPreviewUrl && isCsvFile(currentFilePath)" class="csv-preview-container custom-scrollbar">
+        <table class="csv-table">
+          <thead *ngIf="csvHeaders.length > 0">
+            <tr>
+              <th *ngFor="let header of csvHeaders">{{ header }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of csvData">
+              <td *ngFor="let cell of row">{{ cell }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Default preview for other file types -->
+      <iframe 
+        *ngIf="sanitizedPreviewUrl && isUnsupportedFile(currentFilePath)" 
+        [src]="sanitizedPreviewUrl" 
+        class="preview-iframe">
+      </iframe>
+    </div>
   </div>
 </div>

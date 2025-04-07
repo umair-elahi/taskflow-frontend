@@ -15,7 +15,8 @@ import { FileUploadService } from '../../helper/services/file-upload.service';
 import { environment } from 'src/environments/environment';
 import { MenuCountsService } from '../../helper/services/menu-counts.service';
 import { IUserModel } from '../../configuration/user/IUserModel';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
+import { ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-workflow-execution',
@@ -55,6 +56,16 @@ export class WorkflowExecutionComponent implements OnInit {
 
   showModal = false;
   sanitizedPreviewUrl: SafeResourceUrl = '';
+  sanitizedImageUrl: SafeUrl = '';
+  currentFilePath: string = '';
+  currentScale = 1;
+  minScale = 0.1;
+  maxScale = 5;
+  scaleStep = 0.25;
+  
+  // CSV preview data
+  csvHeaders: string[] = [];
+  csvData: string[][] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -84,22 +95,219 @@ export class WorkflowExecutionComponent implements OnInit {
     await this.getApplication();
   }
 
+  // File type detection methods
+  isImageFile(filePath: string): boolean {
+    if (!filePath) return false;
+    const ext = this.getFileExtension(filePath).toLowerCase();
+    return ['jpeg', 'jpg', 'webp'].includes(ext);
+  }
+
+  isPdfFile(filePath: string): boolean {
+    if (!filePath) return false;
+    const ext = this.getFileExtension(filePath).toLowerCase();
+    return ext === 'pdf';
+  }
+
+  isExcelFile(filePath: string): boolean {
+    if (!filePath) return false;
+    const ext = this.getFileExtension(filePath).toLowerCase();
+    return ['xls', 'xlsx', 'xlsm'].includes(ext);
+  }
+
+  isPowerPointFile(filePath: string): boolean {
+    if (!filePath) return false;
+    const ext = this.getFileExtension(filePath).toLowerCase();
+    return ['ppt', 'pptx', 'pps'].includes(ext);
+  }
+
+  isWordFile(filePath: string): boolean {
+    if (!filePath) return false;
+    const ext = this.getFileExtension(filePath).toLowerCase();
+    return ['doc', 'docx'].includes(ext);
+  }
+
+  isOfficeFile(filePath: string): boolean {
+    return this.isExcelFile(filePath) || 
+           this.isPowerPointFile(filePath) || 
+           this.isWordFile(filePath);
+  }
+
+  isCsvFile(filePath: string): boolean {
+    if (!filePath) return false;
+    const ext = this.getFileExtension(filePath).toLowerCase();
+    return ext === 'csv';
+  }
+
+  isUnsupportedFile(filePath: string): boolean {
+    if (!filePath) return false;
+    return !this.isImageFile(filePath) && 
+           !this.isPdfFile(filePath) && 
+           !this.isOfficeFile(filePath) &&
+           !this.isCsvFile(filePath);
+  }
+
+  getFileExtension(filePath: string): string {
+    if (!filePath) return '';
+    // Remove query parameters if present
+    const pathWithoutQuery = filePath.split('?')[0];
+    return pathWithoutQuery.split('.').pop() || '';
+  }
+
+  // Zoom methods for images
+  zoomIn(): void {
+    this.currentScale = Math.min(this.maxScale, this.currentScale + this.scaleStep);
+    this.applyImageZoom();
+  }
+
+  zoomOut(): void {
+    this.currentScale = Math.max(this.minScale, this.currentScale - this.scaleStep);
+    this.applyImageZoom();
+  }
+
+  resetZoom(): void {
+    this.currentScale = 1;
+    // Only apply zoom if modal is open
+    if (this.showModal) {
+      this.applyImageZoom();
+    }
+  }
+
+  private applyImageZoom(): void {
+    const imageElement = document.querySelector('.image-preview') as HTMLElement;
+    if (imageElement) {
+      imageElement.style.transform = `scale(${this.currentScale})`;
+      
+      // When zoomed in, make sure the image can be larger than the container
+      if (this.currentScale > 1) {
+        imageElement.style.maxWidth = 'none';
+        imageElement.style.maxHeight = 'none';
+      } else {
+        imageElement.style.maxWidth = '100%';
+        imageElement.style.maxHeight = '100%';
+      }
+    }
+  }
+
   openModal(event: Event, fileLink: string) {
     event.preventDefault(); // Prevent the default link behavior
     
     // Disable background scrolling
     document.body.style.overflow = 'hidden';
-  
-    // Sanitize the file URL (if needed, you can build the URL similar to your getLink() method)
-    this.sanitizedPreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileLink);
-  
+    
+    // Store the current file path
+    this.currentFilePath = fileLink;
+    
+    // Reset zoom for images
+    this.currentScale = 1;
+    
+    // Prepare different URLs based on file type
+    if (this.isPdfFile(fileLink)) {
+      // Add PDF specific parameters
+      const pdfUrl = fileLink + "#view=FitH";
+      this.sanitizedPreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl);
+      this.sanitizedImageUrl = null;
+    } else if (this.isOfficeFile(fileLink)) {
+      // Use Office Online Viewer for Office files
+      const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(fileLink)}`;
+      this.sanitizedPreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(officeViewerUrl);
+      this.sanitizedImageUrl = null;
+    } else if (this.isImageFile(fileLink)) {
+      this.sanitizedImageUrl = this.sanitizer.bypassSecurityTrustUrl(fileLink);
+      this.sanitizedPreviewUrl = null;
+    } else if (this.isCsvFile(fileLink)) {
+      // Fetch and parse CSV data
+      this.fetchCsvData(fileLink);
+      this.sanitizedPreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileLink);
+      this.sanitizedImageUrl = null;
+    } else {
+      // For other file types, use the regular preview
+      this.sanitizedPreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileLink);
+      this.sanitizedImageUrl = null;
+    }
+    
     this.showModal = true;
+    
+    // Wait for the DOM to update before applying zoom
+    setTimeout(() => {
+      if (this.isImageFile(fileLink)) {
+        this.applyImageZoom();
+      }
+    }, 100);
   }
 
   closeModal() {
+    // Set showModal to false first to remove elements from DOM
     this.showModal = false;
-    this.sanitizedPreviewUrl = '';
+    this.sanitizedPreviewUrl = null;
+    this.sanitizedImageUrl = null;
+    this.csvHeaders = [];
+    this.csvData = [];
+    this.currentFilePath = '';
     document.body.style.overflow = 'auto'; // Re-enable background scrolling
+    // Don't call resetZoom here as it tries to access DOM elements that are now removed
+    this.currentScale = 1;
+  }
+
+  // Fetch and parse CSV data
+  private fetchCsvData(url: string): void {
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.text();
+      })
+      .then(text => {
+        this.parseCsvData(text);
+      })
+      .catch(error => {
+        console.error('Error fetching CSV data:', error);
+        this.csvData = [['Error loading CSV data']];
+      });
+  }
+
+  // Parse CSV data
+  private parseCsvData(csvText: string): void {
+    // Simple CSV parser - for production, consider using a library
+    const lines = csvText.split('\n');
+    
+    if (lines.length > 0) {
+      // Assume first line is headers
+      this.csvHeaders = this.parseCsvLine(lines[0]);
+      
+      // Parse data rows
+      this.csvData = [];
+      for (let i = 1; i < lines.length; i++) {
+        if (lines[i].trim()) {
+          this.csvData.push(this.parseCsvLine(lines[i]));
+        }
+      }
+    }
+  }
+
+  // Parse a single CSV line
+  private parseCsvLine(line: string): string[] {
+    // This is a simple parser that doesn't handle all CSV edge cases
+    // For production, consider using a CSV parsing library
+    const result: string[] = [];
+    let current = '';
+    let inQuotes = false;
+    
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      
+      if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === ',' && !inQuotes) {
+        result.push(current);
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    
+    result.push(current); // Add the last field
+    return result;
   }
 
   getLocation() {

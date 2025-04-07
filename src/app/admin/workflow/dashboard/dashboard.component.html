@@ -16,3 +16,22 @@
     <button class="card-button" (click)="showAllApps()">Show All</button>
   </div>
 </section>
+
+<section class="dashboard">
+  <div class="card">
+    <h1>Approval Tasks</h1>
+    <i class="fas fa-check-circle"></i>
+    <span>{{ approvalPromiseDataCount }}</span>
+  </div>
+  <div class="card">
+    <h1>Input Tasks</h1>
+    <i class="fas fa-pencil-alt"></i>
+    <span>{{ inputPromiseDataCount }}</span>
+  </div>
+  <div class="card">
+    <h1>Clarity Tasks</h1>
+    <i class="fas fa-comments"></i>
+    <span>{{ clarityPromiseDataCount }}</span>
+  </div>
+</section>
+
