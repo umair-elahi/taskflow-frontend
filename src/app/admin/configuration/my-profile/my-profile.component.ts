@@ -70,6 +70,9 @@ export class MyProfileComponent implements OnInit {
       newPassword: ['', Validators.compose([Validators.required])],
     });
 
+    // Disable all controls of the 'userForm'
+    this.userForm.disable();
+
     this.userForm.controls.roleIdss.disable();
     this.isFormBinded = true;
   }

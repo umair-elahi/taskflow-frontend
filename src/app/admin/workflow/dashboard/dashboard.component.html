@@ -3,14 +3,14 @@
   <a class="create-link" [routerLink]="['/workflow', 'create', 'new']">
     Create New App
   </a>
-  
+
   <!-- Applications List -->
   <ul class="process-list">
     <li class="process-list-item" *ngFor="let item of limitedApps" [routerLink]="['/workflow', item.id, 'execute', 'new', 'open']">
       {{ item.name }}
     </li>
   </ul>
-  
+
   <!-- Card Footer -->
   <div class="card-footer">
     <button class="card-button" (click)="showAllApps()">Show All</button>
@@ -35,3 +35,58 @@
   </div>
 </section>
 
+<!-- Task Type and Date Range Filter Section -->
+<section class="filter-section">
+  <div class="filter-heading">Filter Tasks by Date</div>
+
+  <div class="filter-fields">
+    <div class="col col-1">
+      <!-- Task Type Selection -->
+      <label for="taskType">Task Type</label>
+      <select id="taskType" [(ngModel)]="selectedTaskType" (ngModelChange)="filterTasksByType()">
+        <option value="" disabled selected>Select Task Type</option>
+        <option value="approval">Approval Tasks</option>
+        <option value="input">Input Tasks</option>
+        <option value="clarity">Clarity Tasks</option>
+      </select>
+    </div>
+
+    <div class="col col-2">
+      <!-- Date Inputs -->
+      <label for="startDate">Start Date</label>
+      <input id="startDate" type="date" [(ngModel)]="startDate" (ngModelChange)="filterTasksByType()" />
+    </div>
+
+    <div class="col col-3">
+      <label for="endDate">End Date</label>
+      <input id="endDate" type="date" [(ngModel)]="endDate" (ngModelChange)="filterTasksByType()" />
+    </div>
+
+    <div class="col col-4">
+      <!-- Clear Filters Button -->
+       <label for="">Filters</label>
+      <button class="clear-button" (click)="clearFilters()">Clear</button>
+    </div>
+  </div>
+
+  <!-- Display filtered tasks -->
+  <div *ngIf="selectedTaskType && startDate && endDate" class="filtered-tasks">
+    <div *ngIf="filteredTasks && filteredTasks.length > 0">
+      <div class="filtered-tasks-header">
+        Filtered {{ selectedTaskType | titlecase }} Tasks
+      </div>
+
+      <div class="list-content">
+        <div *ngFor="let item of filteredTasks">
+          <span>{{ item.name || 'Untitled' }}</span>
+          <span>{{ item.createdAt | date:'short' }}</span>
+          <span>{{ item.title }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <div *ngIf="filteredTasks && filteredTasks.length === 0" class="no-tasks">
+      <p>No tasks found for the selected date range.</p>
+    </div>
+  </div>
+</section>
