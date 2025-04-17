@@ -1,0 +1,739 @@
+
+  
+  /* Main Container Styling */
+  .col-md-12 {
+    width: 100%;
+    padding: 16px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text-primary);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Box/Card Styling */
+  .box {
+    background-color: var(--background-light-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    margin-bottom: 24px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .box:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.12);
+  }
+  
+  .bg-white {
+    background-color: var(--background-light-dark);
+  }
+  
+  /* Box Header Styling */
+  .box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background-color: var(--background-hover);
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .title {
+    font-size: 1.25rem;
+    margin: 0;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 12px;
+  }
+  
+  .title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 18px;
+    background: linear-gradient(135deg, var(--custom-color), #ff6b6b);
+    border-radius: 2px;
+  }
+  
+  .fw-normal {
+    font-weight: 500;
+  }
+  
+  .fs-medium {
+    font-size: 1.1rem;
+  }
+  
+  .d-inline-block {
+    display: inline-block;
+  }
+  
+  /* Box Body Styling */
+  .box-body {
+    padding: 20px;
+  }
+  
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -8px;
+  }
+  
+  /* Table Section Styling */
+  .data-table {
+    width: 100%;
+    overflow: hidden;
+    padding: 8px;
+  }
+  
+  /* Table Styling */
+  .table-strip {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--background-dark);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .w-100 {
+    width: 100%;
+  }
+  
+  .mbpx-10 {
+    margin-bottom: 10px;
+  }
+  
+  /* Table Header Styling */
+  .table-strip th {
+    text-align: left;
+    padding: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    background-color: var(--background-hover);
+    border-bottom: 2px solid var(--border-color);
+    position: relative;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+  }
+  
+  .table-strip th:first-child {
+    border-top-left-radius: 8px;
+  }
+  
+  .table-strip th:last-child {
+    border-top-right-radius: 8px;
+  }
+  
+  /* Sort Icons Styling */
+  .table-strip th i.fas {
+    margin-left: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    transition: color 0.2s ease, transform 0.2s ease;
+    vertical-align: middle;
+  }
+  
+  .table-strip th i.fas:hover {
+    color: var(--custom-color);
+    transform: translateY(-1px);
+  }
+  
+  /* Table Row Styling */
+  .table-strip tr {
+    transition: background-color 0.2s ease;
+  }
+  
+  .table-strip tr:not(:last-child) {
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .table-strip tr:hover {
+    background-color: var(--background-hover);
+  }
+  
+  /* Table Cell Styling */
+  .table-strip td {
+    padding: 14px 16px;
+    color: var(--text-secondary);
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s ease;
+  }
+  
+  /* Action Icon Styling */
+  .table-strip td i.fas {
+    cursor: pointer;
+    color: var(--custom-color);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(255, 59, 59, 0.1);
+  }
+  
+  .table-strip td i.fas:hover {
+    background-color: rgba(255, 59, 59, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(255, 59, 59, 0.2);
+  }
+  
+  /* Empty State Styling */
+  .text-center {
+    text-align: center;
+  }
+  
+  td.text-center {
+    padding: 40px 20px !important;
+    color: var(--text-secondary);
+    font-size: 1rem;
+  }
+  
+  /* Enhanced Pagination Container */
+  .col-lg-6.col-md-12 {
+    width: 100%;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+  }
+  
+  /* Pagination Container Wrapper */
+  .data-table .col-lg-6.col-md-12:last-child {
+    margin-top: 0;
+  }
+  
+  /* Page Size Selector Container */
+  .data-table .col-lg-6.col-md-12:first-of-type {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  /* Page Size Selector Styling */
+  .form-control {
+    position: relative;
+    width: 80px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+  }
+  
+  .form-control:focus {
+    outline: none;
+    border-color: var(--custom-color);
+    box-shadow: 0 0 0 2px rgba(255, 59, 59, 0.2);
+  }
+  
+  /* Add a dropdown indicator */
+  .form-control {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23A0A0A0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 28px;
+  }
+  
+  /* Pagination Info Text Styling */
+  .paging-size-info {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+    white-space: nowrap;
+  }
+  
+  .mtpx-10 {
+    margin-top: 0;
+  }
+  
+  .text-sm-center {
+    text-align: left;
+  }
+  
+  /* Pagination Styling */
+  .pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 0 0;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  
+  .ta-right {
+    text-align: left;
+  }
+  
+  .text-md-left {
+    text-align: left;
+  }
+  
+  .unstyled {
+    list-style: none;
+  }
+  
+  /* Pagination Item Styling */
+  .pagination li {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+  }
+  
+  .pagination li:hover {
+    background-color: var(--background-hover);
+    border-color: var(--custom-color);
+  }
+  
+  /* Active Page Styling */
+  .pagination li.active-page {
+    background-color: var(--custom-color);
+    border-color: var(--custom-color);
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(255, 59, 59, 0.3);
+  }
+  
+  /* Previous/Next Button Styling */
+  .pagination li.prev,
+  .pagination li.next {
+    min-width: 100px;
+    font-weight: 500;
+    padding: 0 16px;
+  }
+  
+  /* Hidden Elements for Small Screens */
+  .hidden-sm-up {
+    display: none;
+  }
+  
+  /* Animation for Table Rows */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .table-strip tr {
+    animation: fadeIn 0.3s ease forwards;
+  }
+  
+  /* RESPONSIVE STYLING */
+  
+  /* Large Screens */
+  @media (min-width: 992px) {
+    .col-lg-6 {
+      width: 50%;
+    }
+    
+    .data-table .col-lg-6.col-md-12:first-of-type {
+      justify-content: flex-start;
+    }
+    
+    .data-table .col-lg-6.col-md-12:last-child {
+      justify-content: flex-end;
+    }
+    
+    .pagination {
+      justify-content: flex-end;
+      margin-top: 0;
+    }
+  }
+  
+  /* Medium Screens */
+  @media (max-width: 991px) {
+    .data-table .col-lg-6.col-md-12 {
+      width: 100%;
+    }
+    
+    // .data-table .col-lg-6.col-md-12:first-of-type {
+    //   justify-content: space-between;
+    // }
+    
+    .pagination {
+      justify-content: center;
+    }
+    
+    .ta-right {
+      text-align: center;
+    }
+  }
+  
+  /* Small Screens */
+  @media (max-width: 768px) {
+    .box-header {
+      padding: 14px 16px;
+    }
+    
+    .box-body {
+      padding: 16px;
+    }
+    
+    .title {
+      font-size: 1.1rem;
+    }
+    
+    .mtpx-40 {
+      margin-top: 20px;
+    }
+    
+    .hidden-sm-up {
+      display: block;
+    }
+    
+    /* Responsive Table */
+    .table-strip {
+      border: 0;
+      box-shadow: none;
+      background-color: transparent;
+    }
+    
+    .table-strip thead,
+    .table-strip th {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    
+    .table-strip tr {
+      display: block;
+      margin-bottom: 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background-color: var(--background-dark);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Create labels for mobile view using pseudo-elements */
+    .table-strip td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      text-align: right;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .table-strip td:last-child {
+      border-bottom: 0;
+    }
+    
+    /* Create labels for mobile view using pseudo-elements */
+    .table-strip td:nth-child(1)::before {
+      content: "Action";
+      font-weight: 600;
+      color: var(--text-primary);
+      text-align: left;
+      padding-right: 10px;
+    }
+    
+    .table-strip td:nth-child(2)::before {
+      content: "Item Subject";
+      font-weight: 600;
+      color: var(--text-primary);
+      text-align: left;
+      padding-right: 10px;
+    }
+    
+    .table-strip td:nth-child(3)::before {
+      content: "Created By";
+      font-weight: 600;
+      color: var(--text-primary);
+      text-align: left;
+      padding-right: 10px;
+    }
+    
+    .table-strip td:nth-child(4)::before {
+      content: "Created On";
+      font-weight: 600;
+      color: var(--text-primary);
+      text-align: left;
+      padding-right: 10px;
+    }
+    
+    .table-strip td:nth-child(5)::before {
+      content: "Updated On";
+      font-weight: 600;
+      color: var(--text-primary);
+      text-align: left;
+      padding-right: 10px;
+    }
+    
+    .table-strip td:nth-child(6)::before {
+      content: "Task Name";
+      font-weight: 600;
+      color: var(--text-primary);
+      text-align: left;
+      padding-right: 10px;
+    }
+    
+    /* Special handling for empty state */
+    td.text-center[colspan="6"] {
+      display: block;
+      text-align: center;
+      padding: 30px 20px !important;
+    }
+    
+    td.text-center[colspan="6"]::before {
+      content: none;
+    }
+    
+    /* Pagination on mobile */
+    .data-table .col-lg-6.col-md-12:first-of-type {
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .form-control {
+      width: 100%;
+      max-width: 200px;
+    }
+    
+    .text-sm-center {
+      text-align: center;
+    }
+    
+    .pagination li {
+      min-width: 36px;
+      height: 36px;
+    }
+    
+    .pagination li.prev,
+    .pagination li.next {
+      min-width: auto;
+      padding: 0 12px;
+    }
+  }
+  
+  /* Extra Small Screens */
+  @media (max-width: 480px) {
+    .col-md-12 {
+      padding: 12px;
+    }
+    
+    .box-header {
+      padding: 12px;
+    }
+    
+    .box-body {
+      padding: 12px;
+    }
+    
+    .pagination {
+      gap: 6px;
+    }
+    
+    .pagination li {
+      min-width: 32px;
+      height: 32px;
+      font-size: 0.85rem;
+    }
+    
+    .pagination li.prev,
+    .pagination li.next {
+      font-size: 0.85rem;
+    }
+    
+    /* Make the table cells stack better on very small screens */
+    .table-strip td {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 12px;
+    }
+    
+    .table-strip td::before {
+      margin-bottom: 6px;
+      width: 100%;
+    }
+    
+    .table-strip td:nth-child(1) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    
+    .table-strip td:nth-child(1)::before {
+      margin-bottom: 0;
+      width: auto;
+    }
+  }
+  
+  /* Very Small Screens */
+  @media (max-width: 360px) {
+    .pagination li.prev,
+    .pagination li.next {
+      font-size: 0;
+      min-width: 32px;
+      position: relative;
+    }
+    
+    .pagination li.prev::after {
+      content: "←";
+      font-size: 1rem;
+    }
+    
+    .pagination li.next::after {
+      content: "→";
+      font-size: 1rem;
+    }
+  }
+  
+  /* Fix for empty state on mobile */
+  @media (max-width: 768px) {
+    tr:has(td[colspan="6"]) {
+      display: block;
+      background-color: var(--background-dark);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 16px;
+    }
+    
+    td[colspan="6"] {
+      display: flex !important;
+      justify-content: center;
+      align-items: center;
+      min-height: 100px;
+      text-align: center;
+    }
+    
+    td[colspan="6"]::before {
+      content: none !important;
+    }
+  }
+  
+  /* Enhanced Empty State */
+  td.text-center[colspan="6"] {
+    position: relative;
+    padding-top: 60px !important;
+  }
+  
+  td.text-center[colspan="6"]::after {
+    content: "📂";
+    font-size: 2rem;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.6;
+  }
+  
+  /* Disabled state for pagination */
+  .pagination li.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+  
+  /* Fix for pagination logic */
+  .pagination li.prev:not(.disabled):hover,
+  .pagination li.next:not(.disabled):hover {
+    background-color: var(--background-hover);
+    border-color: var(--custom-color);
+  }
+  
+  /* Add subtle hover effect to form control */
+  .form-control:hover {
+    border-color: var(--border-color);
+    background-color: var(--background-hover);
+  }
+  
+  /* Add focus styles for better accessibility */
+  .pagination li:focus-visible {
+    outline: 2px solid var(--custom-color);
+    outline-offset: 2px;
+  }
+  
+  /* Print styles */
+  @media print {
+    .box {
+      box-shadow: none;
+      border: 1px solid #ddd;
+    }
+    
+    .box-header {
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    
+    .table-strip {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    .table-strip th {
+      background-color: #f5f5f5;
+      color: #333;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .table-strip td {
+      border-bottom: 1px solid #ddd;
+      color: #333;
+    }
+    
+    .pagination,
+    .form-control,
+    .paging-size-info {
+      display: none;
+    }
+  }
+
+  .pag-container-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .pag-container-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }

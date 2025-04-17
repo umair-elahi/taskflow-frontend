@@ -50,41 +50,43 @@
               <td>{{list.applicationWorkflowName || 'N/A' }}</td>
             </tr>
             <tr>
-              <td class=" text-center" *ngIf="lists.length == 0" colspan="6">
+              <td class="text-center" *ngIf="lists.length == 0" colspan="6">
                 No Data Available
               </td>
             </tr>
           </table>
-          <div class="col-lg-6 col-md-12">
-            <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()"
-              aria-controls="example-datatable" class="form-control">
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">30</option>
-              <option value="-1">All</option>
-            </select>
-
-            <p class="mtpx-10 text-sm-center paging-size-info">
-              Showing
-              <strong>{{filters.pageNo}}</strong> -
-              <strong>{{filters.noOfPages > 0 ? filters.noOfPages : 1}}</strong> of
-              <strong>{{totalRecords}}</strong>
-            </p>
-          </div>
-
-          <div class="col-lg-6 col-md-12">
-            <ul class="pagination ta-right text-md-left unstyled">
-              <li class="prev" (click)="filters.pageNo == '1' && goToPrevious()">
-                Previous
-              </li>
-              <li *ngFor="let item of range" [ngClass]="filters.pageNo == (item + 1) ? 'active-page' : ''"
-                (click)="goToPage(item)">
-                {{item + 1}}
-              </li>
-              <li class="next" (click)="filters.pageNo == (range[range.length - 1] + 1) && goToNext()">
-                Next
-              </li>
-            </ul>
+          <div class="pag-container-bottom">
+            <div class="col-lg-6 col-md-12">
+              <select name="example-datatable_length" [(ngModel)]="filters.noOfPages" (change)="getPaginatedData()"
+                aria-controls="example-datatable" class="form-control">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="-1">All</option>
+              </select>
+  
+              <p class="mtpx-10 text-sm-center paging-size-info">
+                Showing
+                <strong>{{filters.pageNo}}</strong> -
+                <strong>{{filters.noOfPages > 0 ? filters.noOfPages : 1}}</strong> of
+                <strong>{{totalRecords}}</strong>
+              </p>
+            </div>
+  
+            <div class="col-lg-6 col-md-12">
+              <ul class="pagination ta-right text-md-left unstyled">
+                <li class="prev" (click)="filters.pageNo == '1' && goToPrevious()">
+                  Previous
+                </li>
+                <li *ngFor="let item of range" [ngClass]="filters.pageNo == (item + 1) ? 'active-page' : ''"
+                  (click)="goToPage(item)">
+                  {{item + 1}}
+                </li>
+                <li class="next" (click)="filters.pageNo == (range[range.length - 1] + 1) && goToNext()">
+                  Next
+                </li>
+              </ul>
+            </div>
           </div>
         </section>
       </div>

@@ -1,4 +1,68 @@
+
 <div class="dashboard-container">
+  <div class="dashboard-card">
+    <div class="dashboard-card-header">
+      <h4 class="dashboard-title">Tasks Pending for Over 7 Days</h4>
+    </div>
+    <div class="dashboard-card-body">
+      <!-- Desktop Table -->
+      <div class="dashboard-table-container custom-items-table-container">
+        <table class="dashboard-table">
+          <thead class="dashboard-table-head">
+            <tr>
+              <th class="dashboard-th">Days Passed</th>
+              <th class="dashboard-th">App Name</th>
+              <th class="dashboard-th">Created At</th>
+              <th class="dashboard-th">Order Id</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of totalItems" class="dashboard-table-row">
+              <td class="dashboard-td">{{item.daysPassed}}</td>
+              <td class="dashboard-td">{{item.name}}</td>
+              <td class="dashboard-td">{{ item.createdAt | date:'medium' }}</td>
+              <td class="dashboard-td">{{item.title}}</td>
+            </tr>
+            <tr *ngIf="totalItems.length == 0">
+              <td class="dashboard-td-empty" colspan="4">
+                <div class="dashboard-empty-state">
+                  <i class="fas fa-folder-open dashboard-empty-icon"></i>
+                  <p>No Items Available</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Mobile Cards -->
+      <div class="dashboard-mobile-cards custom-items-mobile-cards">
+        <div *ngFor="let item of totalItems" class="dashboard-mobile-card">
+          <div class="dashboard-mobile-card-header">
+            <h3 class="dashboard-mobile-card-title">{{item.name}}</h3>
+          </div>
+          <div class="dashboard-mobile-card-body">
+            <div class="dashboard-mobile-stat">
+              <span class="dashboard-mobile-label">Days Passed:</span>
+              <span>{{item.daysPassed}}</span>
+            </div>
+            <div class="dashboard-mobile-stat">
+              <span class="dashboard-mobile-label">Created At:</span>
+              <span>{{ item.createdAt | date:'medium' }}</span>
+            </div>
+            <div class="dashboard-mobile-stat">
+              <span class="dashboard-mobile-label">Title:</span>
+              <span>{{item.title}}</span>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="totalItems.length == 0" class="dashboard-mobile-empty">
+          <i class="fas fa-folder-open dashboard-empty-icon"></i>
+          <p>No Items Available</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- My Items Section -->
   <div class="dashboard-card">
     <div class="dashboard-card-header">
@@ -11,7 +75,7 @@
         <div class="dashboard-search-mobile">
           <div class="dashboard-search-container">
             <i class="fas fa-search dashboard-search-icon"></i>
-            <input type="text" class="dashboard-input" name="searchMobile" placeholder="Search By App Name" [(ngModel)]="filters.searchArray[0].value">
+            <input type="text" class="dashboard-input" name="searchMobile" placeholder="Search By App Name" [(ngModel)]="filters.searchArray[0].value" >
           </div>
         </div>
 

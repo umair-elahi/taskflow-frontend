@@ -575,3 +575,38 @@
   }
 }
 
+/* Custom Items Table Responsive */
+.custom-items-table-container {
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+.custom-items-mobile-cards {
+  display: none;
+  @media (max-width: 767px) {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+}
+
+.dashboard-input {
+  width: 100px !important;
+  transition: width 0.3s ease;
+}
+
+.dashboard-input:focus {
+  width: 500px !important;
+}
+
+@media (max-width: 768px) {
+  .dashboard-input {
+    width: 100% !important;
+  }
+
+  .dashboard-input:focus {
+    width: 100% !important;
+  }
+}

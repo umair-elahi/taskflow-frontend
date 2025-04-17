@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReportService } from '../report.service';
 import { ToasterService } from '../../helper/services/toaster.service';
@@ -8,6 +8,8 @@ import { TitleService } from '../../helper/services/title.service';
 import { SpinnerService } from '../../helper/services/spinner.service';
 import { IMyItemReport } from './interface';
 import { PdfService } from '../../helper/services/pdf.service';
+import { WorkflowService } from '../../workflow/workflow.service';
+
 
 @Component({
   selector: 'app-report-my-item',
@@ -43,12 +45,17 @@ export class MyItemComponent implements OnInit {
   myItems: any[] = [];
   tempParticipatedItems: any[] = [];
   participatedItems: any[] = [];
+  allFilteredItemsInprogress: any[] = [];
+  allFilteredItemsClarity: any[] = [];
+  itemsDataInProgress: any[] = [];
+  itemsDataClarity: any[] = [];
+  totalItems: any[] = [];
 
   constructor(private reportService: ReportService, private router: Router,
     private toastr: ToasterService, private _ActivatedRoute: ActivatedRoute, private titleService: TitleService,
-    private spinner: SpinnerService, private pdfService: PdfService) { }
+    private spinner: SpinnerService, private pdfService: PdfService, private workflowService: WorkflowService) { }
 
-ngOnInit() {
+async ngOnInit() {
     this.titleService.setTitle('Report', 'My Items');
     this.myItems = this._ActivatedRoute.snapshot.data['data'].myItem;
     this.participatedItems = this._ActivatedRoute.snapshot.data['data'].participated;
@@ -59,6 +66,58 @@ ngOnInit() {
     this.tempParticipatedItems = this.participatedItems as IMyItemReport[];
     this.getPaginatedData();
     this.spinner.hide();
+
+    const allItems = this._ActivatedRoute.snapshot.data['data'].myItem;
+    // console.log(allItems);
+    this.allFilteredItemsInprogress = allItems.filter(item => item.inProgress !== 0);
+    this.allFilteredItemsClarity = allItems.filter(item => item.inProgress === 0);
+    
+    for (const i of this.allFilteredItemsInprogress) {
+      let itemsPromise = await this.workflowService.getAllMyExecutions(
+        constants.executionStatus.INPROGRESS,
+        null,
+        i.applicationId
+      );
+    
+      const items = (itemsPromise as any).data;
+    
+      // Filter items older than 7 days and add daysPassed property
+      this.itemsDataInProgress = items
+        .filter((item: any) => {
+          const createdDate = new Date(item.createdAt);
+          const currentDate = new Date();
+          const diffInMs = currentDate.getTime() - createdDate.getTime();
+          const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+          item.daysPassed = Math.floor(diffInDays); // Add custom property to track days passed
+          return diffInDays > 0;
+        });
+    }    
+
+    for (const i of this.allFilteredItemsClarity) {
+      let itemsPromise = await this.workflowService.getAllMyExecutions(
+        constants.executionStatus.CLARITY,
+        null,
+        i.applicationId
+      );
+    
+      const items = (itemsPromise as any).data;
+    
+      // Filter items older than 7 days and add daysPassed property
+      this.itemsDataClarity = items
+        .filter((item: any) => {
+          const createdDate = new Date(item.createdAt);
+          const currentDate = new Date();
+          const diffInMs = currentDate.getTime() - createdDate.getTime();
+          const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+          item.daysPassed = Math.floor(diffInDays); // Add custom property to track days passed
+          return diffInDays > 2;
+        });
+    }
+
+    this.totalItems = this.itemsDataInProgress.concat(this.itemsDataClarity);
+    this.totalItems = _.orderBy(this.totalItems, ['daysPassed'], ['asc']);
+
+    // console.log(this.totalItems);
 }
 
 
