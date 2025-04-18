@@ -37,6 +37,7 @@ export class DashboardComponent implements OnInit {
   
   // Filtered task list
   filteredTasks: any[] = [];
+  isSuperAdmin = false;
 
   constructor(
     private titleService: TitleService, 
@@ -50,6 +51,20 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+
+    const json = localStorage.getItem('user');
+    if (json) {
+      try {
+        const user = JSON.parse(json);
+        this.isSuperAdmin = Array.isArray(user.roles)
+          && user.roles.includes('superAdmin');
+      } catch (e) {
+        console.error('Could not parse user from localStorage', e);
+      }
+    }
+
+
+
     const paramId = this._ActivatedRoute.snapshot.paramMap.get('appId');
     this.appId = paramId === 'all' ? null : paramId;
 

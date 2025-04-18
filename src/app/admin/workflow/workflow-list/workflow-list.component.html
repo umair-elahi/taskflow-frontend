@@ -1,6 +1,6 @@
 <section class="app-container">
   <!-- Create New App -->
-  <div class="create-app" [routerLink]="['/workflow', 'create', 'new']">
+  <div class="create-app" [routerLink]="['/workflow', 'create', 'new']" *ngIf="isSuperAdmin" >
     <span class="icon"><i class="fas fa-plus"></i></span>
     <span class="label">Create New App</span>
   </div>

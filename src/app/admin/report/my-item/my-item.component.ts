@@ -89,7 +89,7 @@ async ngOnInit() {
           const diffInMs = currentDate.getTime() - createdDate.getTime();
           const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
           item.daysPassed = Math.floor(diffInDays); // Add custom property to track days passed
-          return diffInDays > 0;
+          return diffInDays > 7;
         });
     }    
 
@@ -110,7 +110,7 @@ async ngOnInit() {
           const diffInMs = currentDate.getTime() - createdDate.getTime();
           const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
           item.daysPassed = Math.floor(diffInDays); // Add custom property to track days passed
-          return diffInDays > 2;
+          return diffInDays > 7;
         });
     }
 

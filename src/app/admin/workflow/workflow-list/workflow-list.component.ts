@@ -16,10 +16,25 @@ import { SpinnerService } from '../../helper/services/spinner.service';
 export class WorkflowListComponent implements OnInit {
 
   applications: any;
+  isSuperAdmin = false;
+
   constructor(private titleService: TitleService, private toastr: ToasterService, private _ActivatedRoute: ActivatedRoute,
     private workflowService: WorkflowService, private swalService: SwalService, private spinner: SpinnerService) { }
 
   ngOnInit() {
+
+    const json = localStorage.getItem('user');
+    if (json) {
+      try {
+        const user = JSON.parse(json);
+        this.isSuperAdmin = Array.isArray(user.roles)
+          && user.roles.includes('superAdmin');
+      } catch (e) {
+        console.error('Could not parse user from localStorage', e);
+      }
+    }
+
+
     this.titleService.setTitle('Workflow', 'Apps');
     this.applications = this._ActivatedRoute.snapshot.data['data'].data;
     this.spinner.hide();

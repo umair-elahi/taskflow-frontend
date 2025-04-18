@@ -1,4 +1,4 @@
-<section class="card-container">
+<section class="card-container" *ngIf="isSuperAdmin" >
   <!-- Create New App -->
   <a class="create-link" [routerLink]="['/workflow', 'create', 'new']">
     Create New App
