@@ -23,6 +23,7 @@ export class SideMenuComponent implements OnInit {
   menus: any = [];
   menuCounts: any = {};
   isVisible = false;
+  userRole: string = '';
 
   constructor(
     private titleService: TitleService,
@@ -38,6 +39,9 @@ export class SideMenuComponent implements OnInit {
   }
 
   async ngOnInit() {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.userRole = user.roles[0];
+
     this.rights = this.user.Rights;
     this.titleService.onSetTitle().subscribe((res) => {
       this.title = res.subTitle;

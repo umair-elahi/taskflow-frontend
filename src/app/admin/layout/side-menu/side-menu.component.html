@@ -10,6 +10,7 @@
     <ul>
       <li *ngFor="let menu of menus">
         <a 
+          *ngIf="menu.Name !== 'Delete Executions' || userRole === 'superAdmin'"
           [routerLink]="menu.Link" 
           routerLinkActive="active" 
           [routerLinkActiveOptions]="{ exact: true }"

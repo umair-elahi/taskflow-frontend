@@ -20,6 +20,7 @@ import * as _ from 'lodash';
 })
 export class AppTimelineComponent implements OnInit {
 
+  tasks: any[] = [];
   items: any[] = [];
   applications: any[] = [];
   users: any[] = [];
@@ -38,11 +39,40 @@ export class AppTimelineComponent implements OnInit {
     private spinner: SpinnerService, private configurationService: ConfigurationService,
     private dialog: MatDialog, private workflowService: WorkflowService, private pdfService: PdfService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    const startDateStr: string = moment(0).format('YYYY-MM-DD');
+    const endDateStr:   string = moment().format('YYYY-MM-DD');
+
     this.titleService.setTitle('Report', 'Application Timeline');
     this.applications = this._ActivatedRoute.snapshot.data['data'].applications;
     this.users = this._ActivatedRoute.snapshot.data['data'].users;
     this.spinner.hide();
+
+    for (const apps of this.applications) {
+      let req = await this.reportService.getApplicationTimelineReport(apps.id, startDateStr, endDateStr)
+      // console.log(req.data);
+      for (const tasks of req.data) {
+        let daysDifference = moment().diff(moment(tasks.timeline[tasks.timeline.length - 1].startedAt), 'days');
+        if (daysDifference >= 7) {
+          tasks.timeline[tasks.timeline.length - 1].workflowType = tasks.timeline[tasks.timeline.length - 1].workflowType.replace(/^(approval|input) by\s*/i, "");
+          tasks.name = apps.name;
+          tasks.daysPassed = daysDifference;
+          this.tasks.push(tasks);
+        }
+      }
+    } 
+
+    // console.log(this.tasks);
+    this.tasks.sort((a, b) => {
+      const aLast = a.timeline[a.timeline.length - 1].startedAt;
+      const bLast = b.timeline[b.timeline.length - 1].startedAt;
+      
+      const aTime = aLast ? new Date(aLast).getTime() : 0;
+      const bTime = bLast ? new Date(bLast).getTime() : 0;
+      
+      return aTime - bTime;
+    });
+    // console.log(this.tasks);
   }
 
   async findReport() {

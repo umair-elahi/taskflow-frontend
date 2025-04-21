@@ -38,7 +38,7 @@
       <div class="dashboard-mobile-cards custom-items-mobile-cards">
         <div *ngFor="let item of totalItems" class="dashboard-mobile-card">
           <div class="dashboard-mobile-card-header">
-            <h3 class="dashboard-mobile-card-title">{{item.name}}</h3>
+            <h3 class="dashboard-mobile-card-title">{{item.title}}</h3>
           </div>
           <div class="dashboard-mobile-card-body">
             <div class="dashboard-mobile-stat">
@@ -50,8 +50,8 @@
               <span>{{ item.createdAt | date:'medium' }}</span>
             </div>
             <div class="dashboard-mobile-stat">
-              <span class="dashboard-mobile-label">Title:</span>
-              <span>{{item.title}}</span>
+              <span class="dashboard-mobile-label">App Name:</span>
+              <span>{{item.name}}</span>
             </div>
           </div>
         </div>
