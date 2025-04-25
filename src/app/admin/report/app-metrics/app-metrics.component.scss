@@ -92,6 +92,20 @@
     outline: none;
     box-shadow: 0 0 0 2px rgba(var(--custom-color-rgb), 0.1);
   }
+
+  .metrics-select {
+    padding: 0px;
+  }
+
+  ::ng-deep .ng-select-container {
+    background-color: var(--input-bg) !important;
+    border: none !important;
+    color: var(--text-primary);
+  }
+
+  ::ng-deep .ng-select-container input {
+    color: var(--input-text) !important;
+  }
   
   .metrics-form-actions {
     display: flex;

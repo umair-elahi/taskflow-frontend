@@ -431,4 +431,15 @@
     animation: fadeIn 0.3s ease forwards;
   }
   
+  .user-location-select {
+    padding: 0px;
+  }
   
+  ::ng-deep .ng-select-container {
+    background-color: var(--input-bg) !important;
+    border: none !important;
+  }
+
+  ::ng-deep .ng-select-container input {
+    color: var(--input-text);
+  }
