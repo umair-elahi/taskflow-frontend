@@ -33,6 +33,8 @@ export class AppTimelineComponent implements OnInit {
   };
   filters: any = { sortOrder: 'asc' };
 
+  approvedTasks: any[] = [];
+
   constructor(
     private reportService: ReportService,
     private toastr: ToasterService,
@@ -44,12 +46,21 @@ export class AppTimelineComponent implements OnInit {
     private pdfService: PdfService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.titleService.setTitle('Report', 'Application Timeline');
     const data = this.route.snapshot.data['data'];
     this.applications = data.applications;
     this.users        = data.users;
     this.spinner.hide();
+    await this.workflowService.getAllMyExecutions('approved', null, null)
+    .then((res: any) => {
+      res.data.forEach(task=>
+        {
+          this.approvedTasks.push(task.id);
+        });
+    });
+
+    // console.log(this.approvedTasks)
   }
 
   /** Called whenever either date input changes */
@@ -76,11 +87,15 @@ export class AppTimelineComponent implements OnInit {
         )
       );
 
+      
+
       for (const resp of responses) {
+        // console.log(resp.data)
         for (const task of resp.data) {
+          if (this.approvedTasks.includes(task.id)) continue; // skip approved tasks
           const tl = task.timeline;
           if (!tl.length) continue;
-          const last = tl[tl.length - 1];
+          const last = tl[1];
           const ts = moment(last.startedAt);
 
           if (
@@ -97,8 +112,8 @@ export class AppTimelineComponent implements OnInit {
 
       // sort by last.startedAt ascending
       this.tasks.sort((a, b) => {
-        const aT = new Date(a.timeline.slice(-1)[0].startedAt).getTime();
-        const bT = new Date(b.timeline.slice(-1)[0].startedAt).getTime();
+        const aT = new Date(a.timeline[1].startedAt).getTime();
+        const bT = new Date(b.timeline[1].startedAt).getTime();
         return aT - bT;
       });
 

@@ -75,10 +75,10 @@
             <span data-label="Days Passed">{{ task.daysPassed }}</span>
             <span data-label="App Name">{{ task.name }}</span>
             <span data-label="Workflow" class="hide-on-small-tablet">
-              {{ task.timeline[task.timeline.length - 1].workflowType }}
+              {{ task.timeline[1].workflowType }}
             </span>
             <span data-label="Started At" class="hide-on-small">
-              {{ task.timeline[task.timeline.length - 1].startedAt | date:'medium' }}
+              {{ task.timeline[1].startedAt | date:'medium' }}
             </span>
             <span data-label="Title">{{ task.title }}</span>
           </div>
