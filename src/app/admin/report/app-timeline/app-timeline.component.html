@@ -101,11 +101,11 @@
               </div>
               <div class="timeline-mobile-stat">
                 <span class="timeline-mobile-label">Workflow:</span>
-                <span>{{ task.timeline[task.timeline.length - 1].workflowType }}</span>
+                <span>{{ task.timeline[1].workflowType }}</span>
               </div>
               <div class="timeline-mobile-stat">
                 <span class="timeline-mobile-label">Started At:</span>
-                <span>{{ task.timeline[task.timeline.length - 1].startedAt | date:'medium' }}</span>
+                <span>{{ task.timeline[1].startedAt | date:'medium' }}</span>
               </div>
             </div>
           </div>

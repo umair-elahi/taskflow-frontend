@@ -5,6 +5,10 @@ import { HttpClient } from '@angular/common/http';
 export class ReportService {
     constructor(private http: HttpClient) { }
 
+    getAllRawExecutionData(): Promise<any> {
+        return this.http.get(`application-execution/all-raw-data`).toPromise(); 
+    }
+
     // my-item
     getMyItemReport(pageNo: string, noOfRecords: string, searchText: any[]): Promise<any> {
         return this.http.get(`report/my-item`).toPromise();

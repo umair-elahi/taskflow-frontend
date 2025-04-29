@@ -47,16 +47,19 @@ export class AppTimelineComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    // console.log(await this.reportService.getAllRawExecutionData());
     this.titleService.setTitle('Report', 'Application Timeline');
     const data = this.route.snapshot.data['data'];
     this.applications = data.applications;
     this.users        = data.users;
     this.spinner.hide();
-    await this.workflowService.getAllMyExecutions('approved', null, null)
+    await this.reportService.getAllRawExecutionData()
     .then((res: any) => {
       res.data.forEach(task=>
         {
-          this.approvedTasks.push(task.id);
+          if(task.status=='approved'){
+            this.approvedTasks.push(task.id);
+          }
         });
     });
 
