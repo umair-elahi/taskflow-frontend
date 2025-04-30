@@ -90,3 +90,130 @@
     </div>
   </div>
 </section>
+
+<div class="timeline-container" *ngIf="isAuthenticUser">
+<!-- ===== Pending Tasks Card ===== -->
+<div class="timeline-tasks-container">
+  <div class="timeline-tasks-card">
+
+
+    <!-- Header: date inputs + Clear button + title -->
+    <div class="timeline-card-header flex-align">
+
+
+      <!-- Section Title -->
+      <h4 class="timeline-title">Tasks Pending</h4>
+    </div>
+
+
+    <!-- Body -->
+    <div class="timeline-card-body">
+
+
+      <!-- Date Range Inputs -->
+      <div class="timeline-filter" style="justify-content: space-evenly;">
+        <div style="display: flex; flex-direction: column; row-gap: 1rem; width: 200px;">
+          <label for="pf-start">Start Date</label>
+        <input
+          id="pf-start"
+          type="date"
+          [(ngModel)]="pendingFilter.startDate"
+          (ngModelChange)="onDateChange()"
+          [max]="pendingFilter.endDate"
+        />
+        </div>
+
+
+        <div style="display: flex; flex-direction: column; row-gap: 1rem; width: 200px;">
+          <label for="pf-end">End Date</label>
+        <input
+          id="pf-end"
+          type="date"
+          [(ngModel)]="pendingFilter.endDate"
+          (ngModelChange)="onDateChange()"
+          [min]="pendingFilter.startDate"
+        />
+        </div>
+        
+        <div class="clear-btn">
+        <!-- Clear button appears only after load attempt -->
+        <button
+          class="timeline-btn timeline-btn-default"
+          (click)="clearPendingFilter()"
+        >
+        <i class="fas fa-times"></i>
+          Clear
+        </button>
+        </div>
+      </div>
+
+
+      <!-- Prompt before any load -->
+      <div *ngIf="!pendingLoaded" class="timeline-empty-state">
+        <i class="fas fa-info-circle timeline-empty-icon"></i>
+        <p>Please select both dates to load tasks.</p>
+      </div>
+
+
+      <!-- No results message -->
+      <div *ngIf="pendingLoaded && tasks.length === 0" class="timeline-empty-state">
+        <i class="fas fa-info-circle timeline-empty-icon"></i>
+        <p>No tasks found for that date range.</p>
+      </div>
+
+
+      <!-- Desktop/Tablet Table -->
+      <div *ngIf="tasks.length > 0" class="timeline-tasks-wrapper timeline-tasks-desktop">
+        <div class="timeline-tasks-header">
+          <span>Days Passed</span>
+          <span>App Name</span>
+          <span class="hide-on-small-tablet">Workflow</span>
+          <span class="hide-on-small">Started At</span>
+          <span>Title</span>
+        </div>
+        <div *ngFor="let task of tasks" class="timeline-tasks-row" tabindex="0">
+          <span data-label="Days Passed">{{ task.daysPassed }}</span>
+          <span data-label="App Name">{{ task.name }}</span>
+          <span data-label="Workflow" class="hide-on-small-tablet">
+            {{ task.timeline[1].workflowType }}
+          </span>
+          <span data-label="Started At" class="hide-on-small">
+            {{ task.timeline[1].startedAt | date:'medium' }}
+          </span>
+          <span data-label="Title">{{ task.title }}</span>
+        </div>
+      </div>
+
+
+      <!-- Mobile Cards -->
+      <div *ngIf="tasks.length > 0" class="timeline-tasks-mobile">
+        <div *ngFor="let task of tasks" class="timeline-mobile-card" tabindex="0">
+          <div class="timeline-mobile-card-header">
+            <h5 class="timeline-mobile-title">{{ task.title }}</h5>
+          </div>
+          <div class="timeline-mobile-card-body">
+            <div class="timeline-mobile-stat">
+              <span class="timeline-mobile-label">Days Passed:</span>
+              <span>{{ task.daysPassed }}</span>
+            </div>
+            <div class="timeline-mobile-stat">
+              <span class="timeline-mobile-label">App Name:</span>
+              <span>{{ task.name }}</span>
+            </div>
+            <div class="timeline-mobile-stat">
+              <span class="timeline-mobile-label">Workflow:</span>
+              <span>{{ task.timeline[1].workflowType }}</span>
+            </div>
+            <div class="timeline-mobile-stat">
+              <span class="timeline-mobile-label">Started At:</span>
+              <span>{{ task.timeline[1].startedAt | date:'medium' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+</div>

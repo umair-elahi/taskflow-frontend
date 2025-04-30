@@ -11,6 +11,7 @@ import { AllWorkflowModalComponent } from './all-workflow-modal/all-workflow-mod
 import { WorkflowService } from '../workflow.service';
 import { ApplicationWorkflowType } from '../../helper/enum';
 import { constants } from '../../helper/constants';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dashboard',
@@ -38,6 +39,13 @@ export class DashboardComponent implements OnInit {
   // Filtered task list
   filteredTasks: any[] = [];
   isSuperAdmin = false;
+  isAuthenticUser = false;
+
+  approvedTasks: any[] = [];
+  pendingFilter = { startDate: '', endDate: '' };
+  pendingLoaded = false;
+  tasks: any[] = [];
+  reportApplications: any[] = [];
 
   constructor(
     private titleService: TitleService, 
@@ -52,18 +60,27 @@ export class DashboardComponent implements OnInit {
 
   async ngOnInit() {
 
+
     const json = localStorage.getItem('user');
     if (json) {
       try {
         const user = JSON.parse(json);
-        this.isSuperAdmin = Array.isArray(user.roles)
-          && user.roles.includes('superAdmin');
+        this.isSuperAdmin = Array.isArray(user.roles) && user.roles.includes('superAdmin');
+        this.isAuthenticUser = Array.isArray(user.roles) && (user.roles.includes('superAdmin') || user.roles.includes('admin'));
       } catch (e) {
         console.error('Could not parse user from localStorage', e);
       }
     }
-
-
+    
+    await this.workflowService.getAllRawExecutionData()
+    .then((res: any) => {
+      res.data.forEach(task=>
+        {
+          if(task.status=='approved'){
+            this.approvedTasks.push(task.id);
+          }
+        });
+    });
 
     const paramId = this._ActivatedRoute.snapshot.paramMap.get('appId');
     this.appId = paramId === 'all' ? null : paramId;
@@ -105,12 +122,78 @@ export class DashboardComponent implements OnInit {
 
     this.titleService.setTitle('Workflow', 'Dashboard');
     const data = this._ActivatedRoute.snapshot.data['data'].data;
+    this.reportApplications = data;
     this.applications = _.filter(data, { isPublished: true });
     this.limitedApps = _.take(this.applications, 2);
     this.spinner.hide();
     setTimeout(() => {
       App.initMatchHeight();
     }, 100);
+  }
+
+  onDateChange() {
+    const { startDate, endDate } = this.pendingFilter;
+    if (startDate && endDate) {
+      this.fetchPendingTasks();
+    }
+  }
+
+  private async fetchPendingTasks() {
+    this.pendingLoaded = true;
+    this.spinner.showFull();
+    this.tasks = [];
+
+    const { startDate, endDate } = this.pendingFilter;
+    try {
+      const responses = await Promise.all(
+        this.reportApplications.map(app =>
+          this.workflowService
+            .getApplicationTimelineReport(app.id, startDate, endDate)
+            .then(r => ({ appName: app.name, data: r.data }))
+        )
+      );
+
+      
+
+      for (const resp of responses) {
+        // console.log(resp.data)
+        for (const task of resp.data) {
+          if (this.approvedTasks.includes(task.id)) continue; // skip approved tasks
+          const tl = task.timeline;
+          if (!tl.length) continue;
+          const last = tl[1];
+          const ts = moment(last.startedAt);
+
+          if (
+            ts.isSameOrAfter(startDate, 'day') &&
+            ts.isSameOrBefore(endDate, 'day')
+          ) {
+            last.workflowType = last.workflowType.replace(/^(approval|input) by\s*/i, '');
+            task.name       = resp.appName;
+            task.daysPassed = moment().diff(ts, 'days');
+            this.tasks.push(task);
+          }
+        }
+      }
+
+      // sort by last.startedAt ascending
+      this.tasks.sort((a, b) => {
+        const aT = new Date(a.timeline[1].startedAt).getTime();
+        const bT = new Date(b.timeline[1].startedAt).getTime();
+        return aT - bT;
+      });
+
+    } catch {
+      this.toastr.error('Error', 'Error loading pending tasks.');
+    } finally {
+      this.spinner.hide();
+    }
+  }
+  
+  clearPendingFilter() {
+    this.pendingFilter = { startDate: '', endDate: '' };
+    this.pendingLoaded = false;
+    this.tasks = [];
   }
 
   // Helper function to filter tasks by 'createdAt' and sort them by date

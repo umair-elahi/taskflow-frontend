@@ -11,6 +11,14 @@ export class WorkflowService {
 
   constructor(private http: HttpClient) { }
 
+  getAllRawExecutionData(): Promise<any> {
+    return this.http.get(`application-execution/all-raw-data`).toPromise(); 
+  }
+
+  getApplicationTimelineReport(appId: string, startDate: string, endDate: string): Promise<any> {
+    return this.http.get(`application-execution/application/${appId}/time`, { params: { startDate: startDate, endDate: endDate } }).toPromise();
+  }
+
   // Application First Step
   getApplications(pageNo: string, noOfRecords: string, searchText: any[]): Promise<any> {
     return this.http.get(`application`).toPromise();

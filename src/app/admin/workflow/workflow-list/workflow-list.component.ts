@@ -27,8 +27,7 @@ export class WorkflowListComponent implements OnInit {
     if (json) {
       try {
         const user = JSON.parse(json);
-        this.isSuperAdmin = Array.isArray(user.roles)
-          && user.roles.includes('superAdmin');
+        this.isSuperAdmin = Array.isArray(user.roles) && user.roles.includes('superAdmin');
       } catch (e) {
         console.error('Could not parse user from localStorage', e);
       }
