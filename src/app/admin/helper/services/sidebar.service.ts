@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root' // Makes this service available everywhere
 })
 export class SidebarService {
-  private sidebarVisible = new BehaviorSubject<boolean>(false); // Store sidebar state (true/false)
+  private sidebarVisible = new BehaviorSubject<boolean>(true); // Store sidebar state (true/false)
   sidebarState$ = this.sidebarVisible.asObservable(); // Observable to listen for changes
 
   toggleSidebar() {

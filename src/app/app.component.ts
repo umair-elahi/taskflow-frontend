@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { SpinnerService } from './admin/helper/services/spinner.service';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,8 +12,14 @@ export class AppComponent implements OnInit {
   showSpinner = false;
   showFullSpinner = false;
 
-  constructor(private spinnerService: SpinnerService,
-    private changeDetectorRef: ChangeDetectorRef) { }
+  // ← add a flag to skip reload on initial load
+  private firstLoad = true;
+
+  constructor(
+    private spinnerService: SpinnerService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private router: Router              // ← inject the Router
+  ) { }
 
   ngOnInit() {
     this.spinnerService.showSpinner()
@@ -29,5 +36,15 @@ export class AppComponent implements OnInit {
         }
         this.changeDetectorRef.detectChanges();
       });
+
+    // ← add this block to reload on every NavigationEnd
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        if (!this.firstLoad) {
+          window.location.reload();
+        }
+        this.firstLoad = false;
+      }
+    });
   }
 }
